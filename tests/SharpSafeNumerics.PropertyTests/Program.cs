@@ -4,6 +4,8 @@ using Hedgehog;
 using Hedgehog.Linq;
 using SharpSafeNumerics;
 using HRange = Hedgehog.Linq.Range;
+using CGen = CsCheck.Gen;
+using HGen = Hedgehog.Linq.Gen;
 
 static bool AdditionMatchesOracle(int a, int b)
 {
@@ -33,20 +35,20 @@ static bool MultiplicationMatchesOracle(int a, int b)
 }
 
 Console.WriteLine("CsCheck: 30,000 generated arithmetic pairs");
-Gen.Select(Gen.Int, Gen.Int).Sample(t => AdditionMatchesOracle(t.Item1, t.Item2), iter: 10_000);
-Gen.Select(Gen.Int, Gen.Int).Sample(t => SubtractionMatchesOracle(t.Item1, t.Item2), iter: 10_000);
-Gen.Select(Gen.Int, Gen.Int).Sample(t => MultiplicationMatchesOracle(t.Item1, t.Item2), iter: 10_000);
+CGen.Select(CGen.Int, CGen.Int).Sample(t => AdditionMatchesOracle(t.Item1, t.Item2), iter: 10_000);
+CGen.Select(CGen.Int, CGen.Int).Sample(t => SubtractionMatchesOracle(t.Item1, t.Item2), iter: 10_000);
+CGen.Select(CGen.Int, CGen.Int).Sample(t => MultiplicationMatchesOracle(t.Item1, t.Item2), iter: 10_000);
 
 Console.WriteLine("Hedgehog: independently generated/shrunk arithmetic properties");
 var addProperty =
-    from a in Gen.Int32(HRange.ConstantBoundedInt32()).ForAll()
-    from b in Gen.Int32(HRange.ConstantBoundedInt32()).ForAll()
+    from a in HGen.Int32(HRange.ConstantBoundedInt32()).ForAll()
+    from b in HGen.Int32(HRange.ConstantBoundedInt32()).ForAll()
     select AdditionMatchesOracle(a, b);
 addProperty.Check();
 
 var mulProperty =
-    from a in Gen.Int32(HRange.ConstantBoundedInt32()).ForAll()
-    from b in Gen.Int32(HRange.ConstantBoundedInt32()).ForAll()
+    from a in HGen.Int32(HRange.ConstantBoundedInt32()).ForAll()
+    from b in HGen.Int32(HRange.ConstantBoundedInt32()).ForAll()
     select MultiplicationMatchesOracle(a, b);
 mulProperty.Check();
 
