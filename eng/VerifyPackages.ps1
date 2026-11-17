@@ -26,6 +26,7 @@ $project = @"
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SharpSafeNumerics.Core" Version="$safeVersion" />
+    <PackageReference Include="SharpSafeNumerics.Decimal" Version="$safeVersion" />
     <PackageReference Include="SharpSafeNumerics.Generator" Version="$safeVersion" PrivateAssets="all" />
     <PackageReference Include="SharpSafeNumerics.Analyzers" Version="$safeVersion" PrivateAssets="all" />
     <PackageReference Include="SharpSafeNumerics.Unions" Version="$safeVersion" />
@@ -34,7 +35,7 @@ $project = @"
 "@
 $projectPath = Join-Path $WorkDirectory 'PackageSmoke.csproj'
 [IO.File]::WriteAllText($projectPath, $project)
-# All four packages and their sole inter-package dependency must resolve from
+# All five packages and their inter-package dependencies must resolve from
 # this local feed; successful restore also checks the intended BCL-only closure.
 dotnet restore $projectPath --source $PackageDirectory --packages (Join-Path $WorkDirectory 'packages')
 if ($LASTEXITCODE -ne 0) { throw 'Package consumer restore failed' }
@@ -46,16 +47,20 @@ using SharpSafeNumerics;
 [StrictNumeric]
 static class InvalidStrictProbe
 {
-    static void Probe() { _ = SafeInteger.Add(1, 2, ArithmeticPolicy.Throw); }
+    static void Probe()
+    {
+        _ = SafeInteger.Add(1, 2, ArithmeticPolicy.Throw);
+        _ = SafeDecimal.TryAdd(System.Numerics.Decimal64.One, System.Numerics.Decimal64.One);
+    }
 }
 '@)
 try {
     $output = dotnet build $projectPath -c Release --no-restore 2>&1 | Out-String
     $exitCode = $LASTEXITCODE
-    if ($exitCode -eq 0 -or $output -notmatch 'SSN1004') {
+    if ($exitCode -eq 0 -or $output -notmatch 'SSN1004' -or $output -notmatch 'SSN1007' -or $output -notmatch 'SSN1003') {
         throw "Packaged analyzer did not reject the deliberate Strict violation: $output"
     }
-    Write-Output 'Packaged analyzer rejected the deliberate Strict violation with SSN1004.'
+    Write-Output 'Packaged analyzer rejected deliberate Strict/decimal violations with SSN1003, SSN1004 and SSN1007.'
 } finally {
     if (Test-Path -LiteralPath $probe -PathType Leaf) { Remove-Item -LiteralPath $probe }
 }

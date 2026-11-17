@@ -1,7 +1,8 @@
 # 0.1.0-rc.1 release notes
 
 Candidate packages: SharpSafeNumerics.Core, SharpSafeNumerics.Generator,
-SharpSafeNumerics.Analyzers and SharpSafeNumerics.Unions. Target: .NET 11 / C# 15.
+SharpSafeNumerics.Analyzers, SharpSafeNumerics.Unions and the optional
+SharpSafeNumerics.Decimal. Target: .NET 11 / C# 15.
 This document prepares the release; it does not indicate a published NuGet version.
 
 ## Implemented
@@ -14,6 +15,13 @@ This document prepares the release; it does not indicate a published NuGet versi
   provide span parsing/formatting, fixed-width endian codecs, exact conversions,
   equality/order and unit metadata, without runtime reflection.
 - SSN1001–SSN1008 enforce documented statically detectable contracts.
+- Owned signed Q32.32 fixed-point arithmetic, Int128 intermediates, explicit
+  exact/nearest-even/directed rounding and cleared typed failures.
+- Safe finite BCL Decimal32/64/128 arithmetic and cross-format conversions:
+  exact by default, explicit nearest-even acceptance with inexactness reporting.
+  Optional decimal exactness checks allocate; integer/fixed hot paths stay separate.
+- SSN1003 recognizes decimal results; SSN1007 warns for known allocating decimal
+  arithmetic/conversion helpers in strict scopes, excluding nonallocating negation.
 - Int32 batch addition detects SIMD256/SIMD128 and retains scalar fallback/tails,
   per-lane error direction and cleared failures. Buffer-contract errors preserve
   destinations; execution metadata returns by value with an invalid default.
@@ -21,6 +29,11 @@ This document prepares the release; it does not indicate a published NuGet versi
   are supported. Write/format destination and count output storage must be distinct.
 - Package-only consumer checks, Windows/Linux x64 and Linux ARM64 Native AOT,
   and one explicitly gated macOS ARM64 qualification run.
+
+Build-time public API lists track five shipping projects, including nullable
+signatures, enum values and optional defaults. Targeted generic metadata tests
+guard current contracts; general released-package binary compatibility remains
+separate qualification work.
 
 ## Candidate API correction
 
@@ -32,8 +45,11 @@ TryAddBatch and existing BatchArithmeticError numeric values are retained.
 ## Evidence and remaining limits
 
 See [RC qualification](verification/2026-11-17-rc1.md) for exact source revisions,
-commands, seeds, counts, coverage, mutation scores and CI run IDs. The current
-regression suite has 384 cases. The reviewed binary passed a final 15-minute
+commands, seeds, counts, coverage, mutation scores and CI run IDs. Expanded RC1
+fixed/decimal evidence is recorded [separately](verification/2026-11-17-fixed-decimal.md).
+The expanded local suite passed437 cases; Core/decimal/analyzer mutation gates
+passed at93.30%/92.31%/91.80%, with retained survivors and separately reported timeouts.
+The earlier 384-case integer snapshot passed a final 15-minute
 SIMD256 soak plus shorter SIMD128/scalar replays. Default-hardware Core mutation
 CI passed the unchanged 90% gate. Full Standard generator/analyzer mutation campaigns passed their 90% gates at
 90.71% / 92.29%; survivors, uncovered paths and timeouts remain documented.

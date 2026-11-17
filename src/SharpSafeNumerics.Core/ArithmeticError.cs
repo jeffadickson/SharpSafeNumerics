@@ -14,7 +14,11 @@ public enum ArithmeticError : byte
     /// <summary>Divisor is zero.</summary>
     DivideByZero = 4,
     /// <summary>Value or conversion is outside the permitted range.</summary>
-    OutOfRange = 5
+    OutOfRange = 5,
+    /// <summary>The exact result is not representable under the requested precision contract.</summary>
+    Inexact = 6,
+    /// <summary>An operand is NaN or infinite where a finite value is required.</summary>
+    NonFinite = 7
 }
 
 /// <summary>Explicit overflow behavior for policy-oriented arithmetic.</summary>

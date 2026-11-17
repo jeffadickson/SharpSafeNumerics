@@ -11,6 +11,7 @@
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
     <ProjectReference Include="../../src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
+    <ProjectReference Include="../../src/SharpSafeNumerics.Decimal/SharpSafeNumerics.Decimal.csproj" />
     <ProjectReference Include="../../src/SharpSafeNumerics.Analyzers/SharpSafeNumerics.Analyzers.csproj" />
     <ProjectReference Include="../../src/SharpSafeNumerics.Generator/SharpSafeNumerics.Generator.csproj" />
   </ItemGroup>

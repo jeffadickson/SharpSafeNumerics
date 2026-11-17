@@ -23,8 +23,8 @@ NET11/C#15 only. Strict core is BCL-only. Target users: systems, protocol, simul
 | SN-015 | P1 | Published baseline benchmarks | reproducible results on x64/Arm64 |
 | SN-016 | P1 | Structured deterministic errors without strings on strict paths | allocation and replay tests |
 | SN-017 | P1 | SharpUnits integration | sample project + compile |
-| SN-018 | P2 | Fixed point semantics | precision/rounding reference tests |
-| SN-019 | P2 | Decimal32/64/128 operations | IEEE special-value tests |
+| SN-018 | P2; included in expanded RC1 | Fixed point semantics | Scoped Q32.32 contract SN-018-FIXED; precision/rounding reference tests |
+| SN-019 | P2; included in expanded RC1 | Decimal32/64/128 operations | Scoped finite safe BCL wrapper SN-019-DECIMAL; special-value admission, precision/reference tests |
 | SN-020 | P2 | SMT/formal rules | machine-readable proof evidence |
 
 ## Negative requirements
@@ -34,4 +34,4 @@ No silent clamp/wrap; no hidden BigInteger work in strict integer arithmetic; no
 For `Try*`, failure writes `default(T)` to the out value. `TryConvert` admits only exact, sign-preserving conversions and returns `OutOfRange` otherwise, without expected range exceptions for built-in types. Its scoped StrictDoc baseline is [requirements.sdoc](requirements.sdoc), preserving SN-003/004/005. Generic fast paths target built-in integral types only. Caller owns synchronization and domain-state management.
 
 ## Blocking qualification gaps
-Current execution evidence and its scope are recorded in [the conversion pass report](verification/2026-11-17-conversion.md). Conversion evidence does not close whole-library SN-005/SN-010: wide arithmetic policy campaigns and physical target qualification remain incomplete.
+Later integer campaigns supersede the conversion-only status: see [RC closeout](verification/2026-11-17-rc1-closeout.md) for wide policies, Linux/ARM64 AOT and mutation gates. Application-specific allocation/timing and 32-bit execution remain unqualified. The user expanded RC1 to include owned Q32.32 and safe BCL decimal APIs on 2026-11-17; their new verification is separate from the earlier integer evidence and pinned soak. SharpUnits integration SN-017 and published cross-architecture benchmark baselines SN-015 remain open.

@@ -1,0 +1,8 @@
+{
+  "stryker-config": {
+    "project": "SharpSafeNumerics.Decimal.csproj",
+    "test-projects": [ "../../tests/SharpSafeNumerics.DecimalTests/SharpSafeNumerics.DecimalTests.csproj" ],
+    "reporters": [ "progress", "cleartext", "json" ],
+    "thresholds": { "high": 95, "low": 90, "break": 90 }
+  }
+}

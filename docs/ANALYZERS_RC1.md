@@ -27,12 +27,19 @@ operation children only expose the compiler's checked flags.
 | --- | --- | --- |
 | SSN1001 | Explicit conversion between built-in integer types when the destination cannot represent the source's entire range, or an exact source constant is outside the destination range. Includes tuple elements and lifted casts and checks native widths at 32 and 64 bits. | `SafeInteger.TryConvert` or a generated `TryCreateFrom` |
 | SSN1002 | Explicit `unchecked` scopes and nonconstant unchecked built-in addition, subtraction, multiplication, negation, increment, or decrement. Covers compound assignments to built-in integers. | The matching `Try` arithmetic API or a named overflow policy |
-| SSN1003 | Discarded `NumericResult<T>` values, including a discarded `await` result, expression-bodied void methods or delegates, explicit assignment discards, tuple deconstruction discards, and `out` discards. The result type can also be nullable. | Inspect or propagate the result |
+| SSN1003 | Discarded `NumericResult<T>` or optional `DecimalResult<T>` values, including a discarded `await` result, expression-bodied void methods or delegates, explicit assignment discards, tuple deconstruction discards, and `out` discards. The result type can also be nullable. | Inspect or propagate the result |
 | SSN1004 | A compile-time value equal to `ArithmeticPolicy.Throw`, including a statically imported field, constant alias, enum cast, omitted nullable or nonnullable optional argument, or an invocation of generated `Add` or `Subtract` on a domain configured with `Throw`. | `Reject`, another explicitly allowed policy, or a `Try` operation |
 | SSN1005 | Direct calls to generic math `CreateSaturating` or `CreateTruncating`, including static interface dispatch through a constrained type parameter. | `SafeInteger.TryConvert` or an explicitly approved policy helper |
 | SSN1006 | Direct use of the generator's raw constructor or storage, generated input casts, and reads or casts out that can throw on invalid fields. Also catches named BCL reinterpretation calls involving a bounded or nullable bounded type, such as `Unsafe.As`, `Unsafe.BitCast` and `MemoryMarshal.Read`. | Generated `TryCreate`, `TryGetValue`, `TryConvertTo`, or domain codec |
 | SSN1007 | Evident managed allocation sites such as reference or anonymous object creation, reference-constrained `new T()`, explicit arrays, nonempty array collection expressions and expanded array `params`, boxing, nonconstant interpolated strings materialized as strings or format objects, and evident capture by a lambda. The capture check follows statically bound local-function calls, and the rule also reports explicit or instance-bound method-group delegates and local-function method-group delegates. | Value types, caller-owned buffers, and direct calls when appropriate |
 | SSN1008 | Explicit `default`, `default(TDomain)`, or implicit zero-initializing parameterless `new` of a bounded domain configured with `DefaultValuePolicy.Invalid`, including when the option is omitted. | Generated `TryCreate` |
+
+SSN1007 also recognizes calls to the optional library's allocating SafeDecimal
+TryAdd, TrySubtract, TryMultiply, TryDivide and TryConvert helpers in strict
+scopes. TryNegate is excluded because it does not perform the formatting/rational
+exactness check. Optional symbols resolve from their actual assembly, including
+alias-only references; unrelated lookalikes do not match. This bounded known-API
+check does not infer arbitrary transitive allocations.
 
 The analyzer keeps checked narrowing under SSN1001 because a range failure
 throws even when wraparound is disabled. Exact constant casts,

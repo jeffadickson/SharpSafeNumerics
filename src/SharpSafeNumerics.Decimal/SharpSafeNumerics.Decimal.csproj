@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsAotCompatible>true</IsAotCompatible>
+    <IsTrimmable>true</IsTrimmable>
+    <IsPackable>true</IsPackable>
+    <Description>Explicit finite IEEE decimal safety contracts for .NET 11. Exactness checks may allocate.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -29,7 +29,7 @@ try {
         & dotnet @packArguments *> (Join-Path $ArtifactDirectory "$pass.log")
         if ($LASTEXITCODE -ne 0) { throw "Pack failed; inspect $pass.log" }
         $files = @(Get-ChildItem -LiteralPath $output -File | Where-Object Extension -in @('.nupkg', '.snupkg'))
-        if ($files.Count -ne 6) { throw 'Expected four runtime/compiler packages and two symbol packages' }
+        if ($files.Count -ne 8) { throw 'Expected five runtime/compiler packages and three symbol packages' }
         foreach ($file in $files) {
             $key = $file.Name
             $hash = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash
@@ -42,6 +42,6 @@ try {
     $hashes.GetEnumerator() | Sort-Object Name | ForEach-Object {
         [pscustomobject]@{ Package=$_.Name; SHA256=$_.Value }
     } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $ArtifactDirectory 'sha256.json')
-    Write-Output "All six package archives reproduced byte-for-byte; rebuilt between passes: $RebuildBetweenPasses."
+    Write-Output "All eight package archives reproduced byte-for-byte; rebuilt between passes: $RebuildBetweenPasses."
 }
 finally { Pop-Location }

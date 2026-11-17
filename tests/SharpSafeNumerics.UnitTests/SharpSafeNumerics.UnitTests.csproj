@@ -11,5 +11,6 @@
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
     <ProjectReference Include="../../src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
+    <ProjectReference Include="../../src/SharpSafeNumerics.Unions/SharpSafeNumerics.Unions.csproj" />
   </ItemGroup>
 </Project>

@@ -20,19 +20,30 @@ jobs:
         run: dotnet test tests/SharpSafeNumerics.GeneratorTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/generator-coverage
       - name: Analyzer contract tests
         run: dotnet test tests/SharpSafeNumerics.AnalyzerUnitTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/analyzer-coverage
+      - name: Safe decimal contracts and independent oracle
+        run: dotnet test tests/SharpSafeNumerics.DecimalTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/decimal-coverage
+      - name: Verify public API drift controls
+        shell: pwsh
+        run: ./eng/VerifyPublicApi.ps1 -ArtifactDirectory artifacts/api-contract -ConstraintTestAssembly tests/SharpSafeNumerics.UnitTests/bin/Release/net11.0/SharpSafeNumerics.UnitTests.dll
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: core-coverage
           path: |
             artifacts/coverage
             artifacts/generator-coverage
             artifacts/analyzer-coverage
+            artifacts/decimal-coverage
+            artifacts/api-contract/*.log
+            artifacts/api-contract/summary.json
       - name: CsCheck and Hedgehog
         run: dotnet run --project tests/SharpSafeNumerics.PropertyTests -c Release
       - name: Generated annotated domain
         run: dotnet run --project examples/GeneratedQueueDepth -c Release
       - name: Static range-policy example
         run: dotnet run --project examples/RiscueQueueDepth -c Release
+      - name: Fixed-point and safe decimal example
+        run: dotnet run --project examples/FixedAndDecimal -c Release
       - name: Analyzer self-test
         run: dotnet run --project tests/SharpSafeNumerics.AnalyzerTests -c Release
       - name: Compile C# 15 union adapter
@@ -68,6 +79,8 @@ jobs:
           sudo apt-get install -y z3
       - name: Verify Dafny arithmetic model
         run: dotnet tool run dafny -- verify formal/SafeInteger.dfy --solver-path $(which z3)
+      - name: Verify fixed-point rounding model
+        run: dotnet tool run dafny -- verify formal/FixedPoint.dfy --solver-path $(which z3)
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'

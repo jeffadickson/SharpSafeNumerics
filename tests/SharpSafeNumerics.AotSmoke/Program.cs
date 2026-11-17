@@ -53,10 +53,33 @@ for (int i = 0; i < batchLeft.Length; i++)
     if (batchErrors[i] != expected || batchValues[i] != (expected == ArithmeticError.None ? (int)exact : 0)) return 18;
 }
 if (batchWidth != SafeInteger.BatchAddVectorWidth) return 19;
+if (SafeFixed.FromRatio(1, 2).Value.RawValue != 2147483648L) return 20;
+if (SafeFixed.Multiply(Fixed64.FromRaw(long.MaxValue), Fixed64.FromRaw(long.MaxValue)).Error != ArithmeticError.Inexact) return 21;
+if (SafeFixed.Divide(default, default).Error != ArithmeticError.DivideByZero) return 22;
+if (!VerifyDecimal<Decimal32>() || !VerifyDecimal<Decimal64>() || !VerifyDecimal<Decimal128>()) return 23;
+Console.WriteLine("Fixed Q32.32 and three safe decimal formats passed Native AOT contract checks.");
 Console.WriteLine($"Detected batch width: {batchWidth} bits; 257 BigInteger-checked lanes.");
 Console.WriteLine($"AOT oracle: 3,096 type pairs, 52,632 operation/policy outcomes; seed 731922; native width {IntPtr.Size * 8}; Vector256 accelerated {Vector256.IsHardwareAccelerated}.");
 Console.WriteLine("AOT smoke passed.");
 return 0;
+
+static bool VerifyDecimal<T>() where T : struct, IFloatingPointIeee754<T>
+{
+    // Independent integer expectations for exact values, plus deliberate precision
+    // loss and nonfinite rejection, execute in the native application entry point.
+    for (int i = -16; i <= 16; i++)
+    {
+        var a = T.CreateChecked(i);
+        var product = SafeDecimal.TryMultiply(a, T.CreateChecked(3));
+        if (!product.IsSuccess || product.IsInexact || product.Value != T.CreateChecked(i * 3)) return false;
+    }
+    var exact = SafeDecimal.TryDivide(T.One, T.CreateChecked(3));
+    var rounded = SafeDecimal.TryDivide(T.One, T.CreateChecked(3), DecimalRounding.ToEven);
+    return exact.Error == ArithmeticError.Inexact && rounded.IsSuccess && rounded.IsInexact &&
+        SafeDecimal.TryAdd(T.NaN, T.Zero).Error == ArithmeticError.NonFinite &&
+        SafeDecimal.TryDivide(T.One, T.Zero).Error == ArithmeticError.DivideByZero &&
+        SafeDecimal.TryNegate(T.One, (DecimalRounding)255).Error == ArithmeticError.OutOfRange;
+}
 
 [BoundedInteger(typeof(ushort), "0", "4095", OverflowPolicy = ArithmeticPolicy.Saturate,
     DefaultPolicy = DefaultValuePolicy.ZeroValid, Endianness = IntegerEndianness.BigEndian,

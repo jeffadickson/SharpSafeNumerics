@@ -18,6 +18,8 @@ The project is organized as M1–M5; see [milestones](docs/MILESTONES.md). Numer
 - Declarative bounded-number attributes, generated arithmetic/default policies, exact conversions, span text and fixed-width endian codecs for all 12 built-in integer types.
 - Strict-scope diagnostics SSN1001–SSN1008 with documented static-analysis limits.
 - Int32 batch addition with detected SIMD256/SIMD128, scalar fallback, per-lane errors and validation before writes.
+- Owned Q32.32 fixed-point arithmetic with explicit rounding, Int128 intermediates and typed failures.
+- Optional safe Decimal32/64/128 APIs over .NET 11 built-ins: exact by default, explicit nearest-even acceptance and reported precision loss. Decimal exactness checks may allocate. See [contracts and examples](docs/FIXED_AND_DECIMAL.md).
 - CsCheck, Hedgehog, xUnit, Stryker.NET, Dafny and BenchmarkDotNet verification infrastructure.
 - Detailed requirements, original software description, architecture, exception policy and verification plan.
 

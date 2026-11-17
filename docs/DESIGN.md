@@ -20,7 +20,7 @@ Generic and generated bounded arithmetic snapshot the receiver before publishing
 an out result so callers may update a bounded value in place.
 
 ## Limitations
-The current policy API handles addition, subtraction and multiplication, not policy-driven division or negation. RC-1 generated domains consume arithmetic/default/text/codec contracts, and SSN1001–SSN1008 have operation-based enforcement within the documented static detection limits. See GENERATOR_RC1.md and ANALYZERS_RC1.md. Dafny verifies mathematical models, including conversion admission, without proving equivalence to C#. Decimal support remains planned. All generic math providers outside built-in integral primitives require explicit qualification.
+The current policy API handles addition, subtraction and multiplication, not policy-driven division or negation. RC-1 generated domains consume arithmetic/default/text/codec contracts, and SSN1001–SSN1008 have operation-based enforcement within the documented static detection limits. See GENERATOR_RC1.md and ANALYZERS_RC1.md. Dafny verifies mathematical models, including conversion admission, without proving equivalence to C#. Expanded RC1 adds owned Q32.32 arithmetic and optional safe BCL IEEE decimal APIs; see FIXED_AND_DECIMAL.md for their distinct rounding, precision and allocation contracts. All generic math providers outside built-in integral primitives require explicit qualification.
 
 ## Sources
 https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/union

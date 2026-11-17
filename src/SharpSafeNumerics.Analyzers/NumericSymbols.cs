@@ -12,6 +12,7 @@ namespace SharpSafeNumerics.Analyzers;
 internal sealed class NumericSymbols
 {
     private const string CoreAssemblyName = "SharpSafeNumerics.Core";
+    private const string DecimalAssemblyName = "SharpSafeNumerics.Decimal";
     private const string GeneratorName = "SharpSafeNumerics.Generator";
     private readonly CSharpCompilation compilation;
     private readonly INamedTypeSymbol? bounded;
@@ -25,6 +26,8 @@ internal sealed class NumericSymbols
     private readonly INamedTypeSymbol? memoryMarshal;
     private readonly INamedTypeSymbol? formattableString;
     private readonly INamedTypeSymbol? iFormattable;
+    private readonly INamedTypeSymbol? decimalResult;
+    private readonly INamedTypeSymbol? safeDecimal;
     private readonly object? throwValue;
     private readonly object? zeroValidValue;
 
@@ -37,6 +40,10 @@ internal sealed class NumericSymbols
             compilation.SourceModule.ReferencedAssemblySymbols.FirstOrDefault(assembly => assembly.Name == CoreAssemblyName);
         Strict = core?.GetTypeByMetadataName("SharpSafeNumerics.StrictNumericAttribute");
         Result = core?.GetTypeByMetadataName("SharpSafeNumerics.NumericResult`1");
+        var decimals = compilation.Assembly.Name == DecimalAssemblyName ? compilation.Assembly :
+            compilation.SourceModule.ReferencedAssemblySymbols.FirstOrDefault(assembly => assembly.Name == DecimalAssemblyName);
+        decimalResult = decimals?.GetTypeByMetadataName("SharpSafeNumerics.DecimalResult`1");
+        safeDecimal = decimals?.GetTypeByMetadataName("SharpSafeNumerics.SafeDecimal");
         bounded = core?.GetTypeByMetadataName("SharpSafeNumerics.BoundedIntegerAttribute");
         policy = core?.GetTypeByMetadataName("SharpSafeNumerics.ArithmeticPolicy");
         defaultPolicy = core?.GetTypeByMetadataName("SharpSafeNumerics.DefaultValuePolicy");
@@ -69,7 +76,17 @@ internal sealed class NumericSymbols
         return false;
     }
 
-    internal bool IsNumericResult(ITypeSymbol? type) => Matches(Result, UnwrapNullable(type)?.OriginalDefinition);
+    internal bool HasNumericResult => Result is not null || decimalResult is not null;
+
+    internal bool IsNumericResult(ITypeSymbol? type) =>
+        Matches(Result, UnwrapNullable(type)?.OriginalDefinition) ||
+        Matches(decimalResult, UnwrapNullable(type)?.OriginalDefinition);
+
+    internal bool IsAllocatingDecimalHelper(IMethodSymbol method) =>
+        // Exactness checks format values and construct BigInteger rationals. Negation has
+        // neither path, so it deliberately remains outside this bounded known-API warning.
+        Matches(safeDecimal, method.ContainingType) && method.IsStatic &&
+        method.Name is "TryAdd" or "TrySubtract" or "TryMultiply" or "TryDivide" or "TryConvert";
 
     internal bool IsThrowConstant(IOperation operation)
     {

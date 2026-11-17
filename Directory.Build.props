@@ -22,6 +22,6 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
     <IsPackable>false</IsPackable>
-    <IsPackable Condition="'$(MSBuildProjectName)' == 'SharpSafeNumerics.Core' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Unions' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Generator' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Analyzers'">true</IsPackable>
+    <IsPackable Condition="'$(MSBuildProjectName)' == 'SharpSafeNumerics.Core' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Decimal' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Unions' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Generator' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Analyzers'">true</IsPackable>
   </PropertyGroup>
 </Project>

@@ -103,4 +103,55 @@ static bool CheckWide(long ah, long al, long bh, long bl)
     return true;
 }
 
+Console.WriteLine("CsCheck fixed-point multiply: 10,000 raw pairs; existing replay seed");
+CGen.Select(CGen.Long, CGen.Long).Sample(pair => FixedProductMatches(pair.Item1, pair.Item2), seed: seed, iter: 10_000, threads: 1);
+var fixedProperty =
+    from a in HGen.Int64(HRange.ConstantBoundedInt64()).ForAll()
+    from b in HGen.Int64(HRange.ConstantBoundedInt64()).ForAll()
+    select FixedProductMatches(a, b);
+fixedProperty.Check(config);
+
+Console.WriteLine("CsCheck safe decimal exact arithmetic: 2,000 pairs per format");
+CGen.Select(CGen.Int, CGen.Int).Sample(pair =>
+    DecimalExactMatches<Decimal32>(pair.Item1, pair.Item2) &&
+    DecimalExactMatches<Decimal64>(pair.Item1, pair.Item2) &&
+    DecimalExactMatches<Decimal128>(pair.Item1, pair.Item2), seed: seed, iter: 2_000, threads: 1);
+var decimalProperty =
+    from a in HGen.Int32(HRange.ConstantBoundedInt32()).ForAll()
+    from b in HGen.Int32(HRange.ConstantBoundedInt32()).ForAll()
+    select DecimalExactMatches<Decimal32>(a, b) && DecimalExactMatches<Decimal64>(a, b) && DecimalExactMatches<Decimal128>(a, b);
+decimalProperty.Check(config);
 Console.WriteLine("Property suites passed.");
+
+static bool FixedProductMatches(long a, long b)
+{
+    // Work with positive magnitudes, independently of the implementation's signed
+    // quotient/remainder and bitwise parity tests. Round half to an even raw integer.
+    BigInteger product = (BigInteger)a * b;
+    BigInteger denominator = BigInteger.One << 32;
+    BigInteger q = BigInteger.DivRem(BigInteger.Abs(product), denominator, out var remainder);
+    int compare = (remainder * 2).CompareTo(denominator);
+    if (compare > 0 || (compare == 0 && !q.IsEven)) q++;
+    q *= product.Sign;
+    var result = SafeFixed.Multiply(Fixed64.FromRaw(a), Fixed64.FromRaw(b), FixedRounding.ToEven);
+    var expected = q > long.MaxValue ? ArithmeticError.Overflow : q < long.MinValue ? ArithmeticError.Underflow : ArithmeticError.None;
+    return result.Error == expected && (result.TryGetValue(out var value) ? value.RawValue == (long)q : value.RawValue == 0);
+}
+
+static bool DecimalExactMatches<T>(int a, int b) where T : struct, IFloatingPointIeee754<T>
+{
+    // These independent small integer operands keep products below seven digits,
+    // allowing the same exact property to exercise all three decimal formats.
+    a %= 1000; b %= 1000;
+    T left = T.CreateChecked(a), right = T.CreateChecked(b);
+    var sum = SafeDecimal.TryAdd(left, right);
+    var difference = SafeDecimal.TrySubtract(left, right);
+    var product = SafeDecimal.TryMultiply(left, right);
+    var division = SafeDecimal.TryDivide(left, T.CreateChecked(2));
+    // The BCL decimal types do not implement CreateChecked<BigInteger>. These
+    // bounded integer calculations cannot overflow Int32 and give exact references.
+    return sum.IsSuccess && !sum.IsInexact && sum.Value == T.CreateChecked(a + b) &&
+        difference.IsSuccess && !difference.IsInexact && difference.Value == T.CreateChecked(a - b) &&
+        product.IsSuccess && !product.IsInexact && product.Value == T.CreateChecked(a * b) &&
+        division.IsSuccess && !division.IsInexact && division.Value * T.CreateChecked(2) == left;
+}

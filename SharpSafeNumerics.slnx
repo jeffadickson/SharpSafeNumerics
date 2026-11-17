@@ -1,12 +1,14 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
+    <Project Path="src/SharpSafeNumerics.Decimal/SharpSafeNumerics.Decimal.csproj" />
     <Project Path="src/SharpSafeNumerics.Unions/SharpSafeNumerics.Unions.csproj" />
     <Project Path="src/SharpSafeNumerics.Generator/SharpSafeNumerics.Generator.csproj" />
     <Project Path="src/SharpSafeNumerics.Analyzers/SharpSafeNumerics.Analyzers.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/SharpSafeNumerics.UnitTests/SharpSafeNumerics.UnitTests.csproj" />
+    <Project Path="tests/SharpSafeNumerics.DecimalTests/SharpSafeNumerics.DecimalTests.csproj" />
     <Project Path="tests/SharpSafeNumerics.GeneratorTests/SharpSafeNumerics.GeneratorTests.csproj" />
     <Project Path="tests/SharpSafeNumerics.AnalyzerUnitTests/SharpSafeNumerics.AnalyzerUnitTests.csproj" />
     <Project Path="tests/SharpSafeNumerics.Tests/SharpSafeNumerics.Tests.csproj" />
@@ -16,6 +18,7 @@
     <Project Path="tests/SharpSafeNumerics.Soak/SharpSafeNumerics.Soak.csproj" />
   </Folder>
   <Folder Name="/examples/">
+    <Project Path="examples/FixedAndDecimal/FixedAndDecimal.csproj" />
     <Project Path="examples/GeneratedQueueDepth/GeneratedQueueDepth.csproj" />
     <Project Path="examples/RiscueQueueDepth/RiscueQueueDepth.csproj" />
   </Folder>

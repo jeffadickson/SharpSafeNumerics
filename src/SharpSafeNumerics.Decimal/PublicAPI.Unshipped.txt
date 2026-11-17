@@ -1,0 +1,18 @@
+#nullable enable
+SharpSafeNumerics.DecimalResult<T>
+SharpSafeNumerics.DecimalResult<T>.DecimalResult() -> void
+SharpSafeNumerics.DecimalResult<T>.Error.get -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.DecimalResult<T>.IsInexact.get -> bool
+SharpSafeNumerics.DecimalResult<T>.IsSuccess.get -> bool
+SharpSafeNumerics.DecimalResult<T>.TryGetValue(out T value) -> bool
+SharpSafeNumerics.DecimalResult<T>.Value.get -> T
+SharpSafeNumerics.DecimalRounding
+SharpSafeNumerics.DecimalRounding.Exact = 0 -> SharpSafeNumerics.DecimalRounding
+SharpSafeNumerics.DecimalRounding.ToEven = 1 -> SharpSafeNumerics.DecimalRounding
+SharpSafeNumerics.SafeDecimal
+static SharpSafeNumerics.SafeDecimal.TryAdd<T>(T left, T right, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<T>
+static SharpSafeNumerics.SafeDecimal.TryConvert<TSource, TDestination>(TSource value, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<TDestination>
+static SharpSafeNumerics.SafeDecimal.TryDivide<T>(T left, T right, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<T>
+static SharpSafeNumerics.SafeDecimal.TryMultiply<T>(T left, T right, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<T>
+static SharpSafeNumerics.SafeDecimal.TryNegate<T>(T value, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<T>
+static SharpSafeNumerics.SafeDecimal.TrySubtract<T>(T left, T right, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<T>

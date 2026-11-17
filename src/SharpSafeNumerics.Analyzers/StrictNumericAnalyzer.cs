@@ -69,7 +69,7 @@ public sealed class StrictNumericAnalyzer : DiagnosticAnalyzer
         context.RegisterCompilationStartAction(start =>
         {
             var contracts = new NumericSymbols(start.Compilation);
-            if (contracts.Result is not null)
+            if (contracts.HasNumericResult)
             {
                 start.RegisterOperationAction(c => AnalyzeIgnoredResult(c, contracts),
                     OperationKind.ExpressionStatement, OperationKind.SimpleAssignment, OperationKind.Discard);
@@ -238,6 +238,8 @@ public sealed class StrictNumericAnalyzer : DiagnosticAnalyzer
         IInvocationOperation invocation)
     {
         var method = invocation.TargetMethod;
+        if (contracts.IsAllocatingDecimalHelper(method))
+            Report(context, AllocationRule, invocation, "decimal exactness checks and conversion may allocate");
         if (contracts.IsRawNumericConversion(method))
             Report(context, RawPolicyConversionRule, invocation, method.Name);
         if (contracts.IsBoundedReinterpretation(method))

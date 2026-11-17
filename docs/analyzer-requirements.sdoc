@@ -22,7 +22,7 @@ RELATIONS:
 [REQUIREMENT]
 UID: SN-013-RESULT
 TITLE: SSN1003 discarded numeric results
-STATEMENT: The analyzer shall warn for detectable expression-statement and explicit discards of NumericResult values, including deconstruction and out discards, independent of strict scope.
+STATEMENT: The analyzer shall warn for detectable expression-statement and explicit discards of NumericResult and optional DecimalResult values, including deconstruction and out discards, independent of strict scope. Optional decimal contracts shall be recognized by exact assembly/type symbols, including alias-only references; unrelated lookalikes shall not match.
 COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeIgnoredResult. Verification: Discarded_results_are_warnings_in_all_scopes and Unrelated_annotations_and_generic_result_types_do_not_match.
 RELATIONS:
 - TYPE: Parent
@@ -58,7 +58,7 @@ RELATIONS:
 [REQUIREMENT]
 UID: SN-013-ALLOCATION
 TITLE: SSN1007 evident managed allocation sites
-STATEMENT: In strict scope, the analyzer shall warn at documented detectable managed allocation sites, including reference and array creation, boxing, materialized interpolated strings and capturing lambdas. Captures through statically resolved local functions shall be included.
+STATEMENT: In strict scope, the analyzer shall warn at documented detectable managed allocation sites, including reference and array creation, boxing, materialized interpolated strings and capturing lambdas. Captures through statically resolved local functions shall be included. Known SafeDecimal arithmetic and conversion helpers shall warn because exactness checking may allocate; TryNegate shall be excluded from that known-helper rule because it does not execute those paths.
 COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeStrict, AnalyzeConversion, IsHandlerContent and CapturesState, NumericSymbols.IsBoxing. Verification: Evident_allocations_are_warnings_without_flagging_value_construction.
 RELATIONS:
 - TYPE: Parent

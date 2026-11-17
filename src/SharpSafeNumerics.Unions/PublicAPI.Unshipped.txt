@@ -1,0 +1,32 @@
+#nullable enable
+override SharpSafeNumerics.Unions.NumericFailure.GetHashCode() -> int
+override SharpSafeNumerics.Unions.NumericSuccess<T>.GetHashCode() -> int
+SharpSafeNumerics.Unions.ArithmeticOutcome
+SharpSafeNumerics.Unions.ArithmeticOutcome<T>
+SharpSafeNumerics.Unions.ArithmeticOutcome<T>.ArithmeticOutcome() -> void
+SharpSafeNumerics.Unions.ArithmeticOutcome<T>.ArithmeticOutcome(SharpSafeNumerics.Unions.NumericFailure value) -> void
+SharpSafeNumerics.Unions.ArithmeticOutcome<T>.ArithmeticOutcome(SharpSafeNumerics.Unions.NumericSuccess<T> value) -> void
+SharpSafeNumerics.Unions.ArithmeticOutcome<T>.Value.get -> object?
+SharpSafeNumerics.Unions.NumericFailure
+SharpSafeNumerics.Unions.NumericFailure.Deconstruct(out SharpSafeNumerics.ArithmeticError Error) -> void
+SharpSafeNumerics.Unions.NumericFailure.Equals(SharpSafeNumerics.Unions.NumericFailure other) -> bool
+SharpSafeNumerics.Unions.NumericFailure.Error.get -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.Unions.NumericFailure.Error.init -> void
+SharpSafeNumerics.Unions.NumericFailure.NumericFailure() -> void
+SharpSafeNumerics.Unions.NumericFailure.NumericFailure(SharpSafeNumerics.ArithmeticError Error) -> void
+SharpSafeNumerics.Unions.NumericSuccess<T>
+SharpSafeNumerics.Unions.NumericSuccess<T>.Deconstruct(out T Value) -> void
+SharpSafeNumerics.Unions.NumericSuccess<T>.Equals(SharpSafeNumerics.Unions.NumericSuccess<T> other) -> bool
+SharpSafeNumerics.Unions.NumericSuccess<T>.NumericSuccess() -> void
+SharpSafeNumerics.Unions.NumericSuccess<T>.NumericSuccess(T Value) -> void
+SharpSafeNumerics.Unions.NumericSuccess<T>.Value.get -> T
+SharpSafeNumerics.Unions.NumericSuccess<T>.Value.init -> void
+static SharpSafeNumerics.Unions.ArithmeticOutcome.FromResult<T>(SharpSafeNumerics.NumericResult<T> result) -> SharpSafeNumerics.Unions.ArithmeticOutcome<T>
+static SharpSafeNumerics.Unions.NumericFailure.operator !=(SharpSafeNumerics.Unions.NumericFailure left, SharpSafeNumerics.Unions.NumericFailure right) -> bool
+static SharpSafeNumerics.Unions.NumericFailure.operator ==(SharpSafeNumerics.Unions.NumericFailure left, SharpSafeNumerics.Unions.NumericFailure right) -> bool
+static SharpSafeNumerics.Unions.NumericSuccess<T>.operator !=(SharpSafeNumerics.Unions.NumericSuccess<T> left, SharpSafeNumerics.Unions.NumericSuccess<T> right) -> bool
+static SharpSafeNumerics.Unions.NumericSuccess<T>.operator ==(SharpSafeNumerics.Unions.NumericSuccess<T> left, SharpSafeNumerics.Unions.NumericSuccess<T> right) -> bool
+~override SharpSafeNumerics.Unions.NumericFailure.Equals(object obj) -> bool
+~override SharpSafeNumerics.Unions.NumericFailure.ToString() -> string
+~override SharpSafeNumerics.Unions.NumericSuccess<T>.Equals(object obj) -> bool
+~override SharpSafeNumerics.Unions.NumericSuccess<T>.ToString() -> string

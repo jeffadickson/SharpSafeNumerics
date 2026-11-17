@@ -1,0 +1,110 @@
+#nullable enable
+override SharpSafeNumerics.Fixed64.Equals(object? obj) -> bool
+override SharpSafeNumerics.Fixed64.GetHashCode() -> int
+SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.ArithmeticError.DivideByZero = 4 -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.ArithmeticError.Inexact = 6 -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.ArithmeticError.None = 1 -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.ArithmeticError.NonFinite = 7 -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.ArithmeticError.OutOfRange = 5 -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.ArithmeticError.Overflow = 2 -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.ArithmeticError.Underflow = 3 -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.ArithmeticError.Uninitialized = 0 -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.ArithmeticPolicy
+SharpSafeNumerics.ArithmeticPolicy.Reject = 0 -> SharpSafeNumerics.ArithmeticPolicy
+SharpSafeNumerics.ArithmeticPolicy.Saturate = 1 -> SharpSafeNumerics.ArithmeticPolicy
+SharpSafeNumerics.ArithmeticPolicy.Throw = 3 -> SharpSafeNumerics.ArithmeticPolicy
+SharpSafeNumerics.ArithmeticPolicy.Wrap = 2 -> SharpSafeNumerics.ArithmeticPolicy
+SharpSafeNumerics.BatchArithmeticError
+SharpSafeNumerics.BatchArithmeticError.DestinationTooSmall = 2 -> SharpSafeNumerics.BatchArithmeticError
+SharpSafeNumerics.BatchArithmeticError.InputTooLarge = 4 -> SharpSafeNumerics.BatchArithmeticError
+SharpSafeNumerics.BatchArithmeticError.LengthMismatch = 1 -> SharpSafeNumerics.BatchArithmeticError
+SharpSafeNumerics.BatchArithmeticError.None = 0 -> SharpSafeNumerics.BatchArithmeticError
+SharpSafeNumerics.BatchArithmeticError.OverlappingBuffers = 3 -> SharpSafeNumerics.BatchArithmeticError
+SharpSafeNumerics.BatchArithmeticError.Uninitialized = 255 -> SharpSafeNumerics.BatchArithmeticError
+SharpSafeNumerics.BatchArithmeticResult
+SharpSafeNumerics.BatchArithmeticResult.BatchArithmeticResult() -> void
+SharpSafeNumerics.BatchArithmeticResult.Error.get -> SharpSafeNumerics.BatchArithmeticError
+SharpSafeNumerics.BatchArithmeticResult.IsSuccess.get -> bool
+SharpSafeNumerics.BatchArithmeticResult.VectorWidthUsed.get -> int
+SharpSafeNumerics.Bounded<T, TRange>
+SharpSafeNumerics.Bounded<T, TRange>.Bounded() -> void
+SharpSafeNumerics.Bounded<T, TRange>.IsValid.get -> bool
+SharpSafeNumerics.Bounded<T, TRange>.TryAdd(T delta, out SharpSafeNumerics.Bounded<T, TRange> value) -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.Bounded<T, TRange>.TryGetValue(out T value) -> bool
+SharpSafeNumerics.Bounded<T, TRange>.TrySubtract(T delta, out SharpSafeNumerics.Bounded<T, TRange> value) -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.Bounded<T, TRange>.Value.get -> T
+SharpSafeNumerics.BoundedIntegerAttribute
+SharpSafeNumerics.BoundedIntegerAttribute.BoundedIntegerAttribute(System.Type! storageType, string! minimum, string! maximum) -> void
+SharpSafeNumerics.BoundedIntegerAttribute.DefaultPolicy.get -> SharpSafeNumerics.DefaultValuePolicy
+SharpSafeNumerics.BoundedIntegerAttribute.DefaultPolicy.set -> void
+SharpSafeNumerics.BoundedIntegerAttribute.Endianness.get -> SharpSafeNumerics.IntegerEndianness
+SharpSafeNumerics.BoundedIntegerAttribute.Endianness.set -> void
+SharpSafeNumerics.BoundedIntegerAttribute.Maximum.get -> string!
+SharpSafeNumerics.BoundedIntegerAttribute.Minimum.get -> string!
+SharpSafeNumerics.BoundedIntegerAttribute.OverflowPolicy.get -> SharpSafeNumerics.ArithmeticPolicy
+SharpSafeNumerics.BoundedIntegerAttribute.OverflowPolicy.set -> void
+SharpSafeNumerics.BoundedIntegerAttribute.SerializationWidth.get -> int
+SharpSafeNumerics.BoundedIntegerAttribute.SerializationWidth.set -> void
+SharpSafeNumerics.BoundedIntegerAttribute.StorageType.get -> System.Type!
+SharpSafeNumerics.BoundedIntegerAttribute.TextPolicy.get -> SharpSafeNumerics.IntegerTextPolicy
+SharpSafeNumerics.BoundedIntegerAttribute.TextPolicy.set -> void
+SharpSafeNumerics.BoundedIntegerAttribute.Unit.get -> string?
+SharpSafeNumerics.BoundedIntegerAttribute.Unit.set -> void
+SharpSafeNumerics.DefaultValuePolicy
+SharpSafeNumerics.DefaultValuePolicy.Invalid = 0 -> SharpSafeNumerics.DefaultValuePolicy
+SharpSafeNumerics.DefaultValuePolicy.ZeroValid = 1 -> SharpSafeNumerics.DefaultValuePolicy
+SharpSafeNumerics.Fixed64
+SharpSafeNumerics.Fixed64.Equals(SharpSafeNumerics.Fixed64 other) -> bool
+SharpSafeNumerics.Fixed64.Fixed64() -> void
+SharpSafeNumerics.Fixed64.RawValue.get -> long
+SharpSafeNumerics.FixedRounding
+SharpSafeNumerics.FixedRounding.AwayFromZero = 5 -> SharpSafeNumerics.FixedRounding
+SharpSafeNumerics.FixedRounding.Ceiling = 4 -> SharpSafeNumerics.FixedRounding
+SharpSafeNumerics.FixedRounding.Exact = 0 -> SharpSafeNumerics.FixedRounding
+SharpSafeNumerics.FixedRounding.Floor = 3 -> SharpSafeNumerics.FixedRounding
+SharpSafeNumerics.FixedRounding.ToEven = 1 -> SharpSafeNumerics.FixedRounding
+SharpSafeNumerics.FixedRounding.ToZero = 2 -> SharpSafeNumerics.FixedRounding
+SharpSafeNumerics.IntegerEndianness
+SharpSafeNumerics.IntegerEndianness.BigEndian = 1 -> SharpSafeNumerics.IntegerEndianness
+SharpSafeNumerics.IntegerEndianness.LittleEndian = 0 -> SharpSafeNumerics.IntegerEndianness
+SharpSafeNumerics.IntegerTextPolicy
+SharpSafeNumerics.IntegerTextPolicy.InvariantDecimal = 0 -> SharpSafeNumerics.IntegerTextPolicy
+SharpSafeNumerics.IntegerTextPolicy.InvariantHexadecimal = 1 -> SharpSafeNumerics.IntegerTextPolicy
+SharpSafeNumerics.IStaticIntegerRange<T>
+SharpSafeNumerics.IStaticIntegerRange<T>.Maximum.get -> T
+SharpSafeNumerics.IStaticIntegerRange<T>.Minimum.get -> T
+SharpSafeNumerics.NumericResult<T>
+SharpSafeNumerics.NumericResult<T>.Error.get -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.NumericResult<T>.IsSuccess.get -> bool
+SharpSafeNumerics.NumericResult<T>.NumericResult() -> void
+SharpSafeNumerics.NumericResult<T>.TryGetValue(out T value) -> bool
+SharpSafeNumerics.NumericResult<T>.Value.get -> T
+SharpSafeNumerics.SafeFixed
+SharpSafeNumerics.SafeInteger
+SharpSafeNumerics.StrictNumericAttribute
+SharpSafeNumerics.StrictNumericAttribute.StrictNumericAttribute() -> void
+static SharpSafeNumerics.Bounded<T, TRange>.TryCreate(T input, out SharpSafeNumerics.Bounded<T, TRange> value) -> SharpSafeNumerics.ArithmeticError
+static SharpSafeNumerics.Fixed64.FromRaw(long rawValue) -> SharpSafeNumerics.Fixed64
+static SharpSafeNumerics.NumericResult<T>.Fail(SharpSafeNumerics.ArithmeticError error) -> SharpSafeNumerics.NumericResult<T>
+static SharpSafeNumerics.NumericResult<T>.Ok(T value) -> SharpSafeNumerics.NumericResult<T>
+static SharpSafeNumerics.SafeFixed.Add(SharpSafeNumerics.Fixed64 left, SharpSafeNumerics.Fixed64 right) -> SharpSafeNumerics.NumericResult<SharpSafeNumerics.Fixed64>
+static SharpSafeNumerics.SafeFixed.Divide(SharpSafeNumerics.Fixed64 left, SharpSafeNumerics.Fixed64 right, SharpSafeNumerics.FixedRounding rounding = SharpSafeNumerics.FixedRounding.Exact) -> SharpSafeNumerics.NumericResult<SharpSafeNumerics.Fixed64>
+static SharpSafeNumerics.SafeFixed.FromInt64(long value) -> SharpSafeNumerics.NumericResult<SharpSafeNumerics.Fixed64>
+static SharpSafeNumerics.SafeFixed.FromRatio(long numerator, long denominator, SharpSafeNumerics.FixedRounding rounding = SharpSafeNumerics.FixedRounding.Exact) -> SharpSafeNumerics.NumericResult<SharpSafeNumerics.Fixed64>
+static SharpSafeNumerics.SafeFixed.Multiply(SharpSafeNumerics.Fixed64 left, SharpSafeNumerics.Fixed64 right, SharpSafeNumerics.FixedRounding rounding = SharpSafeNumerics.FixedRounding.Exact) -> SharpSafeNumerics.NumericResult<SharpSafeNumerics.Fixed64>
+static SharpSafeNumerics.SafeFixed.Negate(SharpSafeNumerics.Fixed64 value) -> SharpSafeNumerics.NumericResult<SharpSafeNumerics.Fixed64>
+static SharpSafeNumerics.SafeFixed.Subtract(SharpSafeNumerics.Fixed64 left, SharpSafeNumerics.Fixed64 right) -> SharpSafeNumerics.NumericResult<SharpSafeNumerics.Fixed64>
+static SharpSafeNumerics.SafeInteger.Add<T>(T left, T right, SharpSafeNumerics.ArithmeticPolicy policy = SharpSafeNumerics.ArithmeticPolicy.Reject) -> SharpSafeNumerics.NumericResult<T>
+static SharpSafeNumerics.SafeInteger.AddBatch(System.ReadOnlySpan<int> left, System.ReadOnlySpan<int> right, System.Span<int> values, System.Span<SharpSafeNumerics.ArithmeticError> errors) -> SharpSafeNumerics.BatchArithmeticResult
+static SharpSafeNumerics.SafeInteger.BatchAddVectorWidth.get -> int
+static SharpSafeNumerics.SafeInteger.Multiply<T>(T left, T right, SharpSafeNumerics.ArithmeticPolicy policy = SharpSafeNumerics.ArithmeticPolicy.Reject) -> SharpSafeNumerics.NumericResult<T>
+static SharpSafeNumerics.SafeInteger.Subtract<T>(T left, T right, SharpSafeNumerics.ArithmeticPolicy policy = SharpSafeNumerics.ArithmeticPolicy.Reject) -> SharpSafeNumerics.NumericResult<T>
+static SharpSafeNumerics.SafeInteger.TryAdd<T>(T left, T right, out T value) -> SharpSafeNumerics.ArithmeticError
+static SharpSafeNumerics.SafeInteger.TryAddBatch(System.ReadOnlySpan<int> left, System.ReadOnlySpan<int> right, System.Span<int> values, System.Span<SharpSafeNumerics.ArithmeticError> errors) -> SharpSafeNumerics.BatchArithmeticError
+static SharpSafeNumerics.SafeInteger.TryConvert<TFrom, TTo>(TFrom input, out TTo value) -> SharpSafeNumerics.ArithmeticError
+static SharpSafeNumerics.SafeInteger.TryDivide<T>(T left, T right, out T value) -> SharpSafeNumerics.ArithmeticError
+static SharpSafeNumerics.SafeInteger.TryInRange<T>(T input, T minimum, T maximum, out T value) -> SharpSafeNumerics.ArithmeticError
+static SharpSafeNumerics.SafeInteger.TryMultiply<T>(T left, T right, out T value) -> SharpSafeNumerics.ArithmeticError
+static SharpSafeNumerics.SafeInteger.TryNegate<T>(T input, out T value) -> SharpSafeNumerics.ArithmeticError
+static SharpSafeNumerics.SafeInteger.TrySubtract<T>(T left, T right, out T value) -> SharpSafeNumerics.ArithmeticError

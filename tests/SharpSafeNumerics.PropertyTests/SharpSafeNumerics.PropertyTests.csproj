@@ -5,5 +5,6 @@
     <PackageReference Include="CsCheck" />
     <PackageReference Include="Hedgehog" />
     <ProjectReference Include="../../src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
+    <ProjectReference Include="../../src/SharpSafeNumerics.Decimal/SharpSafeNumerics.Decimal.csproj" />
   </ItemGroup>
 </Project>

@@ -511,10 +511,11 @@ try {
     $build=Join-Path $run 'build'; $coverage=Join-Path $run 'coverage'
     if((Invoke-Step 'build' $dotnetExe @('build','-c','Release','--artifacts-path',$build) $checkout 1800) -ne 0){throw 'Build failed; preserving failure evidence'}
     [void](Invoke-Step 'unit-generator-analyzer-tests' $dotnetExe @('test','-c','Release','--no-build','--artifacts-path',$build,'--collect:XPlat Code Coverage','--results-directory',$coverage) $checkout 1800)
-    foreach($project in @('tests/SharpSafeNumerics.Tests','tests/SharpSafeNumerics.PropertyTests','tests/SharpSafeNumerics.AnalyzerTests','examples/GeneratedQueueDepth','examples/RiscueQueueDepth')){
+    foreach($project in @('tests/SharpSafeNumerics.Tests','tests/SharpSafeNumerics.PropertyTests','tests/SharpSafeNumerics.AnalyzerTests','examples/GeneratedQueueDepth','examples/RiscueQueueDepth','examples/FixedAndDecimal')){
         [void](Invoke-Step ($project -replace '/','-') $dotnetExe @('run','--project',$project,'-c','Release','--no-build','--artifacts-path',$build) $checkout 900)
     }
     [void](Invoke-Step 'dafny' $dotnetExe @('tool','run','dafny','--','verify','formal/SafeInteger.dfy','--solver-path',$z3) $checkout 600)
+    [void](Invoke-Step 'dafny-fixed' $dotnetExe @('tool','run','dafny','--','verify','formal/FixedPoint.dfy','--solver-path',$z3) $checkout 600)
     [void](Invoke-Step 'strictdoc' $strictdoc @('export','docs/requirements.sdoc','docs/generator-requirements.sdoc','docs/analyzer-requirements.sdoc','--output-dir',(Join-Path $run 'requirements')) $checkout 900)
     [void](Invoke-Step 'coverage-summary' $dotnetExe @('tool','run','reportgenerator','--',('-reports:'+(Join-Path $coverage '**/coverage.cobertura.xml')),('-targetdir:'+(Join-Path $run 'coverage-report')),'-reporttypes:JsonSummary;Html') $checkout 600)
     $native=Join-Path $run 'aot'
@@ -526,7 +527,7 @@ try {
     $soakBin=Join-Path $run 'soak-bin'
     [void](Invoke-Step 'prepare-soak' $dotnetExe @('publish','tests/SharpSafeNumerics.Soak','-c','Release','--no-self-contained','-p:UseAppHost=false','-o',$soakBin,'--artifacts-path',(Join-Path $run 'soak-build')) $checkout 900)
     $capacity=[Math]::Max(1,[Math]::Min($MaxParallelism,[Environment]::ProcessorCount))
-    $mutationWorkers=if($capacity -ge 6){[Math]::Max(1,[Math]::Floor(($capacity-3)/3))}else{1}
+    $mutationWorkers=if($capacity -ge 6){[Math]::Max(1,[Math]::Floor(($capacity-3)/4))}else{1}
     $jobs=[Collections.Generic.List[object]]::new()
     foreach($mode in @('auto','128','scalar')){
         $environment=@{DOTNET_EnableHWIntrinsic='1';DOTNET_EnableAVX2='1'}; if($mode -eq '128'){$environment['DOTNET_EnableAVX2']='0'}elseif($mode -eq 'scalar'){$environment['DOTNET_EnableHWIntrinsic']='0'}
@@ -535,8 +536,8 @@ try {
         if($mode -ne 'auto'){$arguments+=@('--expected-width',$(if($mode -eq '128'){'128'}else{'0'}))}
         $jobs.Add([pscustomobject]@{Name=('soak-'+$mode);Exe=$dotnetExe;Arguments=$arguments;WorkingDirectory=$checkout;LimitSeconds=$requestedSeconds+120;Weight=1;Environment=$environment})
     }
-    foreach($scope in @('Core','Generator','Analyzers')){
-        $config=if($scope -eq 'Core'){'stryker-config.json'}elseif($scope -eq 'Generator'){'stryker-generator-config.json'}else{'stryker-analyzers-config.json'}
+    foreach($scope in @('Core','Decimal','Generator','Analyzers')){
+        $config=if($scope -eq 'Core'){'stryker-config.json'}elseif($scope -eq 'Decimal'){'stryker-decimal-config.json'}elseif($scope -eq 'Generator'){'stryker-generator-config.json'}else{'stryker-analyzers-config.json'}
         $jobs.Add([pscustomobject]@{Name=('mutation-'+$scope);Exe=$dotnetExe;Arguments=@('stryker','--config-file',('../../'+$config),'--target-framework','net11.0','--concurrency',[string]$mutationWorkers,'--output',(Join-Path $run ('mutation-'+$scope)));WorkingDirectory=(Join-Path $checkout ('src/SharpSafeNumerics.'+$scope));LimitSeconds=5400;Weight=[int]$mutationWorkers;Environment=@{}})
     }
     # Await process completion or the next deadline. There is no fixed-interval

@@ -1,0 +1,668 @@
+{
+  "BaseRevision": "2e242881cb9a5075cb4fceb9f4df7cb7585efc3a",
+  "Scope": "New numeric and compiler sources identified by SHA256, prior to commit",
+  "Sdk": "11.0.100",
+  "Platform": "Windows x64",
+  "Tests": {
+    "Analyzer": 136,
+    "Generator": 89,
+    "Skipped": 0,
+    "Failed": 0,
+    "Core": 197,
+    "Decimal": 15
+  },
+  "Coverage": [
+    {
+      "name": "SharpSafeNumerics.Analyzers",
+      "coveredlines": 378,
+      "coverablelines": 385,
+      "coveredbranches": 523,
+      "totalbranches": 592
+    },
+    {
+      "name": "SharpSafeNumerics.Core",
+      "coveredlines": 204,
+      "coverablelines": 204,
+      "coveredbranches": 165,
+      "totalbranches": 170
+    },
+    {
+      "name": "SharpSafeNumerics.Decimal",
+      "coveredlines": 52,
+      "coverablelines": 52,
+      "coveredbranches": 64,
+      "totalbranches": 66
+    },
+    {
+      "name": "SharpSafeNumerics.Generator",
+      "coveredlines": 541,
+      "coverablelines": 543,
+      "coveredbranches": 256,
+      "totalbranches": 269
+    },
+    {
+      "name": "SharpSafeNumerics.Unions",
+      "coveredlines": 0,
+      "coverablelines": 6,
+      "coveredbranches": 0,
+      "totalbranches": 2
+    }
+  ],
+  "SourceHashes": [
+    {
+      "Path": "src/SharpSafeNumerics.Core/Fixed64.cs",
+      "SHA256": "F4519D5E5C8399DB8EB8606643DDB493B366E37D404B707626F88A7E9A68EA8D"
+    },
+    {
+      "Path": "src/SharpSafeNumerics.Core/ArithmeticError.cs",
+      "SHA256": "E8E093ED1C3D5704B34C1AE448C9F76E87990AB51724AA88C963F9EDA724A922"
+    },
+    {
+      "Path": "src/SharpSafeNumerics.Decimal/SafeDecimal.cs",
+      "SHA256": "96023707C5ECD697CCF36CCD9BC132450581173C312CD52447162AA0F23AF893"
+    },
+    {
+      "Path": "src/SharpSafeNumerics.Analyzers/NumericSymbols.cs",
+      "SHA256": "8099044345466F31D1E45B9C9A21A0FDE4B190AFC2FD21B13BC05BADDFB9E7BB"
+    },
+    {
+      "Path": "src/SharpSafeNumerics.Analyzers/StrictNumericAnalyzer.cs",
+      "SHA256": "B242FAB8F2620086B5F2879701C4DDAAE7FB9E47DAB1587FF69C95F73E1CA753"
+    },
+    {
+      "Path": "formal/FixedPoint.dfy",
+      "SHA256": "1777AEDB4DE9132C9A4B3E1226D8C9CC106D356802EA14B4A521BA5CAECC6872"
+    }
+  ],
+  "Mutations": [
+    {
+      "Scope": "core-mutation",
+      "Total": 269,
+      "Statuses": [
+        {
+          "Name": "CompileError",
+          "Count": 20
+        },
+        {
+          "Name": "Ignored",
+          "Count": 25
+        },
+        {
+          "Name": "Killed",
+          "Count": 207
+        },
+        {
+          "Name": "NoCoverage",
+          "Count": 2
+        },
+        {
+          "Name": "Survived",
+          "Count": 13
+        },
+        {
+          "Name": "Timeout",
+          "Count": 2
+        }
+      ],
+      "Retained": [
+        {
+          "File": "Bounded.cs",
+          "Id": "10",
+          "Status": "Survived",
+          "Line": 38,
+          "Replacement": "(true?_value :T.Zero)"
+        },
+        {
+          "File": "Fixed64.cs",
+          "Id": "36",
+          "Status": "Survived",
+          "Line": 65,
+          "Replacement": "denominator <= 0"
+        },
+        {
+          "File": "Fixed64.cs",
+          "Id": "49",
+          "Status": "Survived",
+          "Line": 71,
+          "Replacement": "remainder <= 0"
+        },
+        {
+          "File": "Fixed64.cs",
+          "Id": "53",
+          "Status": "Survived",
+          "Line": 75,
+          "Replacement": "numerator <= 0"
+        },
+        {
+          "File": "Fixed64.cs",
+          "Id": "55",
+          "Status": "Survived",
+          "Line": 76,
+          "Replacement": "numerator >= 0"
+        },
+        {
+          "File": "Fixed64.cs",
+          "Id": "71",
+          "Status": "Survived",
+          "Line": 80,
+          "Replacement": "numerator <= 0"
+        },
+        {
+          "File": "SafeInteger.Batch.cs",
+          "Id": "90",
+          "Status": "Survived",
+          "Line": 12,
+          "Replacement": "(true?256 :Vector128.IsHardwareAccelerated ? 128 : 0)"
+        },
+        {
+          "File": "SafeInteger.Batch.cs",
+          "Id": "92",
+          "Status": "NoCoverage",
+          "Line": 12,
+          "Replacement": "(true?128 :0)"
+        },
+        {
+          "File": "SafeInteger.Batch.cs",
+          "Id": "93",
+          "Status": "NoCoverage",
+          "Line": 12,
+          "Replacement": "(false?128 :0)"
+        },
+        {
+          "File": "SafeInteger.Batch.cs",
+          "Id": "119",
+          "Status": "Timeout",
+          "Line": 60,
+          "Replacement": "count + Vector256<int>.Count"
+        },
+        {
+          "File": "SafeInteger.Batch.cs",
+          "Id": "121",
+          "Status": "Timeout",
+          "Line": 60,
+          "Replacement": "i -= Vector256<int>.Count"
+        },
+        {
+          "File": "SafeInteger.cs",
+          "Id": "160",
+          "Status": "Survived",
+          "Line": 16,
+          "Replacement": "right >= T.Zero"
+        },
+        {
+          "File": "SafeInteger.cs",
+          "Id": "174",
+          "Status": "Survived",
+          "Line": 27,
+          "Replacement": "right >= T.Zero"
+        },
+        {
+          "File": "SafeInteger.cs",
+          "Id": "185",
+          "Status": "Survived",
+          "Line": 38,
+          "Replacement": "left == T.Zero && right == T.Zero"
+        },
+        {
+          "File": "SafeInteger.cs",
+          "Id": "190",
+          "Status": "Survived",
+          "Line": 39,
+          "Replacement": "left >= T.Zero"
+        },
+        {
+          "File": "SafeInteger.cs",
+          "Id": "196",
+          "Status": "Survived",
+          "Line": 41,
+          "Replacement": "right >= T.Zero"
+        },
+        {
+          "File": "SafeInteger.cs",
+          "Id": "209",
+          "Status": "Survived",
+          "Line": 46,
+          "Replacement": "right >= T.Zero"
+        }
+      ]
+    },
+    {
+      "Scope": "decimal-mutation-final",
+      "Total": 100,
+      "Statuses": [
+        {
+          "Name": "CompileError",
+          "Count": 2
+        },
+        {
+          "Name": "Ignored",
+          "Count": 7
+        },
+        {
+          "Name": "Killed",
+          "Count": 84
+        },
+        {
+          "Name": "Survived",
+          "Count": 7
+        }
+      ],
+      "Retained": [
+        {
+          "File": "SafeDecimal.cs",
+          "Id": "17",
+          "Status": "Survived",
+          "Line": 59,
+          "Replacement": "\"\""
+        },
+        {
+          "File": "SafeDecimal.cs",
+          "Id": "56",
+          "Status": "Survived",
+          "Line": 80,
+          "Replacement": "exact.N.Sign * exact.D.Sign <= 0"
+        },
+        {
+          "File": "SafeDecimal.cs",
+          "Id": "57",
+          "Status": "Survived",
+          "Line": 80,
+          "Replacement": "exact.N.Sign / exact.D.Sign"
+        },
+        {
+          "File": "SafeDecimal.cs",
+          "Id": "66",
+          "Status": "Survived",
+          "Line": 90,
+          "Replacement": "\"\""
+        },
+        {
+          "File": "SafeDecimal.cs",
+          "Id": "70",
+          "Status": "Survived",
+          "Line": 92,
+          "Replacement": "e <= 0"
+        },
+        {
+          "File": "SafeDecimal.cs",
+          "Id": "75",
+          "Status": "Survived",
+          "Line": 93,
+          "Replacement": "e <= 0"
+        },
+        {
+          "File": "SafeDecimal.cs",
+          "Id": "97",
+          "Status": "Survived",
+          "Line": 106,
+          "Replacement": "scale > 0"
+        }
+      ]
+    },
+    {
+      "Scope": "analyzer-mutation",
+      "Total": 548,
+      "Statuses": [
+        {
+          "Name": "CompileError",
+          "Count": 87
+        },
+        {
+          "Name": "Ignored",
+          "Count": 34
+        },
+        {
+          "Name": "Killed",
+          "Count": 391
+        },
+        {
+          "Name": "NoCoverage",
+          "Count": 5
+        },
+        {
+          "Name": "Survived",
+          "Count": 30
+        },
+        {
+          "Name": "Timeout",
+          "Count": 1
+        }
+      ],
+      "Retained": [
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "2",
+          "Status": "Survived",
+          "Line": 39,
+          "Replacement": "(false?compilation.Assembly :            compilation.SourceModule.ReferencedAssemblySymbols.FirstOrDefault(assembly => assembly.Name == CoreAssemblyName))"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "4",
+          "Status": "Survived",
+          "Line": 40,
+          "Replacement": "compilation.SourceModule.ReferencedAssemblySymbols.First"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "9",
+          "Status": "Survived",
+          "Line": 43,
+          "Replacement": "(false?compilation.Assembly :            compilation.SourceModule.ReferencedAssemblySymbols.FirstOrDefault(assembly => assembly.Name == DecimalAssemblyName))"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "11",
+          "Status": "Survived",
+          "Line": 44,
+          "Replacement": "compilation.SourceModule.ReferencedAssemblySymbols.First"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "24",
+          "Status": "Survived",
+          "Line": 56,
+          "Replacement": "\"\""
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "25",
+          "Status": "Survived",
+          "Line": 57,
+          "Replacement": "\"\""
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "32",
+          "Status": "Survived",
+          "Line": 69,
+          "Replacement": "SymbolKind.Namespace and SymbolKind.Assembly"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "37",
+          "Status": "Survived",
+          "Line": 79,
+          "Replacement": "Result is not null && decimalResult is not null"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "38",
+          "Status": "Survived",
+          "Line": 79,
+          "Replacement": "Result is null"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "39",
+          "Status": "NoCoverage",
+          "Line": 79,
+          "Replacement": "decimalResult is null"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "69",
+          "Status": "Survived",
+          "Line": 108,
+          "Replacement": "numberBase is null && !method.IsStatic"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "125",
+          "Status": "NoCoverage",
+          "Line": 161,
+          "Replacement": "Matches(formattableString, type) && Matches(iFormattable, type)"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "131",
+          "Status": "Survived",
+          "Line": 167,
+          "Replacement": "method.ContainingType.SpecialType is not SpecialType.System_IntPtr or SpecialType.System_UIntPtr"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "135",
+          "Status": "Survived",
+          "Line": 171,
+          "Replacement": "!conversion.IsImplicit && conversion.Conversion.Exists ||\n            IsBuiltinIntegerOperator(conversion.OperatorMethod)"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "136",
+          "Status": "Survived",
+          "Line": 171,
+          "Replacement": "!conversion.IsImplicit || conversion.Conversion.Exists"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "142",
+          "Status": "Survived",
+          "Line": 181,
+          "Replacement": "operand is not null || !Matches(targetType, target)"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "171",
+          "Status": "Survived",
+          "Line": 215,
+          "Replacement": "conversion.Conversion.Exists &&\n            !conversion.Conversion.IsUserDefined &&\n            source?.IsValueType == true || target?.IsReferenceType == true"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "172",
+          "Status": "Survived",
+          "Line": 215,
+          "Replacement": "conversion.Conversion.Exists &&\n            !conversion.Conversion.IsUserDefined ||\n            source?.IsValueType == true"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "173",
+          "Status": "Survived",
+          "Line": 215,
+          "Replacement": "conversion.Conversion.Exists ||\n            !conversion.Conversion.IsUserDefined"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "197",
+          "Status": "Survived",
+          "Line": 233,
+          "Replacement": "expected is null && type is null"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "201",
+          "Status": "NoCoverage",
+          "Line": 234,
+          "Replacement": "true"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "204",
+          "Status": "Survived",
+          "Line": 235,
+          "Replacement": "argument.Key == option ||\n            Matches(optionType, argument.Value.Type)"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "239",
+          "Status": "Survived",
+          "Line": 268,
+          "Replacement": "true"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "257",
+          "Status": "Survived",
+          "Line": 285,
+          "Replacement": "(false?null :        symbol.GetAttributes().FirstOrDefault(attribute => Matches(type, attribute.AttributeClass)))"
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "260",
+          "Status": "Survived",
+          "Line": 289,
+          "Replacement": ".GetMembers(name).OfType<IFieldSymbol>().First"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "296",
+          "Status": "Survived",
+          "Line": 67,
+          "Replacement": ";"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "297",
+          "Status": "Timeout",
+          "Line": 68,
+          "Replacement": ";"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "304",
+          "Status": "NoCoverage",
+          "Line": 79,
+          "Replacement": ";"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "307",
+          "Status": "Survived",
+          "Line": 85,
+          "Replacement": "contracts.IsStrict(c.ContainingSymbol) &&\n                    contracts.IsStrict(c.SemanticModel.GetEnclosingSymbol(c.Node.SpanStart, c.CancellationToken))"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "444",
+          "Status": "Survived",
+          "Line": 247,
+          "Replacement": "method.Name is \"Add\" or \"Subtract\" || contracts.IsBoundedGeneratedMember(method)"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "498",
+          "Status": "NoCoverage",
+          "Line": 313,
+          "Replacement": "true"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "505",
+          "Status": "Survived",
+          "Line": 327,
+          "Replacement": "IAnonymousFunctionOperation or ILocalFunctionOperation and INameOfOperation"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "506",
+          "Status": "Survived",
+          "Line": 327,
+          "Replacement": "IAnonymousFunctionOperation and ILocalFunctionOperation"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "507",
+          "Status": "Survived",
+          "Line": 328,
+          "Replacement": ";"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "535",
+          "Status": "Survived",
+          "Line": 377,
+          "Replacement": "target.DeclaringSyntaxReferences.First"
+        },
+        {
+          "File": "StrictNumericAnalyzer.cs",
+          "Id": "540",
+          "Status": "Survived",
+          "Line": 381,
+          "Replacement": ";"
+        }
+      ]
+    },
+    {
+      "Scope": "analyzer-optional-character-replay",
+      "Filter": "**/NumericSymbols.cs{1714..4930}",
+      "Total": 548,
+      "Scored": 49,
+      "Statuses": [
+        {
+          "Name": "CompileError",
+          "Count": 87
+        },
+        {
+          "Name": "Ignored",
+          "Count": 412
+        },
+        {
+          "Name": "Killed",
+          "Count": 46
+        },
+        {
+          "Name": "Survived",
+          "Count": 3
+        }
+      ],
+      "Retained": [
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "24",
+          "Status": "Survived",
+          "Line": 56,
+          "Replacement": "\"\""
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "25",
+          "Status": "Survived",
+          "Line": 57,
+          "Replacement": "\"\""
+        },
+        {
+          "File": "NumericSymbols.cs",
+          "Id": "32",
+          "Status": "Survived",
+          "Line": 69,
+          "Replacement": "SymbolKind.Namespace and SymbolKind.Assembly"
+        }
+      ]
+    }
+  ],
+  "PackageHashes": [
+    {
+      "Package": "SharpSafeNumerics.Analyzers.0.1.0-rc.1.nupkg",
+      "SHA256": "1E305E3030A05E130EA036E8CE29CE31B612BF7A0F80AD909E5266C5124CE8FD"
+    },
+    {
+      "Package": "SharpSafeNumerics.Core.0.1.0-rc.1.nupkg",
+      "SHA256": "D0004DD883DFF69DC4C7D8B400BFE1BB6DFAFC65FC34A529FB9DC356FCEE733D"
+    },
+    {
+      "Package": "SharpSafeNumerics.Core.0.1.0-rc.1.snupkg",
+      "SHA256": "FA05D4685310D0D6D782963D0E43E626ABF98C0FCCFF00DD2480FF0A9043017F"
+    },
+    {
+      "Package": "SharpSafeNumerics.Decimal.0.1.0-rc.1.nupkg",
+      "SHA256": "7E243D4AB90B33579BC54F33D60C58634193089AE03044505CF396A73126654D"
+    },
+    {
+      "Package": "SharpSafeNumerics.Decimal.0.1.0-rc.1.snupkg",
+      "SHA256": "B7E14A874BBD3528DC7A82E9C000D77043F2F08552CB96614D16DCC0F8D618BD"
+    },
+    {
+      "Package": "SharpSafeNumerics.Generator.0.1.0-rc.1.nupkg",
+      "SHA256": "CF82F59E029931D974C30C7717D2181A0FD70C58A93FB089941464D3873E8D7B"
+    },
+    {
+      "Package": "SharpSafeNumerics.Unions.0.1.0-rc.1.nupkg",
+      "SHA256": "E0538D51E896D4CBF2FD86729C7CC028C1066BAC5B55E5C20850AF6D17691E19"
+    },
+    {
+      "Package": "SharpSafeNumerics.Unions.0.1.0-rc.1.snupkg",
+      "SHA256": "AAD81F97D7B474749EC0661D3122F699E0BEE42E7707574AF2304523EE6318E6"
+    }
+  ]
+}

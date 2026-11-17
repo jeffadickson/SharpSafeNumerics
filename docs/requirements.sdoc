@@ -174,8 +174,8 @@ UID: SN-PACK-REPRO
 TITLE: Reproducible candidate package archives
 STATEMENT: >>>
 With the pinned SDK, identical source/configuration, fixed package timestamp and
-same build paths, repeated packaging shall produce byte-identical four NuGet
-packages and two symbol archives. Verification shall compare whole-file SHA256
+same build paths, repeated packaging shall produce byte-identical five NuGet
+packages and three symbol archives. Verification shall compare whole-file SHA256
 values, reject stale output directories and retain the tested scope. Rebuild
 reproducibility shall be reported separately from repacking unchanged binaries.
 <<<
@@ -204,4 +204,74 @@ source-integrity capture, deadline scheduler and package reproducibility step.
 Verification: WorkstationRunner.Tests.ps1 (18-hour plan/verdict cases), prior
 one-hour execution evidence, and rc1-closeout report. No eighteen-hour run is
 claimed until the independent workstation actually executes and returns evidence.
+<<<
+
+[REQUIREMENT]
+UID: SN-API-SOURCE-GUARD
+TITLE: Reviewed shipping API signature lists
+STATEMENT: >>>
+The shipping projects shall maintain source-controlled nullable-aware API
+lists and reject unlisted public additions or stale signatures through build
+errors. Verification shall challenge additions, member removal/rename, enum
+values, optional defaults and nullability. Unpublished candidate signatures shall
+remain labeled Unshipped. Scope limits including generic constraints and generated
+consumer APIs shall be explicit; signature agreement is not behavioral proof.
+<<<
+COMMENT: >>>
+Implementation: PublicAPI.*.txt in the shipping projects,
+Directory.Build.targets and Microsoft.CodeAnalysis.PublicApiAnalyzers 5.6.0.
+Verification: eng/VerifyPublicApi.ps1 and
+verification/2026-11-17-api-baseline.md. SDK package validation remains a separate
+compatibility layer, not replaced by these source lists.
+<<<
+
+[REQUIREMENT]
+UID: SN-018-FIXED
+TITLE: Owned signed Q32.32 arithmetic
+STATEMENT: >>>
+Fixed64 shall represent a signed Int64 raw value divided by two to the power 32.
+SafeFixed shall provide raw admission, integral and rational conversion, addition,
+subtraction, multiplication, division and negation without silent saturation or
+wrapping. Widened intermediates shall prevent premature overflow. Exact rounding
+shall reject discarded fractions; explicit nearest-even, toward-zero, floor,
+ceiling and away-from-zero modes shall define signed rounding. Undefined modes
+shall reject before operand-dependent success or failure. Expected failures shall
+return statuses and cleared result storage. Default Fixed64 is valid zero;
+default NumericResult is invalid. Strict integer and fixed arithmetic shall not
+use runtime reflection or BigInteger intermediates.
+Exact fractional rejection shall precede range validation; other rounding shall
+precede range validation and may admit a value rounded back to an endpoint.
+<<<
+COMMENT: >>>
+Parent product requirement: SN-018. User-authorized RC1 scope expansion on
+2026-11-17. Implementation: Core/Fixed64.cs (including SafeFixed),
+Fixed64Tests.cs, PropertyTests/Program.cs, formal/FixedPoint.dfy.
+Independent reference: test-only exact BigInteger rationals with retained seeds.
+The formal model is not a refinement proof of the handwritten CSharp code.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-DECIMAL
+TITLE: Safe built-in IEEE decimal arithmetic
+STATEMENT: >>>
+The optional Decimal assembly shall wrap NET11 System.Numerics.Decimal32,
+Decimal64 and Decimal128 for finite addition, subtraction, multiplication,
+division, negation and cross-format conversion. Exact is the default rounding
+contract and rejects unrepresentable exact results. Explicit nearest-even may
+accept rounded finite results and shall report inexactness. Nonfinite operands,
+division by zero, nonfinite overflow results, unsupported numeric types and
+undefined rounding modes shall return typed failures with cleared output.
+Undefined modes shall reject before operand-dependent paths. Exactness shall be
+determined using exact rational relations, not rounded reverse-operation tests.
+Default result shall be invalid. Decimal exactness checking may allocate and is
+outside the allocation-free strict integer contract. No whole IEEE754 operation
+set, arbitrary rounding modes or transcendental conformance is implied.
+<<<
+COMMENT: >>>
+Parent product requirement: SN-019. User-authorized RC1 scope expansion on
+2026-11-17. Implementation: SharpSafeNumerics.Decimal. Independent
+verification: PeterO.Numbers 1.8.2 in tests only, rational references, malformed
+options, boundary/subnormal/conversion cases, coverage, mutation and Native AOT.
+Closure requires executed evidence; the existing pinned integer soak does not
+qualify these newly added operations.
 <<<
