@@ -1,6 +1,12 @@
 name: Mutation
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'src/SharpSafeNumerics.Core/**'
+      - 'tests/SharpSafeNumerics.UnitTests/**'
+      - 'stryker-config.json'
+      - '.github/workflows/mutation.yml'
   schedule:
     - cron: '17 10 * * 1'
 jobs:
