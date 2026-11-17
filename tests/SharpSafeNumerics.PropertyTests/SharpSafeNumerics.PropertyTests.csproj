@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CsCheck" Version="5.0.1" />
+    <PackageReference Include="Hedgehog" Version="2.0.4" />
+    <ProjectReference Include="../../src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
+  </ItemGroup>
+</Project>

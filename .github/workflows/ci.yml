@@ -3,20 +3,40 @@ on:
   push:
   pull_request:
 jobs:
-  build-and-test:
+  core:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '11.0.x'
-      - name: Test strict arithmetic
+      - run: dotnet restore
+      - name: Exhaustive deterministic harness
         run: dotnet run --project tests/SharpSafeNumerics.Tests -c Release
-      - name: Build and run bounded domain example
+      - name: Unit tests
+        run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release --no-restore
+      - name: CsCheck and Hedgehog
+        run: dotnet run --project tests/SharpSafeNumerics.PropertyTests -c Release
+      - name: Generated annotated domain
+        run: dotnet run --project examples/GeneratedQueueDepth -c Release
+      - name: Static range-policy example
         run: dotnet run --project examples/RiscueQueueDepth -c Release
+      - name: Analyzer self-test
+        run: dotnet run --project tests/SharpSafeNumerics.AnalyzerTests -c Release
       - name: Compile C# 15 union adapter
         run: dotnet build src/SharpSafeNumerics.Unions -c Release
       - name: Native AOT smoke
         run: |
           dotnet publish tests/SharpSafeNumerics.AotSmoke -c Release -r linux-x64 -o artifacts/aot
           ./artifacts/aot/SharpSafeNumerics.AotSmoke
+
+  formal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+      - run: dotnet tool restore
+      - name: Verify Dafny arithmetic model
+        run: dotnet tool run dafny -- verify formal/SafeInteger.dfy

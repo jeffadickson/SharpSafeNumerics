@@ -1,0 +1,29 @@
+name: Platform Qualification
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'src/**'
+      - 'tests/SharpSafeNumerics.AotSmoke/**'
+      - '.github/workflows/platform.yml'
+jobs:
+  platform:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            exe: ./artifacts/aot/SharpSafeNumerics.AotSmoke
+          - os: windows-latest
+            rid: win-x64
+            exe: artifacts/aot/SharpSafeNumerics.AotSmoke.exe
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+      - run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release
+      - run: dotnet publish tests/SharpSafeNumerics.AotSmoke -c Release -r ${{ matrix.rid }} -o artifacts/aot
+      - name: Run native smoke
+        run: ${{ matrix.exe }}

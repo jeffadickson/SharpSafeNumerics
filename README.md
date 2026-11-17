@@ -5,13 +5,17 @@ A .NET 11 / C# 15 numeric-safety library for bounded integer arithmetic, explici
 **Status:** initial implementation / not yet qualified for embedded or safety-critical use.
 
 ## What is implemented
+
+The project is organized as M1–M5; see [milestones](docs/MILESTONES.md). Numeric-domain **attributes are the specification surface** and Roslyn source generation converts them to reflection-free code. [Why attributes + generation](docs/ANNOTATIONS_AND_GENERATION.md).
+
+
 - BCL-only generic integer core using `IBinaryInteger<T>` and `IMinMaxValue<T>`.
 - Arithmetic without exceptions for expected failure: addition, subtraction, multiplication, division, and negation.
 - Range-checked conversion (exception translated to an error), bounded range admission, four arithmetic policies: Reject, Saturate, Wrap, Throw.
 - Explicit `NumericResult<T>` struct with a default *invalid* state.
 - Optional C# 15 `union` adapter for ergonomic handling **that boxes value-type cases**; do not use it on no-allocation paths.
 - Dependency-free console conformance tests, Native AOT smoke project, GitHub Actions CI.
-- Detailed requirements, original software description, architecture, exception policy and verification plan.
+- Declarative bounded-number attributes + incremental source generator and strict-scope analyzer.\n- CsCheck, Hedgehog, xUnit, Stryker.NET, Dafny and BenchmarkDotNet verification infrastructure.\n- Detailed requirements, original software description, architecture, exception policy and verification plan.
 
 ## Quick start
 ```bash
