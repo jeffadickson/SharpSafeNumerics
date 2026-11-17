@@ -31,7 +31,7 @@ NET11/C#15 only. Strict core is BCL-only. Target users: systems, protocol, simul
 No silent clamp/wrap; no hidden BigInteger work in strict integer arithmetic; no runtime reflection; no false promises of hard-real-time behavior; no blanket ban on exceptions across the application.
 
 ## Current bounded implementation contract
-For `Try*`, failure writes `default(T)` to the out value. `TryConvert` translates overflow exceptions and **is not** part of the strict zero-allocation set. Generic fast path targets built-in integral types only. Caller owns synchronization and domain-state management.
+For `Try*`, failure writes `default(T)` to the out value. `TryConvert` admits only exact, sign-preserving conversions and returns `OutOfRange` otherwise, without expected range exceptions for built-in types. Its scoped StrictDoc baseline is [requirements.sdoc](requirements.sdoc), preserving SN-003/004/005. Generic fast paths target built-in integral types only. Caller owns synchronization and domain-state management.
 
 ## Blocking qualification gaps
-C#15 compilation and .NET 11 runtime builds were not available in the original authoring environment. CI must provide evidence. No baseline benchmark or physical target measurements have been completed. Do not mark SN-005/SN-010 fully passed until failure-path allocation and wide-type oracle suites are green.
+Current execution evidence and its scope are recorded in [the conversion pass report](verification/2026-11-17-conversion.md). Conversion evidence does not close whole-library SN-005/SN-010: wide arithmetic policy campaigns and physical target qualification remain incomplete.

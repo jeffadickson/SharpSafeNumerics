@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
+    <Project Path="src/SharpSafeNumerics.Unions/SharpSafeNumerics.Unions.csproj" />
+    <Project Path="src/SharpSafeNumerics.Generator/SharpSafeNumerics.Generator.csproj" />
+    <Project Path="src/SharpSafeNumerics.Analyzers/SharpSafeNumerics.Analyzers.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SharpSafeNumerics.UnitTests/SharpSafeNumerics.UnitTests.csproj" />
+    <Project Path="tests/SharpSafeNumerics.Tests/SharpSafeNumerics.Tests.csproj" />
+    <Project Path="tests/SharpSafeNumerics.PropertyTests/SharpSafeNumerics.PropertyTests.csproj" />
+    <Project Path="tests/SharpSafeNumerics.AnalyzerTests/SharpSafeNumerics.AnalyzerTests.csproj" />
+    <Project Path="tests/SharpSafeNumerics.AotSmoke/SharpSafeNumerics.AotSmoke.csproj" />
+  </Folder>
+  <Folder Name="/examples/">
+    <Project Path="examples/GeneratedQueueDepth/GeneratedQueueDepth.csproj" />
+    <Project Path="examples/RiscueQueueDepth/RiscueQueueDepth.csproj" />
+  </Folder>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/SharpSafeNumerics.Benchmarks/SharpSafeNumerics.Benchmarks.csproj" />
+  </Folder>
+</Solution>

@@ -11,14 +11,18 @@ The project is organized as M1–M5; see [milestones](docs/MILESTONES.md). Numer
 
 - BCL-only generic integer core using `IBinaryInteger<T>` and `IMinMaxValue<T>`.
 - Arithmetic without exceptions for expected failure: addition, subtraction, multiplication, division, and negation.
-- Range-checked conversion (exception translated to an error), bounded range admission, four arithmetic policies: Reject, Saturate, Wrap, Throw.
+- Exact range-checked conversion without expected range exceptions for built-in integers, bounded range admission, four arithmetic policies: Reject, Saturate, Wrap, Throw.
 - Explicit `NumericResult<T>` struct with a default *invalid* state.
 - Optional C# 15 `union` adapter for ergonomic handling **that boxes value-type cases**; do not use it on no-allocation paths.
 - Dependency-free console conformance tests, Native AOT smoke project, GitHub Actions CI.
-- Declarative bounded-number attributes + incremental source generator and strict-scope analyzer.\n- CsCheck, Hedgehog, xUnit, Stryker.NET, Dafny and BenchmarkDotNet verification infrastructure.\n- Detailed requirements, original software description, architecture, exception policy and verification plan.
+- Declarative bounded-number attributes + incremental source generator and strict-scope analyzer.
+- CsCheck, Hedgehog, xUnit, Stryker.NET, Dafny and BenchmarkDotNet verification infrastructure.
+- Detailed requirements, original software description, architecture, exception policy and verification plan.
 
 ## Quick start
 ```bash
+dotnet build -c Release
+dotnet test -c Release
 dotnet run --project tests/SharpSafeNumerics.Tests -c Release
 dotnet publish tests/SharpSafeNumerics.AotSmoke -c Release -r linux-x64
 ```
@@ -32,7 +36,7 @@ var outcome = SafeInteger.Add((byte)250, (byte)10, ArithmeticPolicy.Saturate);
 ```
 
 ## Scope and limitations
-The `TryAdd/TrySubtract/TryMultiply/TryDivide/TryNegate` fast paths use preflight bounds for built-in integral types, avoiding overflow exceptions on expected failures. `TryConvert` currently catches `OverflowException`: it is non-throwing at its API boundary but **not allocation-free on failure**. No target-hardware timing or allocation qualification has been completed. Custom `IBinaryInteger<T>` implementations are outside the qualified set.
+The `TryAdd/TrySubtract/TryMultiply/TryDivide/TryNegate` fast paths use preflight bounds for built-in integral types, avoiding overflow exceptions on expected failures. `TryConvert` validates a sign-preserving round trip before publishing its candidate; range rejection returns `OutOfRange` and zero. All 144 built-in integer conversion pairs have boundary/oracle and warmed allocation tests. See [bounded verification evidence](docs/verification/2026-11-17-conversion.md); this does not establish whole-library or target-hardware timing qualification. Custom `IBinaryInteger<T>` implementations are outside the qualified set.
 
 The C# 15 union adapter uses generated union storage, which boxes struct cases per Microsoft's documentation. The strict core deliberately does not depend on that adapter.
 

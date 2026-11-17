@@ -75,23 +75,25 @@ public static class SafeInteger
     }
 
     /// <summary>
-    /// Conversion is non-throwing to callers for range errors, but its failure path catches
-    /// OverflowException and may allocate. Strict no-allocation code must not use this method.
+    /// Convert exactly, returning OutOfRange and zero if the value is not representable.
+    /// Built-in integer conversions do not use exceptions for range rejection or allocate.
+    /// Custom generic-math providers require separate qualification and may reject unsupported types.
     /// </summary>
     public static ArithmeticError TryConvert<TFrom, TTo>(TFrom input, out TTo value)
         where TFrom : struct, IBinaryInteger<TFrom>
         where TTo : struct, IBinaryInteger<TTo>
     {
-        try
+        value = TTo.Zero;
+        TTo candidate = TTo.CreateTruncating(input);
+        // A modulo round trip alone accepts sign-changing conversions (e.g. -1 to uint).
+        // Both sign and source value must survive before the candidate may escape.
+        if (TFrom.IsNegative(input) != TTo.IsNegative(candidate) ||
+            TFrom.CreateTruncating(candidate) != input)
         {
-            value = TTo.CreateChecked(input);
-            return ArithmeticError.None;
-        }
-        catch (OverflowException)
-        {
-            value = TTo.Zero;
             return ArithmeticError.OutOfRange;
         }
+        value = candidate;
+        return ArithmeticError.None;
     }
 
     /// <summary>Admit a value into an inclusive numeric range.</summary>

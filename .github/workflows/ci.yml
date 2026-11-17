@@ -13,7 +13,11 @@ jobs:
       - name: Exhaustive deterministic harness
         run: dotnet run --project tests/SharpSafeNumerics.Tests -c Release
       - name: Unit tests
-        run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release
+        run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/coverage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: core-coverage
+          path: artifacts/coverage
       - name: CsCheck and Hedgehog
         run: dotnet run --project tests/SharpSafeNumerics.PropertyTests -c Release
       - name: Generated annotated domain

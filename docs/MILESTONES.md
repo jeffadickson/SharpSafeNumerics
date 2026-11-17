@@ -34,9 +34,16 @@ No single test technology is considered an oracle for itself.
 - Linux x64 Native AOT smoke in core CI
 - Windows/Linux cross-platform test workflow
 - BenchmarkDotNet baseline project
-- mutation score threshold (break below 70)
+- mutation score threshold (break below 90; local conversion pass achieved 91.15%)
 - formal verification workflow
 - generated-domain executable example
 - explicit feature-parity/status documentation
 
-Still required before a 1.0 qualification claim: Windows AOT green evidence, Arm64 AOT, wide-type BigInteger campaign, mutation score review, benchmark baselines, RISCue/VeloSim integration, package signing/versioning and target-specific WCET/allocation evidence.
+Conversion pass: exact nonexception-driven conversion, 144-pair BigInteger oracle,
+100k-call allocation checks, core coverage and survivor-driven regression additions.
+Windows x64 AOT smoke has executed locally. See [dated evidence](verification/2026-11-17-conversion.md).
+
+Still required before a 1.0 qualification claim: Arm64 AOT, wide-type arithmetic
+BigInteger campaigns, full analyzer/generator qualification, robust benchmark
+baselines, RISCue/VeloSim integration, package signing/versioning and
+target-specific WCET/allocation evidence.

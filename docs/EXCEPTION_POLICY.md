@@ -9,7 +9,7 @@
 | Convenient | value or throwing wrapper | rich exception permitted | unrestricted |
 
 - `TryAdd`, `TrySubtract`, `TryMultiply`, `TryDivide`, `TryNegate` must not emit exceptions for normal overflow/underflow/zero-divisor when applied to qualified built-in integer types.
-- `TryConvert` does not propagate overflow exceptions, but currently allocates when exceptions occur; not strict-qualified.
+- `TryConvert` rejects built-in out-of-range values without exception-driven control flow. Warmed allocation checks cover all 144 built-in type pairs; custom providers and arbitrary-width BigInteger are not allocation-qualified.
 - `NumericResult<T>.Value` throws for an unsuccessful result; Strict consumers should use `TryGetValue`.
 - `ArithmeticPolicy.Throw` intentionally creates an exception; forbidden by future strict-scope analyzer.
 - Reject/saturate/wrap behavior must be caller-selected and visible in code. No implicit fallbacks.

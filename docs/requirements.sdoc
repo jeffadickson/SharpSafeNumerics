@@ -1,0 +1,69 @@
+[DOCUMENT]
+TITLE: SharpSafeNumerics strict conversion requirements
+
+[REQUIREMENT]
+UID: SN-003
+TITLE: Expected arithmetic failures
+STATEMENT: Expected arithmetic failures return statuses, not exceptions.
+COMMENT: Parent baseline from PRODUCT_REQUIREMENTS.md; whole-library closure is not claimed.
+
+[REQUIREMENT]
+UID: SN-004
+TITLE: Supported integer domains
+STATEMENT: Signed/unsigned 8-128 bits plus nint/nuint shall be supported.
+COMMENT: Parent baseline from PRODUCT_REQUIREMENTS.md; conversion is one scoped obligation.
+
+[REQUIREMENT]
+UID: SN-005
+TITLE: Qualified hot-path allocation
+STATEMENT: Designated hot paths shall perform zero managed allocations.
+COMMENT: Parent baseline from PRODUCT_REQUIREMENTS.md; evidence must identify qualified paths/platforms.
+
+[REQUIREMENT]
+UID: SN-003-CONV
+TITLE: Expected failures are data
+STATEMENT: >>>
+Built-in integer TryConvert shall return OutOfRange, without raising or catching
+an exception for expected range rejection. Failure shall clear the output to zero.
+<<<
+COMMENT: >>>
+Implementation: src/SharpSafeNumerics.Core/SafeInteger.cs, TryConvert.
+Verification: tests/SharpSafeNumerics.UnitTests/ConversionTests.cs.
+Evidence: docs/verification/2026-11-17-conversion.md (pending).
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-003
+
+[REQUIREMENT]
+UID: SN-004-CONV
+TITLE: Built-in conversion matrix
+STATEMENT: >>>
+TryConvert shall preserve exactly representable values and reject all other values
+for each ordered pair of byte, sbyte, short, ushort, int, uint, long, ulong,
+Int128, UInt128, nint and nuint. Native widths follow the executing architecture.
+<<<
+COMMENT: >>>
+Implementation: SafeInteger.TryConvert. Verification: ConversionTests matrix,
+BigInteger oracle, exhaustive 8-bit sources and deterministic seed 731921.
+Evidence pending. A finite campaign does not prove all wide integer values.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-004
+
+[REQUIREMENT]
+UID: SN-005-CONV
+TITLE: Conversion allocation budget
+STATEMENT: >>>
+Warmed built-in TryConvert success and range-rejection paths shall allocate zero
+managed bytes in 100000 measured calls per path and type pair, excluding test
+setup, assertion construction and generic instantiation warmup.
+<<<
+COMMENT: >>>
+Verification: ConversionTests.Allocation_paths over all 144 ordered type pairs.
+Allocation evidence is runtime/platform-specific; no WCET or custom-provider guarantee.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-005

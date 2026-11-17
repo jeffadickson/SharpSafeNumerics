@@ -9,7 +9,8 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '11.0.x'
-      - run: dotnet run --project benchmarks/SharpSafeNumerics.Benchmarks -c Release -- --filter '*AddBenchmarks*'
+      # Pinned BenchmarkDotNet does not recognize net11 in its default toolchain.
+      - run: dotnet run --project benchmarks/SharpSafeNumerics.Benchmarks -c Release -- --filter '*Benchmarks*' --inProcess
       - uses: actions/upload-artifact@v4
         with:
           name: benchmark-results

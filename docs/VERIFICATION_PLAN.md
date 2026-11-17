@@ -13,7 +13,13 @@
 10. RISCue and VeloSim integration tests, deterministic trace replay, instrumentation of allocations and latency.
 
 ## Current state
-Console test harness is included and invoked by CI but could not run in the authoring environment because the .NET SDK is absent there. CI pass/fail status must be checked after the commit. The numerical API and docs have received source review, not a certified safety review.
+The Windows x64 .NET 11 SDK executes the harness and unit/property suites locally.
+Conversion now has all 144 ordered built-in type-pair boundary and seeded oracle
+campaigns, exhaustive 8-bit sources, and 100k-call warmed allocation checks per
+success/rejection path. Rejection is impossible for wholly widening source ranges.
+Coverlet collects core line and branch coverage through the xUnit project.
+See [dated evidence and reproducible commands](verification/2026-11-17-conversion.md).
+The numerical API has not received a certified safety review.
 
 ## Important validation boundary
 A real-time guarantee requires target-specific WCET analysis, scheduler analysis, memory and exception audit. Microbenchmarks alone cannot supply that evidence.
