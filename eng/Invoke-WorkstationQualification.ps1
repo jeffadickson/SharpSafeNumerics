@@ -49,6 +49,15 @@ function Ensure-Directory([string]$Path) {
     if (-not (Test-Path -LiteralPath $parent -PathType Container)) { Ensure-Directory $parent }
     if (-not (Test-Path -LiteralPath $Path -PathType Container)) { New-Item -ItemType Directory -Path $Path | Out-Null }
 }
+function Get-QualificationStatus([object[]]$Checks, [string]$FatalError, [string]$SourceChanges) {
+    # A successful upload is separate from qualification: failed gates must remain
+    # visibly failed even when no orchestration exception occurred.
+    if ($FatalError -or $SourceChanges) { return 'Failed' }
+    if (-not $Checks -or $Checks.Count -eq 0) { return 'Incomplete' }
+    if (@($Checks | Where-Object { $_.Status -notin @('Passed','ProbeRejected','SkippedBudget') }).Count) { return 'Failed' }
+    if (@($Checks | Where-Object Status -eq 'SkippedBudget').Count) { return 'Incomplete' }
+    return 'Passed'
+}
 Ensure-Directory $run
 Ensure-Directory $toolRoot
 $downloads = New-Object 'System.Collections.Generic.List[object]'
@@ -122,7 +131,7 @@ $records = [Collections.Generic.List[object]]::new()
 $active = [Collections.Generic.List[object]]::new()
 $savedEnvironment = @{}
 foreach ($key in @('PATH','DOTNET_ROOT','NUGET_PACKAGES','MSBUILD_EXE_PATH','DOTNET_EnableAVX2','DOTNET_EnableHWIntrinsic','GIT_AUTHOR_NAME','GIT_AUTHOR_EMAIL','GIT_COMMITTER_NAME','GIT_COMMITTER_EMAIL','GIT_TERMINAL_PROMPT','GH_PROMPT_DISABLED','GCM_INTERACTIVE')) { $savedEnvironment[$key]=[Environment]::GetEnvironmentVariable($key,'Process') }
-$git = $null; $gh = $null; $sourceSha = $null; $fatal = $null; $pushed = $false; $counter = 0
+$git = $null; $gh = $null; $sourceSha = $null; $fatal = $null; $pushed = $false; $counter = 0; $qualificationStatus = 'Incomplete'
 function Initialize-ProcessJob {
     if('QualificationJob' -as [type]){return}
     # Create the child suspended, attach it to a kill-on-close Windows job, then
@@ -512,6 +521,8 @@ try {
     if((Invoke-Step 'aot-publish' $dotnetExe @('publish','tests/SharpSafeNumerics.AotSmoke','-c','Release','-r','win-x64','-o',$native,'--artifacts-path',(Join-Path $run 'aot-build')) $checkout 1800) -eq 0){[void](Invoke-Step 'aot-execute' (Join-Path $native 'SharpSafeNumerics.AotSmoke.exe') @() $checkout 600)}
     $packages=Join-Path $run 'packages'
     if((Invoke-Step 'pack' $dotnetExe @('pack','-c','Release','-o',$packages,'--artifacts-path',$build) $checkout 900) -eq 0){[void](Invoke-Step 'package-consumer' (Get-Process -Id $PID).Path @('-NoProfile','-File',(Join-Path $checkout 'eng\VerifyPackages.ps1'),'-PackageDirectory',$packages,'-WorkDirectory',(Join-Path $run 'package-consumer')) $checkout 900)}
+    # Finish all rebuilds before starting mutation workers or the immutable soak.
+    [void](Invoke-Step 'package-reproducibility' (Get-Process -Id $PID).Path @('-NoProfile','-File',(Join-Path $checkout 'eng\VerifyPackageReproducibility.ps1'),'-ArtifactDirectory',(Join-Path $run 'package-reproducibility'),'-BuildArtifactsPath',$build,'-RebuildBetweenPasses') $checkout 1800)
     $soakBin=Join-Path $run 'soak-bin'
     [void](Invoke-Step 'prepare-soak' $dotnetExe @('publish','tests/SharpSafeNumerics.Soak','-c','Release','--no-self-contained','-p:UseAppHost=false','-o',$soakBin,'--artifacts-path',(Join-Path $run 'soak-build')) $checkout 900)
     $capacity=[Math]::Max(1,[Math]::Min($MaxParallelism,[Environment]::ProcessorCount))
@@ -563,11 +574,13 @@ finally {
         try{
             $relative='qualification-results/workstation/'+$runId; $result=Join-Path $checkout $relative;Ensure-Directory $result
             $sourceChanges=Read-Step 'source-changes' $git @('status','--porcelain=v1','--untracked-files=normal') $checkout
-            $summary=[ordered]@{RunId=$runId;Repository=$Repository;SourceRef=$SourceRef;SourceRevision=$sourceSha;IssueNumber=$IssueNumber;IssueUrl=$issueUrl;ResultsBranch=$branch;Machine=$env:COMPUTERNAME;ProcessorCount=[Environment]::ProcessorCount;StartedUtc=$started.ToString('O');FinishedUtc=[DateTime]::UtcNow.ToString('O');Hours=$Hours;DeadlineUtc=$deadline.ToString('O');ArtifactDirectory=$run;FatalError=$fatal;Checks=$records;Downloads=$downloads;SourceChanges=$sourceChanges}
+            $qualificationStatus=Get-QualificationStatus $records.ToArray() $fatal $sourceChanges
+            $summary=[ordered]@{RunId=$runId;Repository=$Repository;SourceRef=$SourceRef;SourceRevision=$sourceSha;IssueNumber=$IssueNumber;IssueUrl=$issueUrl;ResultsBranch=$branch;Machine=$env:COMPUTERNAME;ProcessorCount=[Environment]::ProcessorCount;StartedUtc=$started.ToString('O');FinishedUtc=[DateTime]::UtcNow.ToString('O');Hours=$Hours;DeadlineUtc=$deadline.ToString('O');ArtifactDirectory=$run;QualificationStatus=$qualificationStatus;FatalError=$fatal;Checks=$records;Downloads=$downloads;SourceChanges=$sourceChanges}
             $summary | ConvertTo-Json -Depth 9 | Set-Content -LiteralPath (Join-Path $result 'summary.json') -Encoding utf8
             [pscustomobject]@{Identifier=$env:PROCESSOR_IDENTIFIER;LogicalProcessors=[Environment]::ProcessorCount}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $result 'cpu.json')
             foreach($file in @('dotnet-info.txt','nuget-cache.txt','disk-start.json')){ $path=Join-Path $run $file;if(Test-Path -LiteralPath $path -PathType Leaf){Copy-Item -LiteralPath $path -Destination (Join-Path $result $file)} }
             $coverageSummary=Join-Path $run 'coverage-report/Summary.json';if(Test-Path -LiteralPath $coverageSummary -PathType Leaf){Copy-Item -LiteralPath $coverageSummary -Destination (Join-Path $result 'coverage-summary.json')}
+            $packageHashes=Join-Path $run 'package-reproducibility/sha256.json';if(Test-Path -LiteralPath $packageHashes -PathType Leaf){Copy-Item -LiteralPath $packageHashes -Destination (Join-Path $result 'package-sha256.json')}
             foreach($record in $records){foreach($kind in @('Stdout','Stderr')){ $path=$record.$kind;if($path -and (Test-Path -LiteralPath $path -PathType Leaf)){Get-Content -LiteralPath $path -Tail 120 | Set-Content -LiteralPath (Join-Path $result ($record.Name+'.'+$kind+'.tail.txt')) -Encoding utf8}}}
             $mutations=foreach($report in (Get-ChildItem -Path (Join-Path $run 'mutation-*/reports/mutation-report.json') -File -ErrorAction SilentlyContinue)){
                 $data=Get-Content -LiteralPath $report.FullName -Raw | ConvertFrom-Json
@@ -576,7 +589,7 @@ finally {
             }
             @($mutations)|ConvertTo-Json -Depth 9|Set-Content -LiteralPath (Join-Path $result 'mutation-summary.json') -Encoding utf8
             Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $result 'runner.ps1')
-            @("# Workstation qualification $runId","","Source: $sourceSha","","Results are bounded evidence, including failures, timeouts and skipped work. See summary.json for exact commands, exit codes, timings and local artifact paths. Raw logs, coverage, packages and full mutation reports remain local. No CI configuration was changed.") | Set-Content -LiteralPath (Join-Path $result 'README.md') -Encoding utf8
+            @("# Workstation qualification $runId","","Source: $sourceSha","Qualification status: $qualificationStatus","","Results are bounded evidence, including failures, timeouts and skipped work. See summary.json for exact commands, exit codes, timings and local artifact paths. Raw logs, coverage, packages and full mutation reports remain local. No CI configuration was changed.") | Set-Content -LiteralPath (Join-Path $result 'README.md') -Encoding utf8
             Commit-Results $relative $sourceSha "Record qualification for issue #$IssueNumber ($runId, $($sourceSha.Substring(0,7)))"
             [void](Read-Step 'push-results' $git @('push','-u','origin',("HEAD:refs/heads/"+$branch)) $checkout 180)
             $pushed=$true
@@ -588,5 +601,5 @@ finally {
     }
     foreach($key in $savedEnvironment.Keys){[Environment]::SetEnvironmentVariable($key,$savedEnvironment[$key],'Process')}
 }
-if(-not $pushed -or $fatal -or @($records|Where-Object {$_.Status -notin @('Passed','ProbeRejected')}).Count -gt 0){exit 1}
+if(-not $pushed -or $qualificationStatus -ne 'Passed' -or $fatal -or @($records|Where-Object {$_.Status -notin @('Passed','ProbeRejected')}).Count -gt 0){exit 1}
 exit 0

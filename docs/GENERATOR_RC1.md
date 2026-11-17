@@ -327,3 +327,11 @@ not the final tests added afterwards. Diagnostic category/type-name hardening
 then passed 89 tests; scoped replay killed prior candidates 117 and 160 while
 retaining a guarded-equivalent First replacement and an uncovered metadata fallback.
 Commands, counts and provenance are recorded in verification/2026-11-17-rc1.md.
+
+## RC1 closeout Standard gate
+
+Full Standard on the closeout renderer and 89 tests passed an explicit 90% break
+gate: 439 candidates, 331 assertion kills, one timeout, 31 survivors, three
+uncovered, 59 compile errors and 14 ignored; 90.71%. Assertion kills alone are
+90.44% of the scored population. No source/mutator exclusions were added.
+See verification/2026-11-17-rc1-closeout.md for hashes, scope and retained limits.

@@ -186,3 +186,22 @@ repacking campaign and Core CI rebuild-between-passes check; see
 verification/2026-11-17-rc1-closeout.md. Cross-path/platform rebuild identity is
 not established by a same-path comparison.
 <<<
+
+[REQUIREMENT]
+UID: SN-QUAL-LONG-RUN
+TITLE: Bounded long qualification and explicit verdict
+STATEMENT: >>>
+The workstation runner shall accept an eighteen-hour total budget and an
+immutable source reference, retain per-step logs, preserve a results-publication
+reserve and report qualification independently from successful upload. Failed,
+cancelled, timed-out or missing-prerequisite checks and unexpected source changes
+shall prevent a Passed verdict; budget-skipped work shall be Incomplete. Expected
+rejected tool probes shall not fail an otherwise successful qualification.
+<<<
+COMMENT: >>>
+Implementation: Invoke-WorkstationQualification.ps1 Get-QualificationStatus,
+source-integrity capture, deadline scheduler and package reproducibility step.
+Verification: WorkstationRunner.Tests.ps1 (18-hour plan/verdict cases), prior
+one-hour execution evidence, and rc1-closeout report. No eighteen-hour run is
+claimed until the independent workstation actually executes and returns evidence.
+<<<

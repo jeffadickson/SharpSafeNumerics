@@ -33,11 +33,10 @@ TryAddBatch and existing BatchArithmeticError numeric values are retained.
 
 See [RC qualification](verification/2026-11-17-rc1.md) for exact source revisions,
 commands, seeds, counts, coverage, mutation scores and CI run IDs. The current
-regression suite has 376 cases. The reviewed binary passed a final 15-minute
+regression suite has 384 cases. The reviewed binary passed a final 15-minute
 SIMD256 soak plus shorter SIMD128/scalar replays. Default-hardware Core mutation
-CI passed the unchanged 90% gate. Compiler-extension whole-project mutation
-scores and remaining survivors are documented separately; scoped hardening
-scores do not substitute for full-project scores.
+CI passed the unchanged 90% gate. Full Standard generator/analyzer mutation campaigns passed their 90% gates at
+90.71% / 92.29%; survivors, uncovered paths and timeouts remain documented.
 
 Portable Native AOT images executed SIMD128 in the observed platform runs;
 managed x64 execution also exercised SIMD256. SIMD support covers Int32 batch
@@ -46,8 +45,8 @@ addition, and does not vectorize all generic operations or policies.
 Analyzers have explicit dataflow/indirect-allocation limits. Custom generic-math
 providers, 32-bit runtime execution, application WCET and safety certification
 are not qualified by these finite campaigns. Dafny proves mathematical models,
-not C# implementation refinement. Repacked package entry bytes matched, while
-archive hashes differed. The optional union adapter boxes value-type cases.
+not C# implementation refinement. Fixed package timestamps now produce byte-identical archives across repeated
+builds in the same checkout/configuration; cross-path/platform identity is not claimed. The optional union adapter boxes value-type cases.
 
 macOS qualification is gated off again; normal platform CI retains Windows and
 Linux. No release tag or NuGet publication is implied by this candidate's checks.

@@ -1,8 +1,12 @@
-param([Parameter(Mandatory)][string]$ArtifactDirectory, [string]$Configuration = 'Release', [switch]$RebuildBetweenPasses)
+param([Parameter(Mandatory)][string]$ArtifactDirectory, [string]$Configuration = 'Release', [switch]$RebuildBetweenPasses, [string]$BuildArtifactsPath)
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
 if (-not (Test-Path -LiteralPath $repo -PathType Container)) { throw 'Missing checkout' }
 $ArtifactDirectory = [IO.Path]::GetFullPath($ArtifactDirectory)
+if ($BuildArtifactsPath) {
+    $BuildArtifactsPath = [IO.Path]::GetFullPath($BuildArtifactsPath)
+    if (-not (Test-Path -LiteralPath $BuildArtifactsPath -PathType Container)) { throw 'Missing compiled build-artifact directory' }
+}
 $parent = Split-Path -Parent $ArtifactDirectory
 if (-not (Test-Path -LiteralPath $parent -PathType Container)) { throw 'Missing artifact parent' }
 if (Test-Path -LiteralPath $ArtifactDirectory) { throw 'Use a fresh reproducibility directory to prevent stale-package comparisons' }
@@ -12,13 +16,17 @@ Push-Location -LiteralPath $repo
 try {
     foreach ($pass in @('first', 'second')) {
         if ($pass -eq 'second' -and $RebuildBetweenPasses) {
-            & dotnet build -c $Configuration --no-restore -t:Rebuild *> (Join-Path $ArtifactDirectory 'rebuild.log')
+            $buildArguments = @('build', '-c', $Configuration, '--no-restore', '-t:Rebuild')
+            if ($BuildArtifactsPath) { $buildArguments += @('--artifacts-path', $BuildArtifactsPath) }
+            & dotnet @buildArguments *> (Join-Path $ArtifactDirectory 'rebuild.log')
             if ($LASTEXITCODE -ne 0) { throw 'Rebuild failed; inspect rebuild.log' }
         }
         $output = Join-Path $ArtifactDirectory $pass
         # Compilation must precede this command. Repack identical existing inputs,
         # including compiler extensions, without unrelated concurrent build writes.
-        & dotnet pack -c $Configuration --no-build -o $output *> (Join-Path $ArtifactDirectory "$pass.log")
+        $packArguments = @('pack', '-c', $Configuration, '--no-build', '-o', $output)
+        if ($BuildArtifactsPath) { $packArguments += @('--artifacts-path', $BuildArtifactsPath) }
+        & dotnet @packArguments *> (Join-Path $ArtifactDirectory "$pass.log")
         if ($LASTEXITCODE -ne 0) { throw "Pack failed; inspect $pass.log" }
         $files = @(Get-ChildItem -LiteralPath $output -File | Where-Object Extension -in @('.nupkg', '.snupkg'))
         if ($files.Count -ne 6) { throw 'Expected four runtime/compiler packages and two symbol packages' }

@@ -132,11 +132,15 @@ public sealed class StrictNumericAnalyzerTests
     [InlineData("ArithmeticPolicy M() => ArithmeticPolicy.Reject;")]
     [InlineData("ArithmeticPolicy M(ArithmeticPolicy policy) => policy;")]
     [InlineData("OtherPolicy M() => OtherPolicy.Throw;")]
+    [InlineData("OtherBytePolicy M() => OtherBytePolicy.Throw;")]
+    [InlineData("byte M() => (byte)3;")]
+    [InlineData("byte M() { const byte code = 3; return code; }")]
     public async Task Throw_policy_is_detected_when_the_bound_value_is_known(string member)
     {
         await Verify("""
             using static SharpSafeNumerics.ArithmeticPolicy;
             enum OtherPolicy { Throw = 3 }
+            enum OtherBytePolicy : byte { Throw = 3 }
             [StrictNumeric] class Consumer
             {
             """ + member + """

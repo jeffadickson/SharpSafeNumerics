@@ -207,3 +207,13 @@ candidates under Stryker's calculation, not assertion kills. Later diagnostic
 catalog/reference-conversion hardening passed 112 tests. Whole-project mutation
 closure is not claimed. See verification/2026-11-17-rc1.md for exact source scope,
 artifact paths and separate hardening replay evidence.
+
+## RC1 closeout Standard gate
+
+Full Standard on the unchanged analyzer implementation and 117 tests passed an
+explicit 90% break gate: 522 candidates, 368 assertion kills, three timeouts,
+27 survivors, four uncovered, 86 compile errors and 34 ignored; 92.29%.
+Assertion kills alone are 91.54% of the scored population. No source/mutator
+exclusions were added. A later timeout replay motivated three additional
+byte/enum identity negative cases; its narrower score is reported separately.
+See verification/2026-11-17-rc1-closeout.md for hashes, scopes and limitations.

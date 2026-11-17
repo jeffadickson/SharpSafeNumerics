@@ -5,13 +5,29 @@ BeforeAll {
     $tokens=$null;$parseErrors=$null
     $ast=[Management.Automation.Language.Parser]::ParseFile($script:runner,[ref]$tokens,[ref]$parseErrors)
     if($parseErrors.Count){throw ($parseErrors.Message -join '; ')}
-    foreach($name in @('Ensure-Directory','Initialize-ProcessJob','Start-Step','Complete-Step','Read-Step','Commit-Results','Network-Seconds','Download','Invoke-Step','Select-QualificationDotnet','Install-QualificationDotnet','Get-MissingToolRuntimes','Test-DirectoryWritable','Set-QualificationNuGetCache','Find-VersionedTool')){
+    foreach($name in @('Ensure-Directory','Get-QualificationStatus','Initialize-ProcessJob','Start-Step','Complete-Step','Read-Step','Commit-Results','Network-Seconds','Download','Invoke-Step','Select-QualificationDotnet','Install-QualificationDotnet','Get-MissingToolRuntimes','Test-DirectoryWritable','Set-QualificationNuGetCache','Find-VersionedTool')){
         $definition=$ast.FindAll({param($node)$node -is [Management.Automation.Language.FunctionDefinitionAst]},$false)|Where-Object Name -eq $name
         if($definition){Invoke-Expression $definition.Extent.Text}
     }
     $script:pwsh=(Get-Process -Id $PID).Path
 }
 Describe 'Bounded workstation runner' {
+    It 'plans an eighteen-hour run pinned to an immutable source without installing tools' {
+        $revision='a'*40
+        $plan=(& $script:runner -PlanOnly -Hours 18 -IssueNumber 1 -SourceRef $revision -CheckoutRoot (Join-Path $TestDrive 'github18') -ArtifactRoot (Join-Path $TestDrive 'artifacts18'))|ConvertFrom-Json
+        $plan.Hours|Should -Be 18
+        $plan.SourceRef|Should -BeExactly $revision
+        $plan.ResultsBranch|Should -Match '^qualification/issue-1/'
+        Test-Path -LiteralPath $plan.Checkout|Should -BeFalse
+    }
+    It 'distinguishes failed gates from successful publication and incomplete work' {
+        (Get-QualificationStatus @([pscustomobject]@{Status='Passed'},[pscustomobject]@{Status='Failed'}) $null)|Should -BeExactly 'Failed'
+        (Get-QualificationStatus @([pscustomobject]@{Status='Passed'},[pscustomobject]@{Status='ProbeRejected'}) $null)|Should -BeExactly 'Passed'
+        (Get-QualificationStatus @([pscustomobject]@{Status='SkippedBudget'}) $null)|Should -BeExactly 'Incomplete'
+        (Get-QualificationStatus @([pscustomobject]@{Status='Passed'}) 'fatal')|Should -BeExactly 'Failed'
+        (Get-QualificationStatus @([pscustomobject]@{Status='Passed'}) $null ' M src/Changed.cs')|Should -BeExactly 'Failed'
+        (Get-QualificationStatus @() $null)|Should -BeExactly 'Incomplete'
+    }
 BeforeEach {
     $script:run=Join-Path $TestDrive 'logs with spaces'
     Ensure-Directory $script:run

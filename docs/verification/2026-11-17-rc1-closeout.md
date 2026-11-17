@@ -55,3 +55,88 @@ No RAM caps or free-RAM gates were used. C/E free space was recorded at startup;
 large logs, mutation reports and package passes are in the unique E run directory.
 Mutation-worker activity was inspected for runaway behavior; none required
 intervention during the recorded portion of this run.
+
+## Full Standard results on the closeout implementation
+
+The recorded component/test source hashes matched the blobs committed in dccc826.
+Both complete Standard campaigns passed the explicit 90% break threshold:
+
+| Component | Candidates | Assertion kills | Timeouts | Survived | Uncovered | Compile error | Ignored | Stryker score |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Generator | 439 | 331 | 1 | 31 | 3 | 59 | 14 | 90.71% |
+| Analyzer | 522 | 368 | 3 | 27 | 4 | 86 | 34 | 92.29% |
+
+Elapsed times were 13m59.860s / 12m55.621s; both exit codes were zero.
+These scores include timeouts as detected under Stryker semantics. Assertion
+kills alone account for 331/366 (90.44%) and 368/402 (91.54%) of their scored
+populations, so passing does not depend on counting those timeouts as kills.
+No full-project source/mutator exclusions were added, and no gate was lowered.
+Compiler implementation files were unchanged by this hardening pass.
+
+The generator timeout was candidate 391, an identity-cast text-rendering branch;
+it remains a timeout observation, not an assertion kill or proven equivalence.
+Remaining generator candidates largely remove redundant partial modifiers,
+identity casts/numeric suffixes or guards also enforced elsewhere. Analyzer
+variants retain guarded symbol/boxing/traversal paths and several unmeasured
+metadata/formatting paths. These are documented limitations, not silently closed
+universal-conformance requirements.
+
+A single-session no-bail replay of the three analyzer timeout spans scored seven
+candidates: six assertion kills, one survivor, no timeouts/uncovered (85.71%, exit
+2 at the unchanged 90% gate). Original timeout candidates 377 and 445 became
+assertion kills. Candidate 31 survived: weakening the enum-type guard could
+misidentify byte-backed values equal to Throw. Three negative regressions were
+then added for an unrelated byte enum and ordinary byte constants. All 18
+Throw-policy theory cases passed. The targeted guard replay is recorded below;
+it is separate from, and not merged into, the full 117-test campaign above.
+
+## Observed CI and packaging closure
+
+Core CI 44169889729 passed on dccc826, including 381 tests (175/89/117), property
+suites, 2,424 HTML/package fixtures, examples, native AOT, package consumers,
+StrictDoc and Dafny's 12 verified obligations. Its new reproducibility step
+reported all six archives byte-identical with RebuildBetweenPasses=True.
+This closes the prior same-checkout archive-timestamp defect. Independent
+cross-path/platform rebuild identity and public API baselines remain open.
+
+The current HTML guide was updated with the passing whole-project scores and
+rechecked in Chromium at 1440/390/320px: 2,424 fixtures agree, zero page errors
+or external requests, V8 executed-character coverage 12,208/12,562 (97.18%).
+That metric is not .NET line/branch coverage. The guide's fixture source revision
+remains the earlier unchanged implementation snapshot, not a new claim that the
+browser executes the package.
+
+## Targeted policy guard closure and final regression
+
+The single-session, no-bail replay of candidate 31's guard with the expanded
+Throw-policy cases scored four candidates: four assertion kills, zero survivors,
+timeouts or uncovered candidates; 100%, exit 0, elapsed 1m33.935s. This closes the
+observed enum/byte identity test gap without changing analyzer implementation.
+The narrower result is not added to the full 117-test score. Final source/test
+hashes are retained in post-replay-hashes.json alongside the earlier full-run set.
+
+A fresh relocated Release build and subsequent rebuild both succeeded. All 384
+regression cases then passed (175 Core / 89 generator / 120 analyzer), zero
+failures/skips; CsCheck and Hedgehog suites also passed with the existing seeds.
+Final Coverlet scopes: Core 170/170 lines and 133/138 branches; generator 541/543
+lines and 256/269 branches; analyzer 367/375 lines and 486/564 branches. Referenced
+assembly incidental coverage is not combined with those component measurements.
+
+## Eighteen-hour workstation preparation
+
+The runner now includes package reproducibility before starting mutation/soak
+workers, uses the relocated build artifacts for that step, and uploads its six
+SHA256 values as bounded evidence. This exact relocated-output/rebuild path
+passed locally with all six archives byte-identical. Fourteen Pester runner tests
+passed, including immutable-reference eighteen-hour planning and qualification
+verdicts for failure, skipped budget, expected probe rejection and source changes.
+A manual source-integrity verdict mutation was detected against the expected
+Failed contract in an isolated function evaluation; source files were preserved.
+
+Reports now include QualificationStatus in summary.json and README. This is
+independent from whether Git successfully uploaded the report. Unexpected source
+changes force a failed qualification and a nonzero runner exit while preserving
+those changes. Logs and results-publication reserve remain in place. The small
+PowerShell reporting/reproducibility additions have executed contract/integration
+checks but no new Pester line/branch coverage measurement; no such metric is
+claimed. No eighteen-hour execution result is claimed before the workstation runs.
