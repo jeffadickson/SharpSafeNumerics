@@ -226,6 +226,21 @@ compatibility layer, not replaced by these source lists.
 <<<
 
 [REQUIREMENT]
+UID: SN-018
+TITLE: Fixed-point semantics
+STATEMENT: >>>
+The package shall provide owned fixed-point arithmetic with documented scale,
+rounding, representability and expected-failure behavior. The RC1 implementation
+scope shall be the signed Q32.32 contract specified by SN-018-FIXED.
+<<<
+COMMENT: >>>
+Stable product ID imported from PRODUCT_REQUIREMENTS.md. The user included this
+feature in RC1 on 2026-11-17. Verification evidence and limits are recorded in
+verification/2026-11-17-fixed-decimal.md; arbitrary fixed-point formats are not
+implied by the scoped implementation.
+<<<
+
+[REQUIREMENT]
 UID: SN-018-FIXED
 TITLE: Owned signed Q32.32 arithmetic
 STATEMENT: >>>
@@ -248,6 +263,22 @@ Parent product requirement: SN-018. User-authorized RC1 scope expansion on
 Fixed64Tests.cs, PropertyTests/Program.cs, formal/FixedPoint.dfy.
 Independent reference: test-only exact BigInteger rationals with retained seeds.
 The formal model is not a refinement proof of the handwritten CSharp code.
+<<<
+
+[REQUIREMENT]
+UID: SN-019
+TITLE: Safe Decimal32 Decimal64 and Decimal128 operations
+STATEMENT: >>>
+The package shall provide explicit safety contracts around NET11 built-in IEEE
+Decimal32, Decimal64 and Decimal128 finite arithmetic and conversion, including
+special-value admission and precision-loss handling, as specified by
+SN-019-DECIMAL. The optional implementation shall not widen the strict integer
+allocation contract to include decimal exactness checking.
+<<<
+COMMENT: >>>
+Stable product ID imported from PRODUCT_REQUIREMENTS.md. The user approved safe
+wrappers over the built-in decimal engine on 2026-11-17. This scoped requirement
+does not assert whole IEEE754 operation/status/encoding conformance.
 <<<
 
 [REQUIREMENT]

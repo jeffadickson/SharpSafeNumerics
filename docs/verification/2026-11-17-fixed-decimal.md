@@ -186,3 +186,26 @@ claimed until observed. macOS
 remains disabled. SharpUnits integration, target timing,32-bit runtime execution,
 full IEEE754 conformance and cross-path package identity remain outside this
 evidence. No NuGet publication or release tag is implied.
+
+## Observed implementation CI
+
+Implementation commit:e141b6b5bea9b36d23853ad0f65813e39d6e77c5.
+
+- [Core CI44187341034](https://github.com/jeffadickson/SharpSafeNumerics/actions/runs/44187341034)
+  passed core and formal jobs:17 API controls, property suites, eight-archive
+  rebuild reproducibility and the five-package consumer/diagnostic probes passed.
+- [Platform44187340932](https://github.com/jeffadickson/SharpSafeNumerics/actions/runs/44187340932)
+  passed437 tests and expanded Native AOT on Windows x64, Linux x64 and Linux
+  ARM64. Job IDs:134407276568/134407276199/134407276767 respectively. macOS was
+  skipped; its gate remains false. ARM64 native execution reported SIMD128.
+- [Mutation44187340873](https://github.com/jeffadickson/SharpSafeNumerics/actions/runs/44187340873)
+  passed both CI gates: Core93.30% (207 kills/2 timeouts/13 survivors),
+  Decimal92.31% (84 kills/0 timeouts/7 survivors). The full analyzer campaign and
+  isolated-reference replay above were executed locally and are not represented
+  as additional CI jobs.
+
+The later documentation-only follow-up imports the original SN-018/SN-019 IDs
+into canonical StrictDoc alongside their scoped child contracts. Its requirement
+export passed locally; numerical/platform claims above remain tied to the exact
+implementation commit. Source files and their hashes are unchanged by that
+documentation follow-up.

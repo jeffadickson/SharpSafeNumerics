@@ -9,12 +9,12 @@ and all eight strict diagnostics.
 | Priority | Remaining qualification | Evidence needed |
 | --- | --- | --- |
 | P0 | Application allocation and hard real-time behavior | Representative target kernels, contention and timing audit |
-| P1 | Final-source compiler-extension mutation breadth | Full Standard gates passed: 90.71% generator / 92.29% analyzer. Retain dispositions for remaining guarded/equivalent variants, uncovered paths and timeouts |
+| P1 | Final-source compiler-extension mutation breadth | Prior generator Standard gate90.71%; expanded analyzer Standard gate91.80% plus isolated-reference replay93.88%. Different scopes; retain remaining guarded/equivalent variants, uncovered paths and timeouts |
 | P1 | Release reproducibility and public API baselines | Same-checkout rebuild reproducibility is measured separately for each package set. Shipping source signatures and targeted generic metadata are guarded; general binary/released-package compatibility and cross-path/platform identity remain open |
 | P1 | Production SIMD performance | Matched production-layout local timings are recorded; target-specific budgets and lower-variance campaigns remain open |
 | P1 | Application integration | Actual RISCue/VeloSim/SharpUnits consumers, beyond repository examples |
 | P1 | Additional architecture coverage | 32-bit runtime execution and native-width contracts |
-| P1 | Expanded RC1 fixed/decimal qualification | Q32.32 and safe BCL Decimal32/64/128 need their own final-source evidence; the pinned integer soak predates them |
+| P1 | Expanded RC1 longer campaigns | Local properties, fuzz, coverage, mutation, formal model and Windows/Linux AOT CI passed on e141b6b; broader/longer new-domain campaigns remain separate from the pinned integer soak, which predates these APIs |
 | P1 | SharpUnits integration SN-017 | Real referenced integration sample and compilation; Unit display metadata is insufficient |
 
 Analyzer static detection has documented dataflow and indirect-allocation limits.

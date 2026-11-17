@@ -664,5 +664,31 @@
       "Package": "SharpSafeNumerics.Unions.0.1.0-rc.1.snupkg",
       "SHA256": "AAD81F97D7B474749EC0661D3122F699E0BEE42E7707574AF2304523EE6318E6"
     }
+  ],
+  "ImplementationCommit": "e141b6b5bea9b36d23853ad0f65813e39d6e77c5",
+  "CI": [
+    {
+      "Run": 44187341034,
+      "Workflow": "Core CI",
+      "Conclusion": "success"
+    },
+    {
+      "Run": 44187340932,
+      "Workflow": "Platform Qualification",
+      "Conclusion": "success",
+      "Platforms": [
+        "win-x64",
+        "linux-x64",
+        "linux-arm64"
+      ],
+      "Mac": "skipped"
+    },
+    {
+      "Run": 44187340873,
+      "Workflow": "Mutation",
+      "Conclusion": "success",
+      "CoreScore": 93.3,
+      "DecimalScore": 92.31
+    }
   ]
 }
