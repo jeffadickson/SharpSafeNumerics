@@ -196,9 +196,40 @@ public sealed class BoundedIntegerGenerator : IIncrementalGenerator
 """;
     }
 
-    private sealed record DomainModel(
-        string? Namespace, string Name, string Accessibility, string ReadonlyModifier,
-        string StorageType, string MinimumLiteral, string MaximumLiteral, string HintName);
+    private sealed class DomainModel
+    {
+        public DomainModel(string? ns, string name, string accessibility, string readonlyModifier,
+            string storageType, string minimumLiteral, string maximumLiteral, string hintName)
+        {
+            Namespace = ns;
+            Name = name;
+            Accessibility = accessibility;
+            ReadonlyModifier = readonlyModifier;
+            StorageType = storageType;
+            MinimumLiteral = minimumLiteral;
+            MaximumLiteral = maximumLiteral;
+            HintName = hintName;
+        }
 
-    private sealed record GenerationResult(DomainModel? Model, Diagnostic? Diagnostic);
+        public string? Namespace { get; }
+        public string Name { get; }
+        public string Accessibility { get; }
+        public string ReadonlyModifier { get; }
+        public string StorageType { get; }
+        public string MinimumLiteral { get; }
+        public string MaximumLiteral { get; }
+        public string HintName { get; }
+    }
+
+    private sealed class GenerationResult
+    {
+        public GenerationResult(DomainModel? model, Diagnostic? diagnostic)
+        {
+            Model = model;
+            Diagnostic = diagnostic;
+        }
+
+        public DomainModel? Model { get; }
+        public Diagnostic? Diagnostic { get; }
+    }
 }
