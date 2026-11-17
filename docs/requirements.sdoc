@@ -152,3 +152,19 @@ and BatchArithmeticTests. Evidence: docs/verification/2026-11-17-rc1.md.
 RELATIONS:
 - TYPE: Parent
   VALUE: SN-011
+
+[REQUIREMENT]
+UID: SN-DOC-INTERACTIVE
+TITLE: Interactive CSharp capability comparison
+STATEMENT: >>>
+An offline HTML guide shall explain where SharpSafeNumerics adds contracts to
+built-in CSharp facilities, with interactive arithmetic policy, exact conversion,
+bounded domain and SIMD partition demonstrations. Browser semantic models shall
+be labeled and checked against fixtures from the real package. The guide shall
+preserve 128-bit integer precision and document evidence scope and limitations.
+<<<
+COMMENT: >>>
+Implementation: docs/interactive-deep-dive.html and eng/DeepDiveEvidence.
+Verification: eng/VerifyDeepDive.cjs, eng/VerifyDeepDiveMutations.ps1,
+CI fixture agreement, and docs/verification/2026-11-17-html-deep-dive.md.
+<<<

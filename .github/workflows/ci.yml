@@ -12,6 +12,8 @@ jobs:
           dotnet-version: '11.0.x'
       - name: Exhaustive deterministic harness
         run: dotnet run --project tests/SharpSafeNumerics.Tests -c Release
+      - name: Verify interactive guide package fixtures
+        run: dotnet run --project eng/DeepDiveEvidence -c Release -- --verify docs/interactive-deep-dive.html
       - name: Unit tests
         run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/coverage
       - name: Generator contract tests

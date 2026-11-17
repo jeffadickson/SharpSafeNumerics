@@ -22,6 +22,12 @@ The project is organized as M1–M5; see [milestones](docs/MILESTONES.md). Numer
 - Detailed requirements, original software description, architecture, exception policy and verification plan.
 
 ## Quick start
+
+Explore the [interactive HTML deep dive](docs/interactive-deep-dive.html) for comparisons
+with built-in C#, editable arithmetic/conversion/domain examples, annotation
+walkthroughs and conceptual SIMD lane demos. Download the HTML and open it in a
+browser; GitHub's source viewer does not execute its scripts. It works offline.
+
 ```bash
 dotnet build -c Release
 dotnet test -c Release
