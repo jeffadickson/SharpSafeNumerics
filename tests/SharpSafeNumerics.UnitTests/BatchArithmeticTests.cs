@@ -78,6 +78,21 @@ public sealed class BatchArithmeticTests
     }
 
     [Fact]
+    public void Each_output_input_alias_is_rejected_independently()
+    {
+        int[] left = [1, 2, 3, 4, 5, 6, 7, 8, 9], right = [11, 12, 13, 14, 15, 16, 17, 18, 19];
+        int[] values = Enumerable.Repeat(91, 8).ToArray();
+        var errors = Enumerable.Repeat((ArithmeticError)255, 8).ToArray();
+        Assert.Equal(BatchArithmeticError.OverlappingBuffers, SafeInteger.TryAddBatch(left.AsSpan(0, 8), right.AsSpan(0, 8), left.AsSpan(1, 8), errors));
+        Assert.Equal(BatchArithmeticError.OverlappingBuffers, SafeInteger.TryAddBatch(left.AsSpan(0, 8), right.AsSpan(0, 8), right.AsSpan(1, 8), errors));
+        Assert.Equal(BatchArithmeticError.OverlappingBuffers, SafeInteger.TryAddBatch(left.AsSpan(0, 8), right.AsSpan(0, 8), values, MemoryMarshal.Cast<int, ArithmeticError>(left.AsSpan()).Slice(1, 8)));
+        Assert.Equal(BatchArithmeticError.OverlappingBuffers, SafeInteger.TryAddBatch(left.AsSpan(0, 8), right.AsSpan(0, 8), values, MemoryMarshal.Cast<int, ArithmeticError>(right.AsSpan()).Slice(1, 8)));
+        Assert.Equal(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, left);
+        Assert.Equal(new[] { 11, 12, 13, 14, 15, 16, 17, 18, 19 }, right);
+        Assert.All(values, x => Assert.Equal(91, x)); Assert.All(errors, x => Assert.Equal((ArithmeticError)255, x));
+    }
+
+    [Fact]
     public void Warmed_success_failure_and_contract_rejection_do_not_allocate()
     {
         int[] left = [int.MaxValue, int.MinValue, 1, 0, -1, 2, -2, 3, 4];

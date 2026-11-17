@@ -59,3 +59,6 @@ try {
 } finally {
     if (Test-Path -LiteralPath $probe -PathType Leaf) { Remove-Item -LiteralPath $probe }
 }
+# The deliberate failing compiler probe is expected. Publish an explicit success
+# exit so callers do not mistake its retained native exit code for a failed check.
+exit 0

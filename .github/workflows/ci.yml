@@ -69,4 +69,4 @@ jobs:
       - name: Validate StrictDoc requirements
         run: |
           python -m pip install --no-compile strictdoc==0.30.4
-          strictdoc export docs --output-dir artifacts/requirements
+          strictdoc export docs/requirements.sdoc docs/generator-requirements.sdoc docs/analyzer-requirements.sdoc --output-dir artifacts/requirements
