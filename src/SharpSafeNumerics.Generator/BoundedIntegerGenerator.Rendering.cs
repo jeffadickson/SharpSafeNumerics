@@ -31,7 +31,6 @@ public sealed partial class BoundedIntegerGenerator
             ? FixedStorageName(model.Storage.Width, model.Storage.IsSigned)
             : storage;
         string textValue = storage == textStorage ? "__ssnValue" : $"({textStorage})__ssnValue";
-        string textFormat = $"({textValue}).TryFormat(destination, out charsWritten, \"{format}\", {InvariantCulture})";
         string binaryCodec = RenderBinaryCodec(model, self);
         string arithmeticAdmission = RenderArithmeticAdmission(model, result);
 
@@ -83,8 +82,9 @@ public sealed partial class BoundedIntegerGenerator
     /// <summary>Reads a valid value. On failure the caller receives zero.</summary>
     public bool TryGetValue(out {{storage}} value)
     {
-        value = IsValid ? __ssnValue : default;
-        return IsValid;
+        bool receiverIsValid = IsValid;
+        value = receiverIsValid ? __ssnValue : default;
+        return receiverIsValid;
     }
 
     /// <summary>Creates a value when the input belongs to the domain.</summary>
@@ -112,10 +112,11 @@ public sealed partial class BoundedIntegerGenerator
     public {{ArithmeticError}} TryConvertTo<TTo>(out TTo value)
         where TTo : struct, global::System.Numerics.IBinaryInteger<TTo>
     {
+        if (IsValid)
+            return {{SafeInteger}}.TryConvert<{{storage}}, TTo>(__ssnValue, out value);
+
         value = TTo.Zero;
-        return IsValid
-            ? {{SafeInteger}}.TryConvert<{{storage}}, TTo>(__ssnValue, out value)
-            : {{ArithmeticError}}.Uninitialized;
+        return {{ArithmeticError}}.Uninitialized;
     }
 
     /// <summary>Admits a storage value into the domain.</summary>
@@ -134,22 +135,28 @@ public sealed partial class BoundedIntegerGenerator
     /// <summary>Adds a delta, rejecting primitive overflow and results outside the domain.</summary>
     public {{ArithmeticError}} TryAdd({{storage}} delta, out {{self}} value)
     {
+        // The out destination may be the receiver variable. Capture the input first.
+        bool receiverIsValid = IsValid;
+        var receiverValue = __ssnValue;
         value = default;
-        if (!IsValid)
+        if (!receiverIsValid)
             return {{ArithmeticError}}.Uninitialized;
 
-        var error = {{SafeInteger}}.TryAdd(__ssnValue, delta, out var sum);
+        var error = {{SafeInteger}}.TryAdd(receiverValue, delta, out var sum);
         return error == {{ArithmeticError}}.None ? TryCreate(sum, out value) : error;
     }
 
     /// <summary>Subtracts a delta, rejecting primitive overflow and results outside the domain.</summary>
     public {{ArithmeticError}} TrySubtract({{storage}} delta, out {{self}} value)
     {
+        // The out destination may be the receiver variable. Capture the input first.
+        bool receiverIsValid = IsValid;
+        var receiverValue = __ssnValue;
         value = default;
-        if (!IsValid)
+        if (!receiverIsValid)
             return {{ArithmeticError}}.Uninitialized;
 
-        var error = {{SafeInteger}}.TrySubtract(__ssnValue, delta, out var difference);
+        var error = {{SafeInteger}}.TrySubtract(receiverValue, delta, out var difference);
         return error == {{ArithmeticError}}.None ? TryCreate(difference, out value) : error;
     }
 
@@ -168,19 +175,31 @@ public sealed partial class BoundedIntegerGenerator
 {{arithmeticAdmission}}
 
     /// <summary>Admits a value from text using the configured invariant convention.</summary>
+    /// <remarks>The input text is consumed before assigning the output value.</remarks>
     public static bool TryParse(global::System.ReadOnlySpan<char> text, out {{self}} value)
     {
+        // The destination may share storage with the input span.
+        if (global::System.MemoryExtensions.IndexOf(text, '\0') < 0 &&
+            {{textStorage}}.TryParse(text, {{numberStyles}}, {{InvariantCulture}}, out var parsed))
+            return TryCreate(({{storage}})parsed, out value) == {{ArithmeticError}}.None;
+
         value = default;
-        return global::System.MemoryExtensions.IndexOf(text, '\0') < 0 &&
-            {{textStorage}}.TryParse(text, {{numberStyles}}, {{InvariantCulture}}, out var parsed) &&
-            TryCreate(({{storage}})parsed, out value) == {{ArithmeticError}}.None;
+        return false;
     }
 
     /// <summary>Formats a valid value using the configured invariant convention.</summary>
+    /// <remarks>The destination span and output count must occupy distinct storage.</remarks>
     public bool TryFormat(global::System.Span<char> destination, out int charsWritten)
     {
-        charsWritten = 0;
-        return IsValid && {{textFormat}};
+        if (!IsValid)
+        {
+            charsWritten = 0;
+            return false;
+        }
+
+        // Formatting may publish its count or text into storage overlapping this receiver.
+        var rawValue = ({{textValue}});
+        return rawValue.TryFormat(destination, out charsWritten, "{{format}}", {{InvariantCulture}});
     }
 
 {{binaryCodec}}
@@ -296,20 +315,31 @@ public sealed partial class BoundedIntegerGenerator
         global::SharpSafeNumerics.IntegerEndianness.{{order}};
 
     /// <summary>Decodes exactly one fixed-width value and verifies its domain membership.</summary>
+    /// <remarks>The encoded input is consumed before assigning the output value.</remarks>
     public static bool TryRead(global::System.ReadOnlySpan<byte> source, out {{self}} value)
     {
+        if (source.Length == SerializationWidth)
+        {
+            // Decode the whole input before publishing into potentially shared storage.
+            var decoded = ({{model.Storage.Type}})({{read}});
+            return TryCreate(decoded, out value) == {{ArithmeticError}}.None;
+        }
+
         value = default;
-        return source.Length == SerializationWidth &&
-            TryCreate(({{model.Storage.Type}})({{read}}), out value) == {{ArithmeticError}}.None;
+        return false;
     }
 
     /// <summary>Writes a valid value into the first SerializationWidth bytes of the destination.</summary>
+    /// <remarks>The destination span and output count must occupy distinct storage.</remarks>
     public bool TryWrite(global::System.Span<byte> destination, out int bytesWritten)
     {
-        bytesWritten = 0;
         if (!IsValid || destination.Length < SerializationWidth)
+        {
+            bytesWritten = 0;
             return false;
+        }
 
+        // Write the encoded payload before publishing a count that may overlap the receiver.
         {{write}}
         bytesWritten = SerializationWidth;
         return true;

@@ -27,9 +27,14 @@ public static partial class SafeInteger
     /// loop actually executed (256, 128 or zero). Contract failures report zero.
     /// This diagnostic describes execution width, not a timing or throughput guarantee.
     /// </summary>
-    public static BatchArithmeticError TryAddBatch(ReadOnlySpan<int> left, ReadOnlySpan<int> right,
-        Span<int> values, Span<ArithmeticError> errors, out int vectorWidthUsed) =>
-        TryAddBatchCore(left, right, values, errors, 256, out vectorWidthUsed);
+    public static BatchArithmeticResult AddBatch(ReadOnlySpan<int> left, ReadOnlySpan<int> right,
+        Span<int> values, Span<ArithmeticError> errors)
+    {
+        // Return diagnostics by value. An out parameter could alias a lane/input
+        // and overwrite either arithmetic data or a destination on contract failure.
+        var error = TryAddBatchCore(left, right, values, errors, 256, out int vectorWidthUsed);
+        return new BatchArithmeticResult(error, vectorWidthUsed);
+    }
 
     internal static BatchArithmeticError TryAddBatchCore(ReadOnlySpan<int> left, ReadOnlySpan<int> right,
         Span<int> values, Span<ArithmeticError> errors, int maximumVectorWidth, out int vectorWidthUsed)

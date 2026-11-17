@@ -52,9 +52,13 @@ public readonly struct Bounded<T, TRange>
     /// <summary>Add within both the primitive limits and the declared domain limits.</summary>
     public ArithmeticError TryAdd(T delta, out Bounded<T, TRange> value)
     {
+        // The caller may use its receiver as the out destination. Snapshot before
+        // clearing that destination so the original value and validity survive.
+        T current = _value;
+        bool valid = _valid;
         value = default;
-        if (!_valid) return ArithmeticError.Uninitialized;
-        var error = SafeInteger.TryAdd(_value, delta, out T sum);
+        if (!valid) return ArithmeticError.Uninitialized;
+        var error = SafeInteger.TryAdd(current, delta, out T sum);
         if (error != ArithmeticError.None) return error;
         return TryCreate(sum, out value);
     }
@@ -62,9 +66,11 @@ public readonly struct Bounded<T, TRange>
     /// <summary>Subtract within both the primitive and declared domain limits.</summary>
     public ArithmeticError TrySubtract(T delta, out Bounded<T, TRange> value)
     {
+        T current = _value;
+        bool valid = _valid;
         value = default;
-        if (!_valid) return ArithmeticError.Uninitialized;
-        var error = SafeInteger.TrySubtract(_value, delta, out T difference);
+        if (!valid) return ArithmeticError.Uninitialized;
+        var error = SafeInteger.TrySubtract(current, delta, out T difference);
         if (error != ArithmeticError.None) return error;
         return TryCreate(difference, out value);
     }

@@ -45,9 +45,10 @@ Gen.Select(Gen.UInt128, Gen.UInt128).Sample(pair =>
         right[i] = int.CreateTruncating(b >> ((i % 4) * 32));
     }
     Array.Fill(values, 0x13579BDF); Array.Fill(errors, (ArithmeticError)255);
-    Require(SafeInteger.TryAddBatch(left.AsSpan(0, count), right.AsSpan(0, count), values, errors, out int width) == BatchArithmeticError.None, "batch-contract");
+    var batch = SafeInteger.AddBatch(left.AsSpan(0, count), right.AsSpan(0, count), values, errors);
+    Require(batch.IsSuccess, "batch-contract");
     int expected = count >= 8 && SafeInteger.BatchAddVectorWidth == 256 ? 256 : count >= 4 && SafeInteger.BatchAddVectorWidth >= 128 ? 128 : 0;
-    Require(width == expected, "batch-dispatch");
+    Require(batch.VectorWidthUsed == expected, "batch-dispatch");
     for (int i = 0; i < count; i++)
     {
         BigInteger exact = (BigInteger)left[i] + right[i];

@@ -1,28 +1,30 @@
 # SIMD assessment for RC-1
 
-The production API remains scalar and portable. SIMD requires a batch contract
-covering per-lane failures, cleared outputs, overlaps, tails and hardware fallback;
-inserting intrinsics into a single scalar generic call has no demonstrated benefit.
+The BCL-only production `SafeInteger.AddBatch` and `TryAddBatch` APIs add Int32
+buffers with per-lane ArithmeticError values and cleared failure outputs.
+Dispatch selects hardware-accelerated Vector256, then Vector128, then scalar;
+short tails remain scalar. BatchAddVectorWidth reports maximum supported width,
+while the value-returning BatchArithmeticResult reports the width actually used.
+Its default state is invalid. Returning metadata by value avoids an out parameter
+aliasing numeric input or output storage.
 
-A bounded BCL-only `Vector256<int>` addition prototype lives in the benchmark
-project and is linked into unit tests. It keeps wrapping candidate bits internal,
-detects signed overflow with `((a ^ sum) & (b ^ sum)) < 0`, writes the same per-lane
-status and cleared failure value as the scalar API, rejects overlapping output or
-mismatched buffers before writes (read-only inputs may alias), and retains a scalar fallback/tail. It is not shipped as a
-runtime API. Tests use BigInteger, forced scalar dispatch and vector-width neighbors.
-Benchmarks compare identical mixed-input result/status-buffer work; hardware
-availability alone is not a performance result or disassembly confirmation.
+Lengths, capacities, byte-count bounds and overlapping written prefixes are
+validated before writes. Read-only inputs may alias; unused destination suffixes
+remain untouched. Overflow uses ((a ^ sum) & (b ^ sum)) < 0 and does not expose
+wrapping candidate bits as successful results. Tests compare BigInteger lane
+oracles, poison tails and scalar/128/256 ceilings without forcing unsupported ISAs.
 
-Existing facilities considered: generic-math scalar code (already used), variable
-width Vector<T> (portable lanes), fixed-width Vector256<T> (explicit dispatch), and
-platform-specific AVX2/AdvSimd (more qualification burden). Fixed-width BCL APIs
-are sufficient for this experiment; no package or ISA-specific production path is
-justified before target-specific benchmark and generated-code evidence.
+Reuse assessment: existing generic math handles scalar semantics; fixed-width
+BCL intrinsics provide explicit dispatch without runtime packages. Vector<T> was
+considered for variable-width portability; ISA-specific AVX2/AdvSimd would add
+qualification burden without a demonstrated need. The benchmark-only prototype
+uses a different status layout, so its speedups are not production measurements.
+See the dated RC report for measured scope and limitations.
 
 Primary documentation:
 - https://learn.microsoft.com/en-us/dotnet/standard/simd
-- https://learn.microsoft.com/en-us/dotnet/api/system.runtime.intrinsics.vector256
+- https://learn.microsoft.com/en-us/dotnet/api/system.runtime.intrinsics.vector128.ishardwareaccelerated
 - https://learn.microsoft.com/en-us/dotnet/api/system.runtime.intrinsics.vector256.ishardwareaccelerated
 
-No SIMD support is inferred for Int128/UInt128, integer division, or the complete
-numeric policy surface. Measurements and hardware scope belong in the dated RC report.
+SIMD support here covers Int32 batch addition. Scalar APIs retain their semantics;
+Int128/UInt128, division and other policies have no vector implementation claim.

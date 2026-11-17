@@ -317,6 +317,15 @@ public sealed class GeneratedContractTests
         else
             Assert.Equal(default, output);
 
+        // Out may name the receiver variable. The operation must first read the original
+        // domain and publish the same completed value or failure output as a distinct out.
+        var inPlace = input;
+        var inPlaceStatus = subtract
+            ? inPlace.TrySubtract(delta, out inPlace)
+            : inPlace.TryAdd(delta, out inPlace);
+        Assert.Equal(status, inPlaceStatus);
+        Assert.Equal(output, inPlace);
+
         NumericResult<T> Apply() => subtract ? input.Subtract(delta) : input.Add(delta);
         if (policy == ArithmeticPolicy.Throw && expected != ArithmeticError.None)
         {

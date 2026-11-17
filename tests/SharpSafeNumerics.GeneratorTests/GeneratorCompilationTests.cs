@@ -257,11 +257,21 @@ public sealed class GeneratorCompilationTests
                     if (!default(Count).IsValid || default(Count).Value != 0 ||
                         default(Count).TryAdd(1, out var one) != ArithmeticError.None || one.Value != 1)
                         return "zero-valid lower endpoint";
+                    if (one.TryAdd(1, out one) != ArithmeticError.None || one.Value != 2 ||
+                        one.TrySubtract(1, out one) != ArithmeticError.None || one.Value != 1 ||
+                        one.TrySubtract(2, out one) != ArithmeticError.OutOfRange || one.Value != 0)
+                        return "zero-valid in-place operation";
 
                     if (default(Positive).IsValid || default(Positive).TryGetValue(out _) ||
                         Positive.TryCreate(2, out var two) != ArithmeticError.None || !two.IsValid)
                         return "invalid positive-range default";
+                    if (two.TryAdd(1, out two) != ArithmeticError.None || two.Value != 3 ||
+                        two.TrySubtract(1, out two) != ArithmeticError.None || two.Value != 2)
+                        return "in-place operation on valid receiver";
+                    if (two.TrySubtract(1, out two) != ArithmeticError.OutOfRange || two.IsValid)
+                        return "in-place failure must clear the receiver";
 
+                    two = (Positive)2;
                     two.Invalidate();
                     if (two.IsValid)
                         return "mutable partial receiver";

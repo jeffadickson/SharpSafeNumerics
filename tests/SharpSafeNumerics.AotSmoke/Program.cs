@@ -43,7 +43,9 @@ for (int i = 0; i < batchLeft.Length; i++)
     batchLeft[i] = i % 3 == 0 ? int.MaxValue : i % 3 == 1 ? int.MinValue : i;
     batchRight[i] = i % 3 == 1 ? -1 : 1;
 }
-if (SafeInteger.TryAddBatch(batchLeft, batchRight, batchValues, batchErrors, out int batchWidth) != BatchArithmeticError.None) return 17;
+var batchResult = SafeInteger.AddBatch(batchLeft, batchRight, batchValues, batchErrors);
+if (!batchResult.IsSuccess) return 17;
+int batchWidth = batchResult.VectorWidthUsed;
 for (int i = 0; i < batchLeft.Length; i++)
 {
     BigInteger exact = (BigInteger)batchLeft[i] + batchRight[i];

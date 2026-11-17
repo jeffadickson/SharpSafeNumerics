@@ -12,5 +12,27 @@ public enum BatchArithmeticError : byte
     /// <summary>A written destination overlaps an input or the other written destination.</summary>
     OverlappingBuffers = 3,
     /// <summary>The input byte length cannot be represented by the span overlap validator.</summary>
-    InputTooLarge = 4
+    InputTooLarge = 4,
+    /// <summary>No batch operation has supplied an outcome.</summary>
+    Uninitialized = 255
+}
+
+/// <summary>Non-boxing batch outcome and observed execution width; its default is uninitialized.</summary>
+public readonly struct BatchArithmeticResult
+{
+    private readonly bool _initialized;
+    private readonly BatchArithmeticError _error;
+    /// <summary>Buffer-contract outcome, separate from each lane's arithmetic error.</summary>
+    public BatchArithmeticError Error => _initialized ? _error : BatchArithmeticError.Uninitialized;
+    /// <summary>Widest vector loop actually executed: 256, 128, or zero. Failures report zero.</summary>
+    public int VectorWidthUsed { get; }
+    /// <summary>Whether the batch completed; individual lanes may still report arithmetic failure.</summary>
+    public bool IsSuccess => _initialized && _error == BatchArithmeticError.None;
+
+    internal BatchArithmeticResult(BatchArithmeticError error, int vectorWidthUsed)
+    {
+        _initialized = true;
+        _error = error;
+        VectorWidthUsed = vectorWidthUsed;
+    }
 }

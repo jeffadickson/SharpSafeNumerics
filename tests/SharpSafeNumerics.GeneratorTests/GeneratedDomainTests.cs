@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using Xunit;
 
 namespace SharpSafeNumerics.GeneratorTests;
@@ -310,6 +311,83 @@ public sealed class GeneratedDomainTests
         Assert.Equal(0xFF, destination[0]);
         Assert.True(NarrowU8.TryRead(destination[..count], out var unsignedByte));
         Assert.Equal(255UL, unsignedByte.Value);
+    }
+
+    [Fact]
+    public void Parsing_consumes_text_before_publishing_into_overlapping_storage()
+    {
+        Span<Slot> slots = stackalloc Slot[1];
+        Span<char> text = MemoryMarshal.Cast<Slot, char>(slots);
+        "09".CopyTo(text);
+
+        Assert.True(Slot.TryParse(text[..2], out slots[0]));
+        Assert.Equal(9, slots[0].Value);
+
+        text[0] = 'x';
+        Assert.False(Slot.TryParse(text[..1], out slots[0]));
+        Assert.Equal(default, slots[0]);
+    }
+
+    [Fact]
+    public void Decoding_consumes_bytes_before_publishing_into_overlapping_storage()
+    {
+        Span<NarrowBigEndian> slots = stackalloc NarrowBigEndian[1];
+        Span<byte> bytes = MemoryMarshal.AsBytes(slots);
+        bytes[0] = 0x00;
+        bytes[1] = 0x29;
+
+        Assert.True(NarrowBigEndian.TryRead(bytes[..2], out slots[0]));
+        Assert.Equal(41, slots[0].Value);
+
+        bytes[0] = 0x7F;
+        bytes[1] = 0xFF;
+        Assert.False(NarrowBigEndian.TryRead(bytes[..2], out slots[0]));
+        Assert.Equal(default, slots[0]);
+    }
+
+    [Fact]
+    public void Extraction_reads_validity_before_publishing_into_overlapping_receiver()
+    {
+        Span<Slot> slots = stackalloc Slot[1];
+        slots[0] = (Slot)0;
+        // The generated int payload precedes the validity byte in the sequential layout.
+        Span<int> storage = MemoryMarshal.Cast<Slot, int>(slots);
+        Assert.True(slots[0].TryGetValue(out storage[1]));
+        Assert.Equal(0, storage[1]);
+    }
+
+    [Fact]
+    public void Conversion_reads_value_before_publishing_into_overlapping_receiver()
+    {
+        Span<Slot> slots = stackalloc Slot[1];
+        slots[0] = (Slot)9;
+        Span<short> storage = MemoryMarshal.Cast<Slot, short>(slots);
+        Assert.Equal(ArithmeticError.None, slots[0].TryConvertTo(out storage[0]));
+        Assert.Equal(9, storage[0]);
+    }
+
+    [Fact]
+    public void Encoding_reads_value_before_publishing_count_into_overlapping_receiver()
+    {
+        Span<Slot> slots = stackalloc Slot[1];
+        slots[0] = (Slot)9;
+        Span<int> storage = MemoryMarshal.Cast<Slot, int>(slots);
+        Span<byte> destination = stackalloc byte[Slot.SerializationWidth];
+        Assert.True(slots[0].TryWrite(destination, out storage[0]));
+        Assert.Equal(Slot.SerializationWidth, storage[0]);
+        Assert.True(destination.SequenceEqual<byte>([9, 0, 0, 0]));
+    }
+
+    [Fact]
+    public void Formatting_reads_value_before_publishing_count_into_overlapping_receiver()
+    {
+        Span<Slot> slots = stackalloc Slot[1];
+        slots[0] = (Slot)9;
+        Span<int> storage = MemoryMarshal.Cast<Slot, int>(slots);
+        Span<char> destination = stackalloc char[1];
+        Assert.True(slots[0].TryFormat(destination, out storage[0]));
+        Assert.Equal(1, storage[0]);
+        Assert.True(destination.SequenceEqual("9"));
     }
 
     [Fact]

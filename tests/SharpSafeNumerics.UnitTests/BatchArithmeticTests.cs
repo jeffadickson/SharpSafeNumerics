@@ -33,8 +33,9 @@ public sealed class BatchArithmeticTests
             Assert.All(errors[count..], x => Assert.Equal((ArithmeticError)255, x));
         }
         Array.Fill(values, 0x13579BDF); Array.Fill(errors, (ArithmeticError)255);
-        Assert.Equal(BatchArithmeticError.None, SafeInteger.TryAddBatch(left, right, values, errors, out int detected));
-        Assert.Equal(ExpectedWidth(count, 256), detected);
+        var detailed = SafeInteger.AddBatch(left, right, values, errors);
+        Assert.Equal(BatchArithmeticError.None, detailed.Error); Assert.True(detailed.IsSuccess);
+        Assert.Equal(ExpectedWidth(count, 256), detailed.VectorWidthUsed);
         Verify(left, right, values, errors);
     }
 
@@ -55,8 +56,9 @@ public sealed class BatchArithmeticTests
         // This test-only logical span must never be accessed: its declared length
         // deliberately exceeds its backing storage to verify the early size guard.
         ReadOnlySpan<int> oversized = MemoryMarshal.CreateReadOnlySpan(ref sentinel, int.MaxValue / sizeof(int) + 1);
-        Assert.Equal(BatchArithmeticError.InputTooLarge, SafeInteger.TryAddBatch(oversized, oversized, [], [], out int width));
-        Assert.Equal(0, width); Assert.Equal(91, sentinel);
+        var detailed = SafeInteger.AddBatch(oversized, oversized, [], []);
+        Assert.Equal(BatchArithmeticError.InputTooLarge, detailed.Error);
+        Assert.Equal(0, detailed.VectorWidthUsed); Assert.False(detailed.IsSuccess); Assert.Equal(91, sentinel);
     }
 
     [Fact]
@@ -108,10 +110,24 @@ public sealed class BatchArithmeticTests
                 checksum += (int)SafeInteger.TryAddBatch(left, right.AsSpan(0, 8), values, errors);
             }
             long bytes = GC.GetAllocatedBytesForCurrentThread() - before;
-            Assert.Equal(100_000 * (8 + (int)ArithmeticError.Overflow + (int)BatchArithmeticError.LengthMismatch), checksum);
+            Assert.Equal(100_000 * ((int)BatchArithmeticError.None + 8 + (int)ArithmeticError.Overflow + (int)BatchArithmeticError.LengthMismatch), checksum);
             Assert.Equal(0, bytes);
         }
         Assert.Equal(ExpectedWidth(8, 256), SafeInteger.BatchAddVectorWidth);
+    }
+
+    [Fact]
+    public void Returned_width_cannot_alias_data_and_default_result_is_invalid()
+    {
+        int[] left = [41], values = [99]; var errors = new ArithmeticError[1];
+        var success = SafeInteger.AddBatch(left, [1], values, errors);
+        Assert.True(success.IsSuccess); Assert.Equal(41, left[0]); Assert.Equal(42, values[0]);
+        values[0] = 99;
+        var failure = SafeInteger.AddBatch(left, [], values, errors);
+        Assert.Equal(BatchArithmeticError.LengthMismatch, failure.Error);
+        Assert.Equal(99, values[0]); Assert.Equal(0, failure.VectorWidthUsed); Assert.False(failure.IsSuccess);
+        Assert.Equal(BatchArithmeticError.Uninitialized, default(BatchArithmeticResult).Error);
+        Assert.False(default(BatchArithmeticResult).IsSuccess);
     }
 
     private static int ExpectedWidth(int count, int ceiling) =>

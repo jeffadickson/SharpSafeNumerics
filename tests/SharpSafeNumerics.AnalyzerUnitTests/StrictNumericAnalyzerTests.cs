@@ -67,6 +67,8 @@ public sealed class StrictNumericAnalyzerTests
     [InlineData("int M(int x) { {|SSN1002:x -= 2|}; return x; }")]
     [InlineData("int M(int x) { {|SSN1002:unchecked { x -= 2; }|} return x; }")]
     [InlineData("int M(int x) => checked(x + 1);")]
+    [InlineData("int M(int x) { checked { x++; x -= 2; } return checked(-x); }")]
+    [InlineData("int M(int x) { x |= 2; x >>= 2; return x; }")]
     [InlineData("int M(int x) => x & (3 << 2);")]
     [InlineData("int M(int x) => x / 2 + 0;", true)]
     [InlineData("int M() => 2 + 3;")]
@@ -145,6 +147,25 @@ public sealed class StrictNumericAnalyzerTests
     }
 
     [Fact]
+    public async Task Generic_math_rule_ignores_a_same_named_contract_from_an_unrelated_interface()
+    {
+        await Verify("""
+            interface ILookalike
+            {
+                static abstract byte CreateSaturating<T>(T value);
+            }
+            readonly struct Adapter : ILookalike
+            {
+                public static byte CreateSaturating<T>(T value) => 0;
+            }
+            [StrictNumeric] class Consumer
+            {
+                byte M(int value) => Adapter.CreateSaturating(value);
+            }
+            """);
+    }
+
+    [Fact]
     public async Task Generated_domain_can_be_bypassed_only_at_the_diagnosed_use_site()
     {
         await Verify("""
@@ -152,6 +173,7 @@ public sealed class StrictNumericAnalyzerTests
             {
                 [StrictNumeric] static Port Raw(int value) => {|SSN1006:new Port(value)|};
                 [StrictNumeric] public int RawValue() => {|SSN1006:__ssnValue|};
+                [StrictNumeric] public bool RawValidity() => {|SSN1006:__ssnValid|};
                 [StrictNumeric] public string StorageName() => nameof(__ssnValue);
             }
             [StrictNumeric] class Consumer
@@ -172,16 +194,58 @@ public sealed class StrictNumericAnalyzerTests
             """, generate: true);
     }
 
+    [Fact]
+    public async Task Raw_reinterpretation_matches_bound_intrinsics_and_a_bounded_payload()
+    {
+        await Verify("""
+            using RawMemory = System.Runtime.InteropServices.MemoryMarshal;
+            using Ordinary = Providers.Ordinary;
+            [BoundedInteger(typeof(int), "1", "4")] readonly partial struct Port;
+            [StrictNumeric] class Consumer
+            {
+                int __ssnValue = 1;
+                int Value => __ssnValue;
+                int UnannotatedRead() => Value;
+                Span<Port> Cast(Span<byte> bytes) => {|SSN1006:RawMemory.Cast<byte, Port>(bytes)|};
+                Span<byte> AsBytes(Span<Port> ports) => {|SSN1006:RawMemory.AsBytes(ports)|};
+                ref Port AsRef(Span<byte> bytes) => ref {|SSN1006:RawMemory.AsRef<Port>(bytes)|};
+                bool TryRead(ReadOnlySpan<byte> bytes, out Port port) => {|SSN1006:RawMemory.TryRead(bytes, out port)|};
+                int PlainRead(ReadOnlySpan<byte> bytes) => RawMemory.Read<int>(bytes);
+                Span<int> PlainCast(Span<byte> bytes) => RawMemory.Cast<byte, int>(bytes);
+                int PlainBitCast(uint value) => System.Runtime.CompilerServices.Unsafe.BitCast<uint, int>(value);
+                Port UserRead(Port port) => Ordinary.Read(port);
+                Port UserAs(Port port) => Ordinary.As(0, port);
+                Port UserGeneric(Port port) => Ordinary.Forward(0, port);
+            }
+            namespace Providers
+            {
+                static class Ordinary
+                {
+                    internal static T Read<T>(T value) => value;
+                    internal static TTo As<TFrom, TTo>(TFrom input, TTo value) => value;
+                    internal static TTo Forward<TFrom, TTo>(TFrom input, TTo value) => value;
+                }
+            }
+            """, generate: true);
+    }
+
     [Theory]
     [InlineData("object M() => {|SSN1007:new object()|};")]
+    [InlineData("object M() => {|SSN1007:new { Value = 1 }|};")]
     [InlineData("int[] M() => {|SSN1007:new int[0]|};")]
     [InlineData("int[] M() => {|SSN1007:[1, 2]|};")]
+    [InlineData("int[] M() => [];")]
     [InlineData("object M(int value) => {|SSN1007:value|};")]
     [InlineData("IFormattable M(int value) => {|SSN1007:value|};")]
     [InlineData("string M(int value) => {|SSN1007:$\"Data: {value}\"|};")]
     [InlineData("FormattableString M(int value) => {|SSN1007:$\"Data: {value}\"|};")]
     [InlineData("Func<int> M(int value) => {|SSN1007:() => value|};")]
     [InlineData("int state = 1; Func<int> M() => {|SSN1007:() => state|};")]
+    [InlineData("Func<int> M(int value) { int local = value; return {|SSN1007:() => local|}; }")]
+    [InlineData("Func<int, int> M() => value => { int local = value; return local; };")]
+    [InlineData("Func<int> M() => {|SSN1007:Read|}; int Read() => 42;")]
+    [InlineData("Func<int> M() => {|SSN1007:new Func<int>(Read)|}; static int Read() => 42;")]
+    [InlineData("Func<int> M() => Read; static int Read() => 42;")]
     [InlineData("int M() => {|SSN1007:Count(1)|}; static int Count(params int[] args) => args.Length;")]
     [InlineData("int M() => Count(); static int Count(params int[] args) => args.Length;")]
     [InlineData("int? M(int value) => value;")]
@@ -213,6 +277,7 @@ public sealed class StrictNumericAnalyzerTests
             [BoundedInteger(typeof(int), "0", "4")] readonly partial struct InvalidByDefault;
             [BoundedInteger(typeof(int), "1", "4", DefaultPolicy = DefaultValuePolicy.Invalid)] readonly partial struct InvalidExplicit;
             [BoundedInteger(typeof(int), "0", "4", DefaultPolicy = DefaultValuePolicy.ZeroValid)] readonly partial struct ZeroValid;
+            [BoundedInteger(typeof(int), "0", "4", OverflowPolicy = ArithmeticPolicy.Saturate)] readonly partial struct Saturating;
             [StrictNumeric] class Consumer
             {
                 InvalidByDefault Invalid() => {|SSN1008:default|};
@@ -220,6 +285,7 @@ public sealed class StrictNumericAnalyzerTests
                 InvalidExplicit ExplicitDefault() => {|SSN1008:default(InvalidExplicit)|};
                 ZeroValid Valid() => default;
                 ZeroValid ValidNew() => new();
+                Saturating NoDefaultPolicy() => {|SSN1008:default|};
                 InvalidByDefault? Absent() => default;
                 bool TestState(InvalidByDefault value) => value.IsValid;
             }

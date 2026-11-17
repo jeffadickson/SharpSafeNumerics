@@ -102,11 +102,12 @@ dotnet test (Join-Path $testDirectory 'SharpSafeNumerics.AnalyzerUnitTests.cspro
 ```
 
 On Windows x64, .NET SDK 11.0.100, Roslyn 5.12.0, and Coverlet collector 10.1.1
-reported 97 passing tests, zero failures, and zero skips. The analyzer assembly
-had 441 of 457 instrumented lines covered (96.49%) and 473 of 564 instrumented
-branches covered (83.86%). The measured scope is `SharpSafeNumerics.Analyzers`.
-Uncovered paths include anonymous-object construction, method-group delegate
-construction, and the compilation guard for an absent StrictNumeric attribute.
+reported 108 passing tests, zero failures, and zero skips. The analyzer assembly
+had 446 of 457 instrumented lines covered (97.59%) and 491 of 564 instrumented
+branches covered (87.05%). The measured scope is `SharpSafeNumerics.Analyzers`.
+Uncovered paths include the compilation guard for an absent StrictNumeric
+attribute and the conversion of certain compiler constants such as `char`
+or `ulong` into the analyzer's exact range-checking representation.
 The existing probe reproduced SSN1002, two SSN1003 warnings, and SSN1004.
 The review regression run recorded 12 failures against the pre-review
 analyzer and all 97 passing with the fixes.
@@ -115,14 +116,14 @@ With `$run` set to a checked results directory under `CODEX_ARTIFACT_ROOT`,
 the coverage run used the same project and
 `--collect 'XPlat Code Coverage' --results-directory $run -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Include='[SharpSafeNumerics.Analyzers]*'`.
 Its report is under the artifact root at
-`SharpSafeNumerics/windows-x64/analyzer-rc1/560a9048-18ee-4d47-942d-234114c0fb13/coverage.cobertura.xml`.
+`SharpSafeNumerics/windows-x64/analyzer-rc1/ce05d9c1-b242-49bc-9b60-981d13bd476b/coverage.cobertura.xml`.
 The source baseline was `15a138c6e04e4830aa729282af1ce9026c58efc4` plus the RC1
 working changes. The tested file SHA-256 values were
 `28cf64b1491da1314078e5c179b9164d87c07fc0887723a0ae2260656d4f655f`
 for `StrictNumericAnalyzer.cs`,
 `53370eb7237660a47d90f7cec52e61289d137f141184b4fe07712c1e4bdd5fcc`
 for `NumericSymbols.cs`, and
-`e32f773af03a5210a7c49e13df655fe63c0eed9af5e2f5146958708b001b4a3c`
+`b920bf91961194cf8702db4b320c865bf4daf446055ed5d34731c0f9d95dc26b`
 for `StrictNumericAnalyzerTests.cs`.
 
 The Standard mutation run uses the manifest-pinned Stryker.NET 5.1.0.
@@ -138,6 +139,58 @@ dotnet tool run dotnet-stryker --project SharpSafeNumerics.Analyzers.csproj --ta
     --skip-version-check --concurrency 4 --mutation-level Standard --reporter dots `
     --reporter cleartext --reporter json --break-on-initial-test-failure --output $run
 ```
+
+The full run completed in 19 minutes 34.65 seconds and exited successfully. It
+covered both analyzer source files with the 97-case suite before the directed
+survivor tests. The test file SHA-256 for that run was
+`e32f773af03a5210a7c49e13df655fe63c0eed9af5e2f5146958708b001b4a3c`.
+Stryker generated
+522 mutants, killed 312, reported 77 survivors and 13 uncovered mutants,
+and filtered 86 compile errors and 34 duplicate block mutations. It reported
+zero timeouts and runtime errors. The 77.61% score is 312 divided by 402.
+One VSTest session retried and the campaign completed. The full report is at
+`SharpSafeNumerics/windows-x64/analyzer-mutation-reviewed-rc1/reports/mutation-report.json`
+under the artifact root.
+
+The survivor review identified these examples from that report.
+
+| Result | Disposition |
+| --- | --- |
+| Diagnostic title, message, and allocation-reason mutations | The harness asserts diagnostic IDs, severities, and source spans. Wording changes remain observable in the compiler and are outside these assertions. |
+| Zero-width integer sentinel, mutant 216 | Equivalent by inspection. The analyzer exits when the width is zero, before it uses signedness. |
+| Concurrent scheduling, mutant 274 | A functional run can produce the same diagnostics with serial scheduling. This mutation needs performance or scheduling evidence. |
+| Reinterpretation predicates, survivors in 80–101 | Directed cases exercise each listed MemoryMarshal operation and check that ordinary aliased methods and unbounded operations pass. |
+| Checked compound, unary, and increment guards, survivors in 434–439 | Directed cases distinguish checked and unchecked operator variants and bitwise compound operations. |
+| Validity-field selection and local capture, mutants 319 and 475 | Directed cases cover direct access to the generated validity field and a nonstatic lambda whose variables belong to the lambda. |
+| Uncovered reference allocation and alternate binding paths | Directed cases cover anonymous-object and method-group delegate construction. The full-run JSON retains all 13 original uncovered entries. |
+
+The directed replay used the 108-case suite and the same analyzer source
+digests. It selected character spans for 32 previously survived or uncovered
+mutants. The spans overlap 16 neighboring executable mutants. Stryker 5.1.0
+Standard completed in 4 minutes 15.64 seconds with 44 killed, three survived,
+one timeout, and zero uncovered or runtime errors. The scoped score of 93.75%
+counts the timeout among the detected outcomes.
+
+The replay matched the 32 selected identities by file hash, source location,
+mutator, and replacement. It killed 21 prior survivors and seven prior
+uncovered mutants. The two newly covered allocation-reason wording mutants
+survived. The enum option guard mutation 181 also survived. Each enum-valued
+named option has a distinct type in the RC1 attribute, so the mutated
+name-or-type test has the same result for supported declarations. The
+reinterpretation mutation 82 timed out in Stryker. An isolated direct
+replay of its exact replacement made
+`Raw_reinterpretation_matches_bound_intrinsics_and_a_bounded_payload`
+fail with two extra SSN1006 diagnostics. The restored source passed
+after a forced rebuild, which cleared the incrementally cached mutant
+assembly. The automatic Stryker report retains the timeout.
+
+The replay's output directory is
+`SharpSafeNumerics/windows-x64/analyzer-mutation-survivor-replay-rc1`
+under the artifact root. It retains `selection.json` with the exact byte-identical
+source SHA-256 values and character-span filters, `command-arguments.json` with
+the Stryker invocation arguments, `selected-mutant-transitions.json`,
+`reports/mutation-report.json`, and the directed xUnit logs
+`mutant-82-directed-red.log` and `mutant-82-directed-green-rebuilt.log`.
 
 StrictDoc 0.30.4 exported the analyzer requirements and the central
 requirements together and built the traceability graph. The eight analyzer

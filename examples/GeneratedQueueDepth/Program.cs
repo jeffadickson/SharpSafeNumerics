@@ -1,7 +1,7 @@
 using SharpSafeNumerics;
 
-if (QueueDepth.TryCreate(62, out var depth) != ArithmeticError.None) return 1;
-if (depth.TryAdd(1, out var full) != ArithmeticError.None || full.Value != 63) return 2;
+if (QueueDepth.TryCreate(62, out var full) != ArithmeticError.None) return 1;
+if (full.TryAdd(1, out full) != ArithmeticError.None || full.Value != 63) return 2;
 if (full.TryAdd(1, out _) != ArithmeticError.OutOfRange) return 3;
 if (full.Add(1).Value != full) return 4;
 if (!default(QueueDepth).IsValid || default(QueueDepth).Value != 0) return 5;

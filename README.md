@@ -2,7 +2,7 @@
 
 A .NET 11 / C# 15 numeric-safety library for bounded integer arithmetic, explicit recoverable errors, and engineering software with deterministic requirements.
 
-**Status:** initial implementation / not yet qualified for embedded or safety-critical use.
+**Status:** RC-1 candidate under qualification; see [current evidence](docs/verification/2026-11-17-rc1.md). Embedded and safety-critical application qualification remains open.
 
 ## What is implemented
 
@@ -15,7 +15,9 @@ The project is organized as M1–M5; see [milestones](docs/MILESTONES.md). Numer
 - Explicit `NumericResult<T>` struct with a default *invalid* state.
 - Optional C# 15 `union` adapter for ergonomic handling **that boxes value-type cases**; do not use it on no-allocation paths.
 - Dependency-free console conformance tests, Native AOT smoke project, GitHub Actions CI.
-- Declarative bounded-number attributes + incremental source generator and strict-scope analyzer.
+- Declarative bounded-number attributes, generated arithmetic/default policies, exact conversions, span text and fixed-width endian codecs for all 12 built-in integer types.
+- Strict-scope diagnostics SSN1001–SSN1008 with documented static-analysis limits.
+- Int32 batch addition with detected SIMD256/SIMD128, scalar fallback, per-lane errors and validation before writes.
 - CsCheck, Hedgehog, xUnit, Stryker.NET, Dafny and BenchmarkDotNet verification infrastructure.
 - Detailed requirements, original software description, architecture, exception policy and verification plan.
 

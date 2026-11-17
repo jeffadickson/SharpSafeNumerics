@@ -48,7 +48,8 @@ preserve its identity in source that defines native-integer aliases.
   `InvalidOperationException`. Explicit casts between the domain and its
   storage enforce the same admission and validity rules.
 - `TryAdd` and `TrySubtract` always reject primitive overflow, primitive
-  underflow, or results outside the declared range. `Add` and `Subtract`
+  underflow, or results outside the declared range. They support in-place
+  operations such as `current.TryAdd(delta, out current)`. `Add` and `Subtract`
   return `NumericResult<Domain>`. `Reject` returns the same failures as the
   Try methods. `Saturate` clamps to the nearest domain endpoint. `Wrap` uses
   primitive modulo arithmetic and then rejects any result outside the declared
@@ -59,15 +60,19 @@ preserve its identity in source that defines native-integer aliases.
   leading sign and leading or trailing whitespace. Hex output is uppercase,
   with signed negative values represented in two's complement at the storage
   width. Text containing a NUL is malformed. `TryFormat(Span<char>, out int)`
-  writes invariant text and reports zero characters on failure. `ToString()`
+  writes invariant text and reports zero characters on failure. Its destination
+  span and output count require distinct storage. `ToString()`
   uses the same convention and returns `<invalid>` for an invalid instance.
   Unit metadata leaves the numeric text unchanged.
 - `TryRead(ReadOnlySpan<byte>, out Domain)` requires exactly
   `SerializationWidth` bytes and rejects an out-of-domain decoded integer.
   `TryWrite(Span<byte>, out int)` writes that many bytes at the start of
-  a sufficiently large destination. Failure leaves the destination
-  untouched and reports zero bytes written. Signed encodings use two's
+  a sufficiently large destination. The destination span and output count
+  require distinct storage. Under that precondition, failure preserves the
+  destination and reports zero bytes written. Signed encodings use two's
   complement. `SerializationEndianness` gives the configured byte order.
+  `TryParse` and `TryRead` consume their input before assigning the output
+  value, so their input span and result may share storage.
 - Typed equality, hashing, and comparisons use validity and the storage value.
   Invalid values compare equal to each other and sort before valid values.
   `IEquatable<T>`, `IComparable<T>`, and all six relational and equality
@@ -101,7 +106,7 @@ identity, including its namespace and casing.
 ## Verification
 
 On Windows x64 with .NET SDK 11.0.100 and runtime 11.0.0, the generator tests passed
-79 of 79. Roslyn compilation enabled checked arithmetic and checked generated
+88 of 88. Roslyn compilation enabled checked arithmetic and checked generated
 XML documentation. The Windows tests compiled in-memory x86, Arm, x64 and Arm64 fixtures.
 Runtime execution used Windows x64. The normal SDK build ran the generated queue
 example and printed `Generated QueueDepth verified: 63 entries`.
@@ -122,14 +127,25 @@ example and printed `Generated QueueDepth verified: 63 entries`.
   and underflow, failed conversion, malformed input, short buffers, and ordinary
   and zero-valid singleton intervals.
 - Dynamic Roslyn fixtures executed generated bodies for the default, invariant
-  text, endian and Throw policy options after emitting assemblies in memory.
+  text, endian, one-byte signedness, Saturate and Throw policy options after
+  emitting assemblies in memory. A batch compilation verifies all 42 reserved
+  generated names.
   Regression cases verified native storage identity under global aliases,
   reserved accessor collisions, explicit and inline-array layouts, field-like
   instance events, and that construction preserves user static underscore fields.
-  Seven cases reproduced the review findings before the fixes and passed afterward.
-- Coverlet collector 10.1.1 reported 499/513 lines (97.27%) and 254/269 branches
-  (94.42%) in the generator implementation. Instrumentation of the 28 generated
-  domain fixture types reported 1,889/1,905 lines (99.16%) and 1,375/1,450 branches
+  Seven cases reproduced those review findings before the fixes and passed afterward.
+  A later review reproduced incorrect results with aliased arithmetic destinations
+  in three focused cases. The generator now reads the receiver before assigning
+  the output, and all fixture policies check aliased success and failure.
+  Separate parsing and decoding repros confirmed the need to consume span
+  input before publishing into overlapping output storage.
+  Four additional regressions checked overlapping receiver storage for
+  extraction, conversion, text formatting, and binary encoding.
+- Coverlet collector 10.1.1 reported 541/543 lines (99.63%) and 256/269 branches
+  (95.17%) in the generator implementation. The two unexecuted generator lines
+  diagnose a duplicate bounded annotation and guard the internal storage-width
+  name lookup. Instrumentation of the 28 generated
+  domain fixture types reported 2,189/2,213 lines (98.92%) and 1,375/1,450 branches
   (94.83%). Uncovered paths include range rejection in full-storage domains,
   primitive-width entry conversion rejection in several narrow domains, the
   primitive failure guard when Wrap is active, and invalid-receiver paths in
@@ -167,10 +183,11 @@ Measured generator sources by Git blob ID:
 |---|---|
 | `NumericAnnotations.cs` | `fc4de762e09af7e1805896679128b7af8c864bff` |
 | `BoundedIntegerGenerator.cs` | `4e222d9f35a4b2eafb6e459badb034bbf2ab4464` |
-| `BoundedIntegerGenerator.Rendering.cs` | `44e23b3c662d8e4142a0a0692b928336b080d6c5` |
-| `GeneratorCompilationTests.cs` | `1d4fa81007ae1c511d5be3f9f77c2834e755e7ff` |
-| `GeneratedContractTests.cs` | `bbf21086c6537b6356e67426596b9241b290d5ab` |
-| `GeneratedDomainTests.cs` | `8f291759fa339674f2fc1f7a661e75650dacc85b` |
+| `BoundedIntegerGenerator.Rendering.cs` | `36efcfd95832eceb900e238412a4343a336ad6d2` |
+| `GeneratorCompilationTests.cs` | `688279d8457d7c5f433d36bc52a860cc1e34aca8` |
+| `GeneratedContractTests.cs` | `74c5d186708cc463e5448005a08569cb62cc7061` |
+| `GeneratedDomainTests.cs` | `9cc1a56a6d7651bfa6401c9522b4d50ae66f6a68` |
+| `GeneratedQueueDepth/Program.cs` | `40119bd8e7609dcc8c87ff215d2451f5a5527945` |
 
 
 ## Generator mutation experiment
@@ -181,7 +198,7 @@ three-project build graph with the 64-case pre-expansion test suite. It created
 uncovered mutations, rejected 43 at compilation, and filtered seven as ignored.
 The score was 81.05% (77 of 95 scored mutants), with zero timeouts. The run took
 4 minutes 21 seconds with two parallel test sessions on Windows x64.
-The current 79-test suite extends runtime coverage of SDK-generated output and
+The subsequent suite extends runtime coverage of SDK-generated output and
 executes selected fixtures emitted by the generator assembly under test.
 Stryker replaced the generator assembly after building the SDK fixture assembly,
 so the mutation experiment principally exercised the in-process Roslyn checks.
@@ -198,6 +215,55 @@ only successful compilation.
 | 76 | Changes the guard for a NUL at offset zero. The dynamic malformed fixture exercises a trailing NUL. The built-in decimal parser's behavior for all leading-NUL inputs was outside this experiment. |
 | 110, 118, 122 | Reject known valid Throw, hexadecimal or big-endian options. SDK fixtures exercise their runtime behavior. Dynamic checks should also assert that each option is emitted. |
 | 131, 133, 136 | Change the emitted default, text policy or native hexadecimal width. These are runtime contract checks in the SDK fixtures. The dynamic mutation checks did not execute the emitted outputs. |
+
+### Unfiltered Standard campaign
+
+Stryker.NET 5.1.0 Standard ran the 79-case suite against the reviewed generator
+before the in-place arithmetic fix. The campaign created 440 mutants, killed
+264, timed out on three, and
+reported 95 survivors, five uncovered, 59 compile errors and 14 filtered
+mutants. Its score was 72.75% (267 of 367 scored mutants, including timeouts).
+The run took 21 minutes 49 seconds using four sessions. The runner retried
+one session and recovered two further sessions after cancellation warnings.
+
+Forty survivors removed individual reserved names, and 15 emptied diagnostic
+titles or messages. The follow-up suite checks all reserved names in one
+compilation and verifies that declaration errors provide visible titles and
+messages. It also executes the public, writable and readonly declaration
+variants, invalid storage access, decimal formatting, both single-byte
+codecs and the Saturate policy. It checks an ordinary explicit interface
+implementation, a primary constructor in a different partial declaration,
+and unrelated attributes with layout-like constructor arguments.
+
+The initial Standard score covers both generator source files, including
+compile-time diagnostics, naming and generated member rendering. A targeted
+follow-up covers the character spans of every original survivor, uncovered
+mutation and timeout on the same pre-fix generator blobs, using the expanded
+82-case test project. The generator validation source blob was
+`4e222d9f35a4b2eafb6e459badb034bbf2ab4464` and the renderer blob was
+`44e23b3c662d8e4142a0a0692b928336b080d6c5`. The follow-up queued 124 candidates
+after span overlap. It stopped after 14 minutes 18 seconds with VSTest connection
+timeouts and process exit -532462766. It produced no scored report. The later
+emitted overlap fixes have independent failing and passing regression evidence.
+
+### Targeted recovery on the final sources
+
+Stryker.NET 5.1.0 Standard completed a bounded final-source recovery run in
+2 minutes 20 seconds. The source scope selected four reserved-name entries,
+rendered accessibility, default and decimal/hex selection, and single-byte
+codec branches. It used four dynamic Roslyn tests, one VSTest worker,
+`VSTEST_CONNECTION_TIMEOUT=180` and `--disable-bail`. It created 439 mutants.
+The filter excluded 362, and compilation excluded 59. Of 18 scored mutants,
+15 were killed and three survived for a raw score of 83.33%. The run reported
+zero timeouts, uncovered candidates and runtime errors.
+
+| Surviving IDs | Disposition |
+|---|---|
+| 348, 349 | Omitting the redundant accessibility modifier on the generated partial declaration preserves the handwritten declaration's accessibility. If all parts omit a modifier, a top-level struct remains internal. [C# accessibility specifications](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes) |
+| 387 | Replacing precision-free decimal format `D` with the empty format reaches the same .NET 11 integral decimal path through precision-free `G`. An independent C# check compared both string and span output for 10,542 values across all 12 storage types, with exhaustive byte/sbyte values and seed 172493 for wider inputs. [Runtime implementation](https://github.com/dotnet/runtime/blob/v11.0.0/src/libraries/System.Private.CoreLib/src/System/Number.Formatting.cs) |
+
+The recovery score applies to the selected final-source spans. The unfiltered
+score measures the earlier renderer and suite.
 
 The ordinary snapshot test project built successfully. Buildalyzer's initial
 Visual Studio MSBuild probe could not resolve the SDK. Selecting the SDK MSBuild
@@ -231,4 +297,23 @@ The Windows run data is under `SharpSafeNumerics-generator-20261117T180916050Z`
 in the bulk artifact root. It includes the coverage and TRX attachments, the
 mutation snapshot, `mutation/sdk-msbuild.log`, and
 `mutation/reports/mutation-report.json`.
+The Standard runs and latest coverage are under
+`SharpSafeNumerics-generator-reviewed-20261117T182130479Z`. The follow-up
+source filter is preserved at `mutation-followup/scope.json`.
+For the scoped follow-up, copy that `scope.json` into the generator snapshot
+directory as `stryker-followup.json` and add `--config-file stryker-followup.json`
+to the same command. Use the archived `followup-snapshot` for the exact
+source and test blobs associated with that source filter.
+
+For the final-source recovery, use `final-recovery-snapshot` and the
+`mutation-recovery/scope.json` filter as `stryker-recovery.json`. Run the
+command above with `--config-file stryker-recovery.json`, `--concurrency 1`,
+`--disable-bail`, and the script arguments below. The recovery directory
+also retains the independent `CheckDecimalFormat.cs` trial.
+
+```powershell
+$env:VSTEST_CONNECTION_TIMEOUT = '180'
+$filter = 'FullyQualifiedName~Every_reserved_generated_name|FullyQualifiedName~Runtime_compiled_defaults|FullyQualifiedName~Runtime_compiled_options|FullyQualifiedName~Runtime_compiled_single_byte'
+# Add --test-case-filter $filter to the Stryker command.
+```
 

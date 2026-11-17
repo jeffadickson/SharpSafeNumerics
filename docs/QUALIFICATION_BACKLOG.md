@@ -1,20 +1,20 @@
-# Qualification backlog after the conversion pass
+# RC-1 qualification backlog
 
-These items are open; a green conversion pass does not close them.
+Implemented RC-1 contracts and bounded verification evidence are recorded in the
+[RC report](verification/2026-11-17-rc1.md), [generator report](GENERATOR_RC1.md)
+and [analyzer report](ANALYZERS_RC1.md). Historical conversion-only gaps have been
+superseded by wide BigInteger campaigns, policy validation, generated codecs/text,
+and all eight strict diagnostics.
 
-| Priority | Gap | Next evidence needed |
+| Priority | Remaining qualification | Evidence needed |
 | --- | --- | --- |
-| P0 | Wide arithmetic and policy qualification is incomplete | All built-in add/sub/mul/div/negate and named policies against BigInteger, adversarial boundaries and seeded sequences |
-| P0 | No target-wide allocation or hard real-time qualification | Representative Native AOT application kernels, contention and target-specific timing/exception audit |
-| P1 | Invalid arithmetic policy is checked only on an overflowing operation | Regression for successful Add/Subtract/Multiply with an undefined enum; specify and consistently enforce programmer-contract validation |
-| P1 | Generator permits declaration shapes without full qualification | Roslyn tests for nesting, generic names, member collisions, namespaces and malformed attributes; 128-bit extreme literal compilation |
-| P1 | Remaining enforcement rules and analyzer test infrastructure | SSN1001/1005–1008; nested/async/lambda/local-function scope and false-positive tests |
-| P1 | Binary codecs, span parsing/formatting and policy annotations incomplete | Golden vectors, malformed-input campaigns and round trips, including generated domains |
-| P1 | Arm64 and native-width portability evidence incomplete | Actual ARM64 AOT execution; architecture-specific nint/nuint contracts and generated ranges |
-| P1 | Benchmark fast paths approach the empty-method measurement floor | Batch kernels with representative success/failure distributions, out-of-process net11 toolchain, disassembly and comparable work |
-| P1 | Release and application qualification incomplete | Deterministic packages, centralized versions, API baselines, code-size comparison and actual RISCue/VeloSim/SharpUnits integration |
+| P0 | Application allocation and hard real-time behavior | Representative target kernels, contention and timing audit |
+| P1 | Final-source compiler-extension mutation breadth | Full Standard reruns; scoped hardening scores do not replace whole-project scores |
+| P1 | Release reproducibility and public API baselines | Immutable-source packages, hashes and consumer checks |
+| P1 | Production SIMD performance | Matched output/status layout and representative workload timings |
+| P1 | Application integration | Actual RISCue/VeloSim/SharpUnits consumers, beyond repository examples |
+| P1 | Additional architecture coverage | 32-bit runtime execution and native-width contracts |
 
-The invalid-policy observation is source inspection of the current early-success
-return in SafeInteger; it is recorded for a separate specified fix, without
-claiming a new runtime regression test. Existing generator and analyzer examples
-are useful smoke checks but do not qualify the full planned contract.
+Analyzer static detection has documented dataflow and indirect-allocation limits.
+Dafny models do not prove C# implementation equivalence. Coverage and finite
+campaigns do not establish safety certification or universal provider conformance.

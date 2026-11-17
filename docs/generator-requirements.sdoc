@@ -30,6 +30,7 @@ is declared with an interval containing zero. Instances shall expose safe extrac
 typed equality, hashing and total ordering, with invalid defaults ordered before valid
 values. Generated declarations and public members shall include XML documentation and
 the resulting type shall have a debugger display.
+Extraction shall read receiver validity and value before publishing the output.
 <<<
 COMMENT: >>>
 Implementation: NumericAnnotations.cs and BoundedIntegerGenerator.Rendering.cs, Render.
@@ -49,6 +50,8 @@ TITLE: Generated arithmetic policies and rejecting Try paths
 STATEMENT: >>>
 Generated TryAdd and TrySubtract shall report invalid operands, primitive overflow
 or underflow and out-of-domain results with a status and default output.
+They shall produce the same status and output when the receiver and out argument
+refer to the same variable.
 Generated Add and Subtract shall consume the annotated policy. Reject shall preserve
 failure statuses, Saturate shall clamp to the inclusive domain, Wrap shall apply
 primitive modulo arithmetic and then require domain membership, and Throw shall raise
@@ -72,6 +75,7 @@ STATEMENT: >>>
 Generated conversion methods shall preserve exactly representable built-in integer values,
 enforce domain admission on entry, and clear outputs on rejection. A cast between the
 domain and its storage shall be explicit and enforce admission or instance validity.
+Conversion shall read the receiver before publishing the output.
 <<<
 COMMENT: >>>
 Implementation: BoundedIntegerGenerator.Rendering.cs, Render, delegating to SafeInteger.TryConvert.
@@ -88,7 +92,9 @@ TITLE: Invariant span text and unit metadata
 STATEMENT: >>>
 Generated span text methods shall use the configured invariant decimal or hexadecimal
 convention, reject malformed and out-of-domain input, and report no characters written
-on insufficient capacity or invalid value. Optional unit metadata shall be available
+on insufficient capacity or invalid value. The formatting destination and output count
+shall occupy distinct storage. A parser shall consume input before assigning its output
+value, supporting overlapping storage. Optional unit metadata shall be available
 without runtime reflection and shall leave values, parsing and formatting unchanged.
 <<<
 COMMENT: >>>
@@ -106,10 +112,12 @@ UID: SN-011-GEN-BINARY
 TITLE: Fixed-width binary codecs
 STATEMENT: >>>
 Generated span codecs shall read an exact-width little- or big-endian integer and require
-domain membership before admission. A write shall preserve the configured signedness and
-width and touch only the prefix it reports written. Invalid values or insufficient write
-capacity shall fail without changing the destination. A binary width that cannot represent
-the complete interval shall be diagnosed at compilation.
+domain membership before admission. A read shall consume input before assigning its
+output value, supporting overlapping storage. A write shall preserve the configured
+signedness and width and touch only the prefix it reports written. The write destination
+and count shall occupy distinct storage. With that precondition, invalid values or
+insufficient write capacity shall fail without changing the destination. A binary width
+that cannot represent the complete interval shall be diagnosed at compilation.
 <<<
 COMMENT: >>>
 Implementation: BoundedIntegerGenerator.cs, CreateModel and Fits, and

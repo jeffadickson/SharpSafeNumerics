@@ -41,7 +41,7 @@ RELATIONS:
 UID: SN-013-POLICY-CONVERSION
 TITLE: SSN1005 raw saturating and truncating numeric conversion
 STATEMENT: In strict scope, the analyzer shall report direct invocations of the generic math CreateSaturating and CreateTruncating contracts.
-COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeInvocation and NumericSymbols.IsRawNumericConversion. Verification: Raw_generic_math_policy_conversion_requires_a_named_numeric_boundary.
+COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeInvocation and NumericSymbols.IsRawNumericConversion. Verification: Raw_generic_math_policy_conversion_requires_a_named_numeric_boundary and Generic_math_rule_ignores_a_same_named_contract_from_an_unrelated_interface.
 RELATIONS:
 - TYPE: Parent
   VALUE: SN-013
@@ -50,7 +50,7 @@ RELATIONS:
 UID: SN-013-BOUNDED-ACCESS
 TITLE: SSN1006 detectable bounded domain bypasses
 STATEMENT: In strict scope, the analyzer shall report raw generated constructors and storage access, generated conversions or accessors that bypass a status-based admission or read, and known raw reinterpretation operations involving an annotated bounded domain, including nullable payloads. Name-only references shall be allowed.
-COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeStrict, AnalyzeConversion and AnalyzeInvocation, NumericSymbols.IsBoundedGeneratedMember and IsBoundedReinterpretation. Verification: Generated_domain_can_be_bypassed_only_at_the_diagnosed_use_site and Generated_contracts_survive_assembly_boundaries.
+COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeStrict, AnalyzeConversion and AnalyzeInvocation, NumericSymbols.IsBoundedGeneratedMember and IsBoundedReinterpretation. Verification: Generated_domain_can_be_bypassed_only_at_the_diagnosed_use_site, Raw_reinterpretation_matches_bound_intrinsics_and_a_bounded_payload, and Generated_contracts_survive_assembly_boundaries.
 RELATIONS:
 - TYPE: Parent
   VALUE: SN-013

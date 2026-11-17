@@ -1,18 +1,18 @@
 # Verification matrix
 
-| Concern | Primary | Independent check | Status |
+| Concern | Primary | Independent check | Current evidence |
 | --- | --- | --- | --- |
-| 8-bit arithmetic | exhaustive loops | integer oracle | green before M2 |
-| 32-bit arithmetic | xUnit boundaries | CsCheck + BigInteger | implemented |
-| Built-in conversion pairs | 144-pair xUnit matrix, seed 731921 | BigInteger admission oracle; CsCheck + Hedgehog | locally green |
-| Shrinking | CsCheck | Hedgehog | implemented |
-| Domain generation | executable generated example | generator diagnostics | implemented |
-| Strict policy | Roslyn analyzer | analyzer self-test | implemented |
-| Mutation sensitivity | Stryker.NET | score threshold 90% | locally 91.15%; survivors documented |
-| Arithmetic specification | Dafny | C# properties | modeled |
-| Allocation | GC byte count, all conversion pairs | BenchmarkDotNet MemoryDiagnoser | warmed local matrix green; conversion benchmarks report zero bytes |
-| AOT | linux-x64 smoke | Windows x64 local Native AOT smoke | local Windows execution and baseline Linux CI |
-| Core coverage | Coverlet 10.1.1 | mutation regressions | 98/99 lines; 94/97 branches |
-| WCET | none yet | target hardware | not qualified |
+| Wide arithmetic/policies | All 12 built-in types, boundaries and seeded UInt128 pairs | BigInteger; CsCheck and Hedgehog | RC report |
+| Conversion pairs | 144-pair boundary matrix | BigInteger admission oracle | Conversion and RC reports |
+| Generated domains | 88 Roslyn/runtime tests | Golden codecs, malformed input, seeded round trips | Generator report |
+| Strict policy | 108 analyzer tests, SSN1001–1008 | Positive/negative operation and metadata fixtures | Analyzer report |
+| SIMD batch addition | Poison buffers, overlaps, dispatch ceilings | BigInteger lane oracle | RC report |
+| Mutation sensitivity | Stryker.NET Standard | Survivor dispositions and regression hardening | Scores retain source/scope distinctions in reports |
+| Arithmetic specification | Dafny, 12 obligations verified | C# property tests | No refinement proof |
+| Allocation | Warmed GC byte counts | BenchmarkDotNet MemoryDiagnoser | Bounded API cases only |
+| Native AOT/platforms | Windows/Linux x64 and Linux ARM64 | Gated one-time macOS ARM64 | Run IDs in RC report |
+| Coverage | Coverlet line/branch metrics | Mutation and negative tests | Per-assembly scope in reports |
+| WCET | Target hardware required | Application workload | Open |
 
-Formal verification proves the Dafny specification, not the C# implementation. The relationship is strengthened through shared golden/property semantics but is not a machine-checked refinement proof.
+The [RC report](verification/2026-11-17-rc1.md) records exact counts, source scope,
+commands and limitations. Historical measurements remain historical evidence.
