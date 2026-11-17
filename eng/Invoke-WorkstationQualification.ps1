@@ -15,6 +15,7 @@ param(
     [ValidateRange(1,64)][int]$MaxParallelism = 12,
     [string]$CheckoutRoot,
     [string]$ArtifactRoot,
+    [switch]$IsolatedNuGetCache,
     [switch]$SkipNativeToolsInstall,
     [switch]$PlanOnly,
     [Parameter(DontShow=$true)][string]$DeadlineUtc
@@ -37,7 +38,7 @@ $branch = 'qualification/issue-' + $IssueNumber + '/' + $runId
 $issueUrl='https://github.com/'+$Repository+'/issues/'+$IssueNumber
 $toolRoot = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'SharpSafeNumericsQualification\tools'
 if ($PlanOnly) {
-    [pscustomobject]@{ Repository=$Repository; SourceRef=$SourceRef; IssueNumber=$IssueNumber; IssueUrl=$issueUrl; Checkout=$checkout; Artifacts=$run; ResultsBranch=$branch; Hours=$Hours; DeadlineUtc=$absoluteDeadline.ToString('O'); SoakMinutesPerMode=$SoakMinutes; MaxParallelism=$MaxParallelism; ToolRoot=$toolRoot } | ConvertTo-Json
+    [pscustomobject]@{ Repository=$Repository; SourceRef=$SourceRef; IssueNumber=$IssueNumber; IssueUrl=$issueUrl; Checkout=$checkout; Artifacts=$run; ResultsBranch=$branch; Hours=$Hours; DeadlineUtc=$absoluteDeadline.ToString('O'); SoakMinutesPerMode=$SoakMinutes; MaxParallelism=$MaxParallelism; ToolRoot=$toolRoot; IsolatedNuGetCache=$IsolatedNuGetCache.IsPresent } | ConvertTo-Json
     return
 }
 if ($env:OS -ne 'Windows_NT' -or $env:PROCESSOR_ARCHITECTURE -ne 'AMD64') { throw 'This runner requires Windows x64.' }
@@ -233,14 +234,14 @@ function Start-Step([string]$Name,[string]$Exe,[string[]]$Arguments,[string]$Wor
     Write-Host "Started $Name; logs: $stdout"
     return $context
 }
-function Complete-Step($Context,[switch]$Cancel) {
+function Complete-Step($Context,[switch]$Cancel,[switch]$Probe) {
     if (-not $Context) { return }
     $end = if ($Context.End -lt $workDeadline) { $Context.End } else { $workDeadline }
     $milliseconds=[int][Math]::Max(0,($end-[DateTime]::UtcNow).TotalMilliseconds)
     try{$finished=(-not $Cancel) -and $Context.Process.WaitForExit($milliseconds)}
     finally{$Context.Owner.Dispose()}
     $code=if($finished){$Context.Process.ExitCode}else{-1}
-    $status=if($Cancel){'Cancelled'}elseif(-not $finished){'TimedOut'}elseif($code -eq 0){'Passed'}else{'Failed'}
+    $status=if($Cancel){'Cancelled'}elseif(-not $finished){'TimedOut'}elseif($code -eq 0){'Passed'}elseif($Probe){'ProbeRejected'}else{'Failed'}
     $peak=$null; try{$peak=$Context.Process.PeakWorkingSet64}catch{}
     $records.Add([pscustomobject]@{Name=$Context.Name;Status=$status;ExitCode=$code;StartUtc=$Context.Start.ToString('O');ElapsedSeconds=([DateTime]::UtcNow-$Context.Start).TotalSeconds;Command=$Context.Command;Environment=$Context.Environment;Stdout=$Context.Stdout;Stderr=$Context.Stderr;PeakWorkingSetBytes=$peak})
     Write-Host "$($Context.Name): $status (exit $code)"
@@ -252,14 +253,94 @@ function Invoke-Step([string]$Name,[string]$Exe,[string[]]$Arguments,[string]$Wo
     if ($context) { return Complete-Step $context }
     return -1
 }
-function Read-Step([string]$Name,[string]$Exe,[string[]]$Arguments,[string]$WorkingDirectory,[int]$LimitSeconds=90){
-    $context=Start-Step $Name $Exe $Arguments $WorkingDirectory $LimitSeconds
-    if(-not $context -or (Complete-Step $context) -ne 0){throw "$Name failed or exceeded its budget. See local logs under $run."}
+function Read-Step([string]$Name,[string]$Exe,[string[]]$Arguments,[string]$WorkingDirectory,[int]$LimitSeconds=90,[switch]$Probe,[hashtable]$Environment=@{}){
+    $context=Start-Step $Name $Exe $Arguments $WorkingDirectory $LimitSeconds -Environment $Environment
+    if(-not $context){throw "$Name exceeded its budget. See local logs under $run."}
+    $code=Complete-Step $context -Probe:$Probe
+    if($Probe -and $records[-1].Status -eq 'ProbeRejected'){return}
+    if($code -ne 0){throw "$Name failed or exceeded its budget. See local logs under $run."}
     # Kill-on-close termination can release a descendant's inherited file handle
     # just after the parent exits. Permit that writer while reading flushed output.
     $stream=[IO.FileStream]::new($context.Stdout,[IO.FileMode]::Open,[IO.FileAccess]::Read,([IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete))
     $reader=[IO.StreamReader]::new($stream)
     try{return $reader.ReadToEnd().TrimEnd()}finally{$reader.Dispose()}
+}
+function Set-QualificationNuGetCache([string]$ArtifactDirectory,[switch]$Isolated){
+    # Preserve NuGet.Config, the caller's override, and NuGet's user cache unless requested.
+    if($Isolated){
+        $cache=Join-Path $ArtifactDirectory 'nuget'
+        Ensure-Directory $cache
+        $env:NUGET_PACKAGES=$cache
+    }
+}
+function Select-QualificationDotnet([string[]]$Candidates,[string]$WorkingDirectory){
+    foreach($exe in ($Candidates | Where-Object {$_} | Select-Object -Unique)){
+        if(-not(Test-Path -LiteralPath $exe -PathType Leaf)){continue}
+        # The SDK resolver processes the checkout's global.json, including its patch roll-forward.
+        $version=Read-Step 'probe-sdk-version' $exe @('--version') $WorkingDirectory -Probe
+        if(-not $version -or $version -notmatch '^\d+\.\d+\.\d+(?:-[\w.-]+)?$'){continue}
+        $root=Split-Path -Parent $exe
+        $msbuild=Join-Path $root "sdk/$version/MSBuild.dll"
+        if(-not(Test-Path -LiteralPath $msbuild -PathType Leaf)){continue}
+        $info=Read-Step 'probe-sdk-info' $exe @('--info') $WorkingDirectory -Probe -Environment @{DOTNET_CLI_UI_LANGUAGE='en-US'}
+        if($info -notmatch '(?mi)^\s*Architecture:\s*x64\s*$'){continue}
+        return [pscustomobject]@{Executable=$exe;Root=$root;Version=$version;MSBuild=$msbuild;Info=$info}
+    }
+}
+function Get-MissingToolRuntimes([string]$RuntimeList){
+    # The pinned qualification tools target .NET 8.0 and 10.0 and accept stable patches.
+    foreach($channel in @('8.0','10.0')){
+        $pattern='(?m)^Microsoft\.NETCore\.App '+[regex]::Escape($channel)+'\.\d+\s+\['
+        if($RuntimeList -notmatch $pattern){$channel}
+    }
+}
+function Test-DirectoryWritable([string]$Path){
+    if(-not(Test-Path -LiteralPath $Path -PathType Container)){return $false}
+    $probe=Join-Path $Path ('.qualification-write-'+[guid]::NewGuid().ToString('N'))
+    try{
+        $stream=[IO.FileStream]::new($probe,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
+        $stream.Dispose()
+        return $true
+    }catch [UnauthorizedAccessException]{return $false}
+    catch [IO.IOException]{return $false}
+}
+function Install-QualificationDotnet([string[]]$Candidates,[string]$RequiredVersion,[string]$WorkingDirectory,[string]$ToolDirectory,[string]$ArtifactDirectory){
+    $sdk=Select-QualificationDotnet $Candidates $WorkingDirectory
+    $installer=Join-Path $ArtifactDirectory 'dotnet-install.ps1'
+    $pwsh=(Get-Process -Id $PID).Path
+    if(-not $sdk){
+        $root=Join-Path $ToolDirectory ('dotnet-'+$RequiredVersion)
+        Ensure-Directory $root
+        Download 'https://dot.net/v1/dotnet-install.ps1' $installer
+        if((Invoke-Step 'install-sdk' $pwsh @('-NoProfile','-File',$installer,'-Version',$RequiredVersion,'-Architecture','x64','-InstallDir',$root,'-NoPath') $WorkingDirectory 1500) -ne 0){
+            throw "Installation of the checkout's .NET SDK $RequiredVersion failed."
+        }
+        $sdk=Select-QualificationDotnet @((Join-Path $root 'dotnet.exe')) $WorkingDirectory
+        if(-not $sdk){throw "The checkout could not select an x64 SDK from $root after installation."}
+    }
+    $runtimeList=Read-Step 'installed-runtimes' $sdk.Executable @('--list-runtimes') $WorkingDirectory
+    $missing=@(Get-MissingToolRuntimes $runtimeList)
+    if($missing.Count){
+        if(-not(Test-DirectoryWritable $sdk.Root)){
+            throw "The selected .NET SDK $($sdk.Version) is usable. Install missing x64 tool runtimes $($missing -join ', ') into $($sdk.Root) as administrator, or rerun this runner elevated."
+        }
+        if(-not(Test-Path -LiteralPath $installer -PathType Leaf)){Download 'https://dot.net/v1/dotnet-install.ps1' $installer}
+        foreach($channel in $missing){
+            # Adding an older runtime must preserve the existing SDK's dotnet host.
+            $arguments=@('-NoProfile','-File',$installer,'-Channel',$channel,'-Runtime','dotnet','-Architecture','x64','-InstallDir',$sdk.Root,'-NoPath','-SkipNonVersionedFiles')
+            if((Invoke-Step ('install-runtime-'+$channel) $pwsh $arguments $WorkingDirectory 600) -ne 0){throw "Installation of the x64 tool runtime $channel failed."}
+        }
+        $remaining=@(Get-MissingToolRuntimes (Read-Step 'verified-runtimes' $sdk.Executable @('--list-runtimes') $WorkingDirectory))
+        if($remaining.Count){throw "Missing x64 tool runtimes in $($sdk.Root) after installation: $($remaining -join ', ')."}
+    }
+    return $sdk
+}
+function Find-VersionedTool([string[]]$Candidates,[string]$Pattern,[string]$ProbeName,[string]$WorkingDirectory){
+    foreach($exe in ($Candidates | Where-Object {$_} | Select-Object -Unique)){
+        if(-not(Test-Path -LiteralPath $exe -PathType Leaf)){continue}
+        $version=Read-Step $ProbeName $exe @('--version') $WorkingDirectory -Probe
+        if($version -match $Pattern){return $exe}
+    }
 }
 function Commit-Results([string]$Relative,[string]$Revision,[string]$Message){
     [void](Read-Step 'stage-results' $git @('add','--',$Relative) $checkout)
@@ -295,31 +376,64 @@ try {
     $sourceSha=Read-Step 'source-revision' $git @('rev-parse','HEAD') $checkout
     $env:GIT_AUTHOR_NAME='jeffadickson';$env:GIT_COMMITTER_NAME='jeffadickson'
     $env:GIT_AUTHOR_EMAIL='88860296+jeffadickson@users.noreply.github.com';$env:GIT_COMMITTER_EMAIL=$env:GIT_AUTHOR_EMAIL
-    $env:NUGET_PACKAGES=Join-Path $run 'nuget'; Ensure-Directory $env:NUGET_PACKAGES
+    Set-QualificationNuGetCache $run -Isolated:$IsolatedNuGetCache
     Get-PSDrive -PSProvider FileSystem | Select-Object Name,Root,Used,Free | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $run 'disk-start.json')
-    $dotnet=Get-Command dotnet.exe -ErrorAction SilentlyContinue
-    $usable=$false
-    if($dotnet){$sdkText=Read-Step 'installed-sdks' $dotnet.Source @('--list-sdks') $checkout;$runtimeText=Read-Step 'installed-runtimes' $dotnet.Source @('--list-runtimes') $checkout;$usable=($sdkText -match '(?m)^11\.0\.1\d\d ') -and ($runtimeText -match 'Microsoft.NETCore.App 8\.') -and ($runtimeText -match 'Microsoft.NETCore.App 10\.')}
-    if(-not $usable){
-        $sdkRoot=Join-Path $toolRoot 'dotnet-11.0.100'; Ensure-Directory $sdkRoot
-        $installer=Join-Path $run 'dotnet-install.ps1'; Download 'https://dot.net/v1/dotnet-install.ps1' $installer
-        $pwsh=(Get-Process -Id $PID).Path
-        if((Invoke-Step 'install-sdk' $pwsh @('-NoProfile','-File',$installer,'-Version','11.0.100','-InstallDir',$sdkRoot,'-NoPath') $checkout 1500) -ne 0){throw 'SDK installation failed'}
-        foreach($channel in @('8.0','10.0')){if((Invoke-Step ('install-runtime-'+$channel) $pwsh @('-NoProfile','-File',$installer,'-Channel',$channel,'-Runtime','dotnet','-InstallDir',$sdkRoot,'-NoPath') $checkout 600) -ne 0){throw 'Required tool runtime installation failed'}}
-        $dotnet=Get-Item -LiteralPath (Join-Path $sdkRoot 'dotnet.exe')
-        $dotnetExe=$dotnet.FullName
-    }else{$dotnetExe=$dotnet.Source}
-    $env:DOTNET_ROOT=Split-Path -Parent $dotnetExe; $env:PATH=$env:DOTNET_ROOT+';'+$env:PATH
-    $sdkVersion=Read-Step 'pinned-sdk-version' $dotnetExe @('--version') $checkout
-    $env:MSBUILD_EXE_PATH=Join-Path $env:DOTNET_ROOT "sdk\$sdkVersion\MSBuild.dll"
-    if(-not(Test-Path -LiteralPath $env:MSBUILD_EXE_PATH -PathType Leaf)){throw 'SDK MSBuild missing'}
-    Read-Step 'sdk-info' $dotnetExe @('--info') $checkout | Set-Content -LiteralPath (Join-Path $run 'dotnet-info.txt')
+    $global=Get-Content -LiteralPath (Join-Path $checkout 'global.json') -Raw | ConvertFrom-Json
+    $requiredSdk=[string]$global.sdk.version
+    if($requiredSdk -notmatch '^\d+\.\d+\.\d+(?:-[\w.-]+)?$'){throw 'The checkout global.json does not specify an installable SDK version.'}
+    $dotnetCandidates=@((Get-Command dotnet.exe -CommandType Application -All -ErrorAction SilentlyContinue).Source)
+    foreach($root in @($env:DOTNET_ROOT,(Join-Path ([Environment]::GetFolderPath('ProgramFiles')) 'dotnet'),(Join-Path $toolRoot ('dotnet-'+$requiredSdk)))){
+        if($root){$dotnetCandidates+=Join-Path $root 'dotnet.exe'}
+    }
+    $sdk=Install-QualificationDotnet $dotnetCandidates $requiredSdk $checkout $toolRoot $run
+    $dotnetExe=$sdk.Executable
+    $env:DOTNET_ROOT=$sdk.Root
+    $env:PATH=$sdk.Root+';'+$env:PATH
+    $env:MSBUILD_EXE_PATH=$sdk.MSBuild
+    $sdk.Info | Set-Content -LiteralPath (Join-Path $run 'dotnet-info.txt')
+    Write-Host "Selected .NET SDK $($sdk.Version): $dotnetExe"
+    $nugetCache=Read-Step 'nuget-global-packages' $dotnetExe @('nuget','locals','global-packages','--list') $checkout
+    $nugetCache | Set-Content -LiteralPath (Join-Path $run 'nuget-cache.txt')
+    Write-Host "NuGet $nugetCache"
     if((Invoke-Step 'restore-pinned-tools' $dotnetExe @('tool','restore') $checkout 900) -ne 0){throw 'Pinned tool restore failed'}
-    $z3Root=Join-Path $toolRoot 'z3-4.12.1'; $z3=Join-Path $z3Root 'z3-4.12.1-x64-win\bin\z3.exe'
-    if(-not(Test-Path -LiteralPath $z3 -PathType Leaf)){$archive=Join-Path $run 'z3.zip';Download 'https://github.com/Z3Prover/z3/releases/download/z3-4.12.1/z3-4.12.1-x64-win.zip' $archive;Ensure-Directory $z3Root;Expand-Archive -LiteralPath $archive -DestinationPath $z3Root -Force}
-    $python=Get-Command python.exe -ErrorAction SilentlyContinue
-    $pythonPath=if($python -and $python.Source -notlike '*WindowsApps*'){$python.Source}else{$null}
-    if(-not $pythonPath){
+    $z3Root=Join-Path $toolRoot 'z3-4.12.1'
+    $z3Cached=Join-Path $z3Root 'z3-4.12.1-x64-win\bin\z3.exe'
+    $z3Pattern='^Z3 version 4\.12\.1(?:\s|$)'
+    $z3=Find-VersionedTool (@((Get-Command z3.exe -CommandType Application -All -ErrorAction SilentlyContinue).Source)+@($z3Cached)) $z3Pattern 'probe-z3' $checkout
+    if(-not $z3){
+        $archive=Join-Path $run 'z3.zip'
+        Download 'https://github.com/Z3Prover/z3/releases/download/z3-4.12.1/z3-4.12.1-x64-win.zip' $archive
+        Ensure-Directory $z3Root
+        Expand-Archive -LiteralPath $archive -DestinationPath $z3Root -Force
+        $z3=Find-VersionedTool @($z3Cached) $z3Pattern 'verify-z3' $checkout
+        if(-not $z3){throw 'Pinned Z3 4.12.1 was unavailable after extraction.'}
+    }
+    $venv=Join-Path $toolRoot 'strictdoc-0.30.4'
+    $strictdocCached=Join-Path $venv 'Scripts/strictdoc.exe'
+    $strictdocPattern='^(?:StrictDoc\s+)?0\.30\.4$'
+    $docCandidates=@((Get-Command strictdoc.exe -CommandType Application -All -ErrorAction SilentlyContinue).Source)+@($strictdocCached)
+    foreach($root in @($env:VIRTUAL_ENV,$env:CONDA_PREFIX)){
+        if($root){$docCandidates+=Join-Path $root 'Scripts/strictdoc.exe'}
+    }
+    $strictdoc=Find-VersionedTool $docCandidates $strictdocPattern 'probe-strictdoc' $checkout
+    $pythonPath=$null
+    if(-not $strictdoc){
+        $python=Get-Command python.exe -CommandType Application -All -ErrorAction SilentlyContinue |
+            Where-Object Source -NotLike '*WindowsApps*' | Select-Object -First 1
+        if($python){$pythonPath=$python.Source}
+        else{
+            $launcher=Get-Command py.exe -CommandType Application -ErrorAction SilentlyContinue
+            if($launcher){$pythonPath=Read-Step 'probe-python' $launcher.Source @('-3','-c','import sys; print(sys.executable)') $checkout -Probe}
+        }
+        if($pythonPath -and (Test-Path -LiteralPath $pythonPath -PathType Leaf)){
+            $scripts=Read-Step 'probe-python-script-directories' $pythonPath @('-c','import sysconfig; print(sysconfig.get_path("scripts")); print(sysconfig.get_path("scripts", scheme="nt_user"))') $checkout -Probe
+            $docCandidates=@(foreach($directory in ($scripts -split '\r?\n')){
+                if($directory -and (Test-Path -LiteralPath $directory -PathType Container)){Join-Path $directory 'strictdoc.exe'}
+            })
+            $strictdoc=Find-VersionedTool $docCandidates $strictdocPattern 'probe-python-strictdoc' $checkout
+        }else{$pythonPath=$null}
+    }
+    if(-not $strictdoc -and -not $pythonPath){
         # PSF publishes a full, unprivileged Windows build for automation on NuGet.
         $catalog=Read-OfficialUrl 'https://api.nuget.org/v3-flatcontainer/python/index.json' | ConvertFrom-Json
         $version=$catalog.versions | Where-Object {$_ -match '^3\.13\.\d+$'} | Sort-Object {[version]$_} -Descending | Select-Object -First 1
@@ -332,13 +446,17 @@ try {
             Ensure-Directory $pythonRoot; Expand-Archive -LiteralPath $archive -DestinationPath $pythonRoot -Force
         }
     }
-    if(-not(Test-Path -LiteralPath $pythonPath -PathType Leaf)){throw 'Python installation unavailable'}
-    $venv=Join-Path $toolRoot 'strictdoc-0.30.4'; $strictdoc=Join-Path $venv 'Scripts\strictdoc.exe'
-    if(-not(Test-Path -LiteralPath $strictdoc -PathType Leaf)){
-        [void](Read-Step 'create-doc-environment' $pythonPath @('-m','venv',$venv) $checkout 300)
-        $venvPython=Join-Path $venv 'Scripts\python.exe'
-        [void](Read-Step 'install-strictdoc' $venvPython @('-m','pip','install','--no-compile','strictdoc==0.30.4','--cache-dir',(Join-Path $run 'pip-cache')) $checkout 1200)
+    if(-not $strictdoc){
+        $venvPython=Join-Path $venv 'Scripts/python.exe'
+        if(-not(Test-Path -LiteralPath $venvPython -PathType Leaf)){
+            if(-not(Test-Path -LiteralPath $pythonPath -PathType Leaf)){throw 'Python installation unavailable'}
+            [void](Read-Step 'create-doc-environment' $pythonPath @('-m','venv',$venv) $checkout 300)
+        }
+        [void](Read-Step 'install-strictdoc' $venvPython @('-m','pip','install','--no-compile','strictdoc==0.30.4') $checkout 1200)
+        $strictdoc=Find-VersionedTool @($strictdocCached) $strictdocPattern 'verify-strictdoc' $checkout
+        if(-not $strictdoc){throw 'Pinned StrictDoc 0.30.4 was unavailable after installation.'}
     }
+    Write-Host "Selected StrictDoc 0.30.4: $strictdoc"
     $vswhere=Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
     function Test-NativePrerequisites {
         if(-not(Test-Path -LiteralPath $vswhere -PathType Leaf)){return $false}
@@ -448,7 +566,7 @@ finally {
             $summary=[ordered]@{RunId=$runId;Repository=$Repository;SourceRef=$SourceRef;SourceRevision=$sourceSha;IssueNumber=$IssueNumber;IssueUrl=$issueUrl;ResultsBranch=$branch;Machine=$env:COMPUTERNAME;ProcessorCount=[Environment]::ProcessorCount;StartedUtc=$started.ToString('O');FinishedUtc=[DateTime]::UtcNow.ToString('O');Hours=$Hours;DeadlineUtc=$deadline.ToString('O');ArtifactDirectory=$run;FatalError=$fatal;Checks=$records;Downloads=$downloads;SourceChanges=$sourceChanges}
             $summary | ConvertTo-Json -Depth 9 | Set-Content -LiteralPath (Join-Path $result 'summary.json') -Encoding utf8
             [pscustomobject]@{Identifier=$env:PROCESSOR_IDENTIFIER;LogicalProcessors=[Environment]::ProcessorCount}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $result 'cpu.json')
-            foreach($file in @('dotnet-info.txt','disk-start.json')){ $path=Join-Path $run $file;if(Test-Path -LiteralPath $path -PathType Leaf){Copy-Item -LiteralPath $path -Destination (Join-Path $result $file)} }
+            foreach($file in @('dotnet-info.txt','nuget-cache.txt','disk-start.json')){ $path=Join-Path $run $file;if(Test-Path -LiteralPath $path -PathType Leaf){Copy-Item -LiteralPath $path -Destination (Join-Path $result $file)} }
             $coverageSummary=Join-Path $run 'coverage-report/Summary.json';if(Test-Path -LiteralPath $coverageSummary -PathType Leaf){Copy-Item -LiteralPath $coverageSummary -Destination (Join-Path $result 'coverage-summary.json')}
             foreach($record in $records){foreach($kind in @('Stdout','Stderr')){ $path=$record.$kind;if($path -and (Test-Path -LiteralPath $path -PathType Leaf)){Get-Content -LiteralPath $path -Tail 120 | Set-Content -LiteralPath (Join-Path $result ($record.Name+'.'+$kind+'.tail.txt')) -Encoding utf8}}}
             $mutations=foreach($report in (Get-ChildItem -Path (Join-Path $run 'mutation-*/reports/mutation-report.json') -File -ErrorAction SilentlyContinue)){
@@ -470,5 +588,5 @@ finally {
     }
     foreach($key in $savedEnvironment.Keys){[Environment]::SetEnvironmentVariable($key,$savedEnvironment[$key],'Process')}
 }
-if(-not $pushed -or $fatal -or @($records|Where-Object Status -ne 'Passed').Count -gt 0){exit 1}
+if(-not $pushed -or $fatal -or @($records|Where-Object {$_.Status -notin @('Passed','ProbeRejected')}).Count -gt 0){exit 1}
 exit 0

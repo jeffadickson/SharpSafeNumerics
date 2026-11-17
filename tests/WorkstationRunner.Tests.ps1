@@ -5,10 +5,9 @@ BeforeAll {
     $tokens=$null;$parseErrors=$null
     $ast=[Management.Automation.Language.Parser]::ParseFile($script:runner,[ref]$tokens,[ref]$parseErrors)
     if($parseErrors.Count){throw ($parseErrors.Message -join '; ')}
-    foreach($name in @('Ensure-Directory','Initialize-ProcessJob','Start-Step','Complete-Step','Read-Step','Commit-Results','Network-Seconds')){
+    foreach($name in @('Ensure-Directory','Initialize-ProcessJob','Start-Step','Complete-Step','Read-Step','Commit-Results','Network-Seconds','Download','Invoke-Step','Select-QualificationDotnet','Install-QualificationDotnet','Get-MissingToolRuntimes','Test-DirectoryWritable','Set-QualificationNuGetCache','Find-VersionedTool')){
         $definition=$ast.FindAll({param($node)$node -is [Management.Automation.Language.FunctionDefinitionAst]},$false)|Where-Object Name -eq $name
-        if(-not $definition){throw "Missing process helper $name"}
-        Invoke-Expression $definition.Extent.Text
+        if($definition){Invoke-Expression $definition.Extent.Text}
     }
     $script:pwsh=(Get-Process -Id $PID).Path
 }
@@ -75,6 +74,55 @@ BeforeEach {
     It 'refuses downloads as soon as the five-minute publication reserve starts' {
         $script:absoluteDeadline=[DateTime]::UtcNow.AddMinutes(4)
         {Network-Seconds}|Should -Throw '*deadline expired*'
+    }
+    It 'reuses the SDK selected by the checkout and installs only the missing tool runtime' {
+        $root=Join-Path $TestDrive 'existing dotnet'
+        Ensure-Directory (Join-Path $root 'sdk/11.0.104')
+        $exe=Join-Path $root 'dotnet.exe'
+        Set-Content -LiteralPath $exe -Value 'fixture'
+        Set-Content -LiteralPath (Join-Path $root 'sdk/11.0.104/MSBuild.dll') -Value 'fixture'
+        Mock Read-Step {
+            switch($Name){
+                'probe-sdk-version' { '11.0.104' }
+                'probe-sdk-info' { "Host:`n  Architecture: x64" }
+                'installed-runtimes' { 'Microsoft.NETCore.App 10.0.6 [installed]' }
+                'verified-runtimes' { "Microsoft.NETCore.App 8.0.25 [installed]`nMicrosoft.NETCore.App 10.0.6 [installed]" }
+                default { throw "Unexpected probe $Name" }
+            }
+        }
+        Mock Download {}
+        Mock Invoke-Step { 0 }
+        $result=Install-QualificationDotnet @($exe) '11.0.100' $TestDrive $TestDrive $script:run
+        $result.Executable|Should -BeExactly $exe
+        $result.Version|Should -BeExactly '11.0.104'
+        Should -Invoke Invoke-Step -Times 0 -Exactly -ParameterFilter {$Name -eq 'install-sdk'}
+        Should -Invoke Invoke-Step -Times 1 -Exactly -ParameterFilter {$Name -eq 'install-runtime-8.0' -and $Arguments -contains $root}
+        Should -Invoke Invoke-Step -Times 0 -Exactly -ParameterFilter {$Name -eq 'install-runtime-10.0'}
+        Should -Invoke Download -Times 1 -Exactly
+    }
+    It 'keeps the caller NuGet cache by default and isolates it only by request' {
+        $previous=$env:NUGET_PACKAGES
+        try {
+            $env:NUGET_PACKAGES=Join-Path $TestDrive 'existing cache'
+            Set-QualificationNuGetCache $script:run
+            $env:NUGET_PACKAGES|Should -BeExactly (Join-Path $TestDrive 'existing cache')
+            Test-Path -LiteralPath (Join-Path $script:run 'nuget')|Should -BeFalse
+            $env:NUGET_PACKAGES=$null
+            Set-QualificationNuGetCache $script:run
+            $env:NUGET_PACKAGES|Should -BeNullOrEmpty
+            Set-QualificationNuGetCache $script:run -Isolated
+            $env:NUGET_PACKAGES|Should -BeExactly (Join-Path $script:run 'nuget')
+            Test-Path -LiteralPath $env:NUGET_PACKAGES -PathType Container|Should -BeTrue
+        } finally { $env:NUGET_PACKAGES=$previous }
+    }
+    It 'finds the requested StrictDoc version in an existing environment' {
+        $wrong=Join-Path $TestDrive 'wrong.exe'
+        $right=Join-Path $TestDrive 'right.exe'
+        Set-Content -LiteralPath $wrong -Value 'fixture'
+        Set-Content -LiteralPath $right -Value 'fixture'
+        Mock Read-Step { if($Exe -eq $wrong){'0.31.0'}else{'0.30.4'} }
+        (Find-VersionedTool @($wrong,$right) '^0\.30\.4$' 'probe-strictdoc' $TestDrive)|Should -BeExactly $right
+        Should -Invoke Read-Step -Times 2 -Exactly
     }
     It 'commits reports while preserving an unrelated staged modification' {
         $script:git=(Get-Command git.exe).Source
