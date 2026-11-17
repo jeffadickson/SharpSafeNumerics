@@ -1,0 +1,2298 @@
+[
+  {
+    "Report": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\mutation-Analyzers\\reports\\mutation-report.json",
+    "Total": 522,
+    "Statuses": [
+      {
+        "Name": "CompileError",
+        "Count": 86
+      },
+      {
+        "Name": "Ignored",
+        "Count": 34
+      },
+      {
+        "Name": "Killed",
+        "Count": 312
+      },
+      {
+        "Name": "NoCoverage",
+        "Count": 13
+      },
+      {
+        "Name": "Survived",
+        "Count": 77
+      }
+    ],
+    "Survivors": [
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "2",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 36,
+            "column": 20
+          },
+          "end": {
+            "line": 37,
+            "column": 125
+          }
+        },
+        "Replacement": "(false?compilation.Assembly :            compilation.SourceModule.ReferencedAssemblySymbols.FirstOrDefault(assembly => assembly.Name == CoreAssemblyName))"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "4",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 37,
+            "column": 13
+          },
+          "end": {
+            "line": 37,
+            "column": 78
+          }
+        },
+        "Replacement": "compilation.SourceModule.ReferencedAssemblySymbols.First"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "17",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 49,
+            "column": 63
+          },
+          "end": {
+            "line": 49,
+            "column": 89
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "18",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 50,
+            "column": 58
+          },
+          "end": {
+            "line": 50,
+            "column": 79
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "25",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 62,
+            "column": 58
+          },
+          "end": {
+            "line": 62,
+            "column": 101
+          }
+        },
+        "Replacement": "SymbolKind.Namespace and SymbolKind.Assembly"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "46",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 91,
+            "column": 13
+          },
+          "end": {
+            "line": 91,
+            "column": 51
+          }
+        },
+        "Replacement": "numberBase is null && !method.IsStatic"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "58",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 101,
+            "column": 17
+          },
+          "end": {
+            "line": 101,
+            "column": 26
+          }
+        },
+        "Replacement": ";"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "80",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 135,
+            "column": 16
+          },
+          "end": {
+            "line": 136,
+            "column": 98
+          }
+        },
+        "Replacement": "Matches(unsafeMethods, method.ContainingType) &&\r\n            method.Name is \"As\" or \"BitCast\" && types.Length == 2 || types.Any(HasBoundedPayload)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "81",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 135,
+            "column": 16
+          },
+          "end": {
+            "line": 136,
+            "column": 66
+          }
+        },
+        "Replacement": "Matches(unsafeMethods, method.ContainingType) &&\r\n            method.Name is \"As\" or \"BitCast\" || types.Length == 2"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "82",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 135,
+            "column": 16
+          },
+          "end": {
+            "line": 136,
+            "column": 45
+          }
+        },
+        "Replacement": "Matches(unsafeMethods, method.ContainingType) ||\r\n            method.Name is \"As\" or \"BitCast\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "89",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 137,
+            "column": 13
+          },
+          "end": {
+            "line": 138,
+            "column": 113
+          }
+        },
+        "Replacement": "Matches(memoryMarshal, method.ContainingType) &&\r\n            method.Name is \"AsBytes\" or \"AsRef\" or \"Cast\" or \"Read\" or \"TryRead\" || types.Any(HasBoundedPayload)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "90",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 137,
+            "column": 13
+          },
+          "end": {
+            "line": 138,
+            "column": 81
+          }
+        },
+        "Replacement": "Matches(memoryMarshal, method.ContainingType) ||\r\n            method.Name is \"AsBytes\" or \"AsRef\" or \"Cast\" or \"Read\" or \"TryRead\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "94",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 138,
+            "column": 28
+          },
+          "end": {
+            "line": 138,
+            "column": 58
+          }
+        },
+        "Replacement": "\"AsBytes\" or \"AsRef\" and \"Cast\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "95",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 138,
+            "column": 28
+          },
+          "end": {
+            "line": 138,
+            "column": 48
+          }
+        },
+        "Replacement": "\"AsBytes\" and \"AsRef\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "96",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 138,
+            "column": 28
+          },
+          "end": {
+            "line": 138,
+            "column": 37
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "97",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 138,
+            "column": 41
+          },
+          "end": {
+            "line": 138,
+            "column": 48
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "98",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 138,
+            "column": 52
+          },
+          "end": {
+            "line": 138,
+            "column": 58
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "100",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 138,
+            "column": 72
+          },
+          "end": {
+            "line": 138,
+            "column": 81
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "101",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 138,
+            "column": 85
+          },
+          "end": {
+            "line": 138,
+            "column": 94
+          }
+        },
+        "Replacement": "types.All"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "102",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 144,
+            "column": 9
+          },
+          "end": {
+            "line": 144,
+            "column": 72
+          }
+        },
+        "Replacement": "Matches(formattableString, type) && Matches(iFormattable, type)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "108",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 150,
+            "column": 9
+          },
+          "end": {
+            "line": 150,
+            "column": 101
+          }
+        },
+        "Replacement": "method.ContainingType.SpecialType is not SpecialType.System_IntPtr or SpecialType.System_UIntPtr"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "112",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 154,
+            "column": 16
+          },
+          "end": {
+            "line": 155,
+            "column": 64
+          }
+        },
+        "Replacement": "!conversion.IsImplicit && conversion.Conversion.Exists ||\r\n            IsBuiltinIntegerOperator(conversion.OperatorMethod)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "113",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 154,
+            "column": 16
+          },
+          "end": {
+            "line": 154,
+            "column": 70
+          }
+        },
+        "Replacement": "!conversion.IsImplicit || conversion.Conversion.Exists"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "119",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 164,
+            "column": 14
+          },
+          "end": {
+            "line": 164,
+            "column": 65
+          }
+        },
+        "Replacement": "operand is not null || !Matches(targetType, target)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "148",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 198,
+            "column": 16
+          },
+          "end": {
+            "line": 200,
+            "column": 75
+          }
+        },
+        "Replacement": "conversion.Conversion.Exists &&\r\n            !conversion.Conversion.IsUserDefined &&\r\n            source?.IsValueType == true || target?.IsReferenceType == true"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "149",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 198,
+            "column": 16
+          },
+          "end": {
+            "line": 200,
+            "column": 40
+          }
+        },
+        "Replacement": "conversion.Conversion.Exists &&\r\n            !conversion.Conversion.IsUserDefined ||\r\n            source?.IsValueType == true"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "150",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 198,
+            "column": 16
+          },
+          "end": {
+            "line": 199,
+            "column": 49
+          }
+        },
+        "Replacement": "conversion.Conversion.Exists ||\r\n            !conversion.Conversion.IsUserDefined"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "174",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 216,
+            "column": 13
+          },
+          "end": {
+            "line": 216,
+            "column": 45
+          }
+        },
+        "Replacement": "expected is null && type is null"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "178",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 217,
+            "column": 20
+          },
+          "end": {
+            "line": 217,
+            "column": 25
+          }
+        },
+        "Replacement": "true"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "181",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 218,
+            "column": 59
+          },
+          "end": {
+            "line": 219,
+            "column": 53
+          }
+        },
+        "Replacement": "argument.Key == option ||\r\n            Matches(optionType, argument.Value.Type)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "216",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 251,
+            "column": 22
+          },
+          "end": {
+            "line": 251,
+            "column": 27
+          }
+        },
+        "Replacement": "true"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "230",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 262,
+            "column": 9
+          },
+          "end": {
+            "line": 262,
+            "column": 41
+          }
+        },
+        "Replacement": "sbyte or byte or short and ushort"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "231",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 262,
+            "column": 9
+          },
+          "end": {
+            "line": 262,
+            "column": 31
+          }
+        },
+        "Replacement": "sbyte or byte and short"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "234",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 268,
+            "column": 88
+          },
+          "end": {
+            "line": 269,
+            "column": 100
+          }
+        },
+        "Replacement": "(false?null :        symbol.GetAttributes().FirstOrDefault(attribute => Matches(type, attribute.AttributeClass)))"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\NumericSymbols.cs",
+        "Id": "237",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 272,
+            "column": 14
+          },
+          "end": {
+            "line": 272,
+            "column": 69
+          }
+        },
+        "Replacement": ".GetMembers(name).OfType<IFieldSymbol>().First"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "241",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 20,
+            "column": 20
+          },
+          "end": {
+            "line": 20,
+            "column": 76
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "242",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 21,
+            "column": 9
+          },
+          "end": {
+            "line": 21,
+            "column": 107
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "245",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 25,
+            "column": 20
+          },
+          "end": {
+            "line": 25,
+            "column": 81
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "246",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 26,
+            "column": 9
+          },
+          "end": {
+            "line": 26,
+            "column": 71
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "249",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 30,
+            "column": 20
+          },
+          "end": {
+            "line": 30,
+            "column": 47
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "250",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 31,
+            "column": 9
+          },
+          "end": {
+            "line": 31,
+            "column": 71
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "253",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 35,
+            "column": 20
+          },
+          "end": {
+            "line": 35,
+            "column": 73
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "254",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 36,
+            "column": 9
+          },
+          "end": {
+            "line": 36,
+            "column": 73
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "257",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 40,
+            "column": 20
+          },
+          "end": {
+            "line": 40,
+            "column": 87
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "258",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 41,
+            "column": 9
+          },
+          "end": {
+            "line": 41,
+            "column": 130
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "261",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 45,
+            "column": 20
+          },
+          "end": {
+            "line": 45,
+            "column": 77
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "262",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 46,
+            "column": 9
+          },
+          "end": {
+            "line": 46,
+            "column": 95
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "265",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 50,
+            "column": 20
+          },
+          "end": {
+            "line": 50,
+            "column": 76
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "266",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 51,
+            "column": 9
+          },
+          "end": {
+            "line": 51,
+            "column": 67
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "269",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 55,
+            "column": 20
+          },
+          "end": {
+            "line": 55,
+            "column": 69
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "270",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 56,
+            "column": 9
+          },
+          "end": {
+            "line": 56,
+            "column": 99
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "273",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 67,
+            "column": 9
+          },
+          "end": {
+            "line": 67,
+            "column": 81
+          }
+        },
+        "Replacement": ";"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "274",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 68,
+            "column": 9
+          },
+          "end": {
+            "line": 68,
+            "column": 45
+          }
+        },
+        "Replacement": ";"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "281",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 79,
+            "column": 17
+          },
+          "end": {
+            "line": 79,
+            "column": 24
+          }
+        },
+        "Replacement": ";"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "284",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 85,
+            "column": 21
+          },
+          "end": {
+            "line": 86,
+            "column": 114
+          }
+        },
+        "Replacement": "contracts.IsStrict(c.ContainingSymbol) &&\r\n                    contracts.IsStrict(c.SemanticModel.GetEnclosingSymbol(c.Node.SpanStart, c.CancellationToken))"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "315",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 145,
+            "column": 17
+          },
+          "end": {
+            "line": 145,
+            "column": 116
+          }
+        },
+        "Replacement": "field.Field.Name is \"__ssnValue\" or \"__ssnValid\" || contracts.IsBoundedGeneratedMember(field.Field)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "319",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 145,
+            "column": 53
+          },
+          "end": {
+            "line": 145,
+            "column": 65
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "324",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 150,
+            "column": 17
+          },
+          "end": {
+            "line": 150,
+            "column": 107
+          }
+        },
+        "Replacement": "property.Property.Name == \"Value\" || contracts.IsBoundedGeneratedMember(property.Property)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "333",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 156,
+            "column": 63
+          },
+          "end": {
+            "line": 156,
+            "column": 92
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "343",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 163,
+            "column": 60
+          },
+          "end": {
+            "line": 163,
+            "column": 101
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "346",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 169,
+            "column": 17
+          },
+          "end": {
+            "line": 169,
+            "column": 93
+          }
+        },
+        "Replacement": ";"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "347",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 169,
+            "column": 60
+          },
+          "end": {
+            "line": 169,
+            "column": 91
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "353",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 173,
+            "column": 60
+          },
+          "end": {
+            "line": 173,
+            "column": 80
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "355",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 175,
+            "column": 92
+          },
+          "end": {
+            "line": 175,
+            "column": 95
+          }
+        },
+        "Replacement": ">= 0"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "357",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 176,
+            "column": 60
+          },
+          "end": {
+            "line": 176,
+            "column": 89
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "365",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 180,
+            "column": 55
+          },
+          "end": {
+            "line": 180,
+            "column": 92
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "367",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 183,
+            "column": 59
+          },
+          "end": {
+            "line": 183,
+            "column": 97
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "370",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 186,
+            "column": 18
+          },
+          "end": {
+            "line": 186,
+            "column": 125
+          }
+        },
+        "Replacement": "!creation.IsImplicit || method.Instance is not null && method.Method.MethodKind == MethodKind.LocalFunction"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "371",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 186,
+            "column": 18
+          },
+          "end": {
+            "line": 186,
+            "column": 69
+          }
+        },
+        "Replacement": "!creation.IsImplicit && method.Instance is not null"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "372",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 186,
+            "column": 18
+          },
+          "end": {
+            "line": 186,
+            "column": 38
+          }
+        },
+        "Replacement": "creation.IsImplicit"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "373",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 186,
+            "column": 42
+          },
+          "end": {
+            "line": 186,
+            "column": 69
+          }
+        },
+        "Replacement": "method.Instance is null"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "374",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 186,
+            "column": 73
+          },
+          "end": {
+            "line": 186,
+            "column": 125
+          }
+        },
+        "Replacement": "method.Method.MethodKind != MethodKind.LocalFunction"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "375",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 187,
+            "column": 17
+          },
+          "end": {
+            "line": 187,
+            "column": 84
+          }
+        },
+        "Replacement": ";"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "376",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 187,
+            "column": 59
+          },
+          "end": {
+            "line": 187,
+            "column": 82
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "410",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 234,
+            "column": 57
+          },
+          "end": {
+            "line": 234,
+            "column": 65
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "418",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 245,
+            "column": 13
+          },
+          "end": {
+            "line": 245,
+            "column": 93
+          }
+        },
+        "Replacement": "method.Name is \"Add\" or \"Subtract\" || contracts.IsBoundedGeneratedMember(method)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "434",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 266,
+            "column": 56
+          },
+          "end": {
+            "line": 267,
+            "column": 78
+          }
+        },
+        "Replacement": "!assignment.IsChecked && IsWrapping(assignment.OperatorKind) ||\r\n                contracts.IsBuiltinIntegerOperator(assignment.OperatorMethod)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "435",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 266,
+            "column": 56
+          },
+          "end": {
+            "line": 266,
+            "column": 116
+          }
+        },
+        "Replacement": "!assignment.IsChecked || IsWrapping(assignment.OperatorKind)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "437",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 268,
+            "column": 80
+          },
+          "end": {
+            "line": 269,
+            "column": 73
+          }
+        },
+        "Replacement": "!unary.IsChecked ||\r\n                contracts.IsBuiltinIntegerOperator(unary.OperatorMethod)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "439",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 270,
+            "column": 57
+          },
+          "end": {
+            "line": 271,
+            "column": 77
+          }
+        },
+        "Replacement": "!increment.IsChecked ||\r\n                contracts.IsBuiltinIntegerOperator(increment.OperatorMethod)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "451",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 284,
+            "column": 17
+          },
+          "end": {
+            "line": 285,
+            "column": 110
+          }
+        },
+        "Replacement": "ancestor is AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax ||\r\n                ancestor.IsKind(SyntaxKind.CheckedExpression) && ancestor.IsKind(SyntaxKind.CheckedStatement)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "453",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 284,
+            "column": 17
+          },
+          "end": {
+            "line": 285,
+            "column": 62
+          }
+        },
+        "Replacement": "ancestor is AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax &&\r\n                ancestor.IsKind(SyntaxKind.CheckedExpression)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "470",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 307,
+            "column": 17
+          },
+          "end": {
+            "line": 307,
+            "column": 67
+          }
+        },
+        "Replacement": "parent is IInterpolatedStringAdditionOperation"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "472",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 311,
+            "column": 16
+          },
+          "end": {
+            "line": 311,
+            "column": 21
+          }
+        },
+        "Replacement": "true"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "475",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 316,
+            "column": 13
+          },
+          "end": {
+            "line": 316,
+            "column": 91
+          }
+        },
+        "Replacement": "new HashSet<IMethodSymbol>(SymbolEqualityComparer.Default) {}"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "479",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 325,
+            "column": 26
+          },
+          "end": {
+            "line": 325,
+            "column": 100
+          }
+        },
+        "Replacement": "IAnonymousFunctionOperation or ILocalFunctionOperation and INameOfOperation"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "480",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 325,
+            "column": 26
+          },
+          "end": {
+            "line": 325,
+            "column": 80
+          }
+        },
+        "Replacement": "IAnonymousFunctionOperation and ILocalFunctionOperation"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "481",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 326,
+            "column": 17
+          },
+          "end": {
+            "line": 326,
+            "column": 26
+          }
+        },
+        "Replacement": ";"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "509",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 375,
+            "column": 27
+          },
+          "end": {
+            "line": 375,
+            "column": 74
+          }
+        },
+        "Replacement": "target.DeclaringSyntaxReferences.First"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Analyzers\\StrictNumericAnalyzer.cs",
+        "Id": "514",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 379,
+            "column": 9
+          },
+          "end": {
+            "line": 379,
+            "column": 59
+          }
+        },
+        "Replacement": ";"
+      }
+    ]
+  },
+  {
+    "Report": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\mutation-Core\\reports\\mutation-report.json",
+    "Total": 203,
+    "Statuses": [
+      {
+        "Name": "CompileError",
+        "Count": 18
+      },
+      {
+        "Name": "Ignored",
+        "Count": 21
+      },
+      {
+        "Name": "Killed",
+        "Count": 151
+      },
+      {
+        "Name": "NoCoverage",
+        "Count": 2
+      },
+      {
+        "Name": "Survived",
+        "Count": 9
+      },
+      {
+        "Name": "Timeout",
+        "Count": 2
+      }
+    ],
+    "Survivors": [
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\Bounded.cs",
+        "Id": "5",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 38,
+            "column": 17
+          },
+          "end": {
+            "line": 38,
+            "column": 41
+          }
+        },
+        "Replacement": "(true?_value :T.Zero)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\SafeInteger.Batch.cs",
+        "Id": "25",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 12,
+            "column": 46
+          },
+          "end": {
+            "line": 12,
+            "column": 127
+          }
+        },
+        "Replacement": "(true?256 :Vector128.IsHardwareAccelerated ? 128 : 0)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\SafeInteger.Batch.cs",
+        "Id": "27",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 12,
+            "column": 86
+          },
+          "end": {
+            "line": 12,
+            "column": 127
+          }
+        },
+        "Replacement": "(true?128 :0)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\SafeInteger.Batch.cs",
+        "Id": "28",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 12,
+            "column": 86
+          },
+          "end": {
+            "line": 12,
+            "column": 127
+          }
+        },
+        "Replacement": "(false?128 :0)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\SafeInteger.Batch.cs",
+        "Id": "32",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 42,
+            "column": 13
+          },
+          "end": {
+            "line": 42,
+            "column": 47
+          }
+        },
+        "Replacement": "count >= int.MaxValue / sizeof(int)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\SafeInteger.cs",
+        "Id": "94",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 16,
+            "column": 13
+          },
+          "end": {
+            "line": 16,
+            "column": 27
+          }
+        },
+        "Replacement": "right >= T.Zero"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\SafeInteger.cs",
+        "Id": "108",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 27,
+            "column": 13
+          },
+          "end": {
+            "line": 27,
+            "column": 27
+          }
+        },
+        "Replacement": "right >= T.Zero"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\SafeInteger.cs",
+        "Id": "119",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 38,
+            "column": 13
+          },
+          "end": {
+            "line": 38,
+            "column": 46
+          }
+        },
+        "Replacement": "left == T.Zero && right == T.Zero"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\SafeInteger.cs",
+        "Id": "124",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 39,
+            "column": 13
+          },
+          "end": {
+            "line": 39,
+            "column": 26
+          }
+        },
+        "Replacement": "left >= T.Zero"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\SafeInteger.cs",
+        "Id": "130",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 41,
+            "column": 17
+          },
+          "end": {
+            "line": 41,
+            "column": 31
+          }
+        },
+        "Replacement": "right >= T.Zero"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Core\\SafeInteger.cs",
+        "Id": "143",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 46,
+            "column": 17
+          },
+          "end": {
+            "line": 46,
+            "column": 31
+          }
+        },
+        "Replacement": "right >= T.Zero"
+      }
+    ]
+  },
+  {
+    "Report": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\mutation-Generator\\reports\\mutation-report.json",
+    "Total": 440,
+    "Statuses": [
+      {
+        "Name": "CompileError",
+        "Count": 59
+      },
+      {
+        "Name": "Ignored",
+        "Count": 14
+      },
+      {
+        "Name": "Killed",
+        "Count": 330
+      },
+      {
+        "Name": "NoCoverage",
+        "Count": 3
+      },
+      {
+        "Name": "Survived",
+        "Count": 34
+      }
+    ],
+    "Survivors": [
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "28",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 57,
+            "column": 20
+          },
+          "end": {
+            "line": 57,
+            "column": 29
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "29",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 57,
+            "column": 31
+          },
+          "end": {
+            "line": 57,
+            "column": 40
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "30",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 57,
+            "column": 42
+          },
+          "end": {
+            "line": 57,
+            "column": 49
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "87",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 99,
+            "column": 13
+          },
+          "end": {
+            "line": 99,
+            "column": 49
+          }
+        },
+        "Replacement": "symbol.DeclaringSyntaxReferences.All"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "109",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 116,
+            "column": 41
+          },
+          "end": {
+            "line": 116,
+            "column": 66
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "117",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 124,
+            "column": 46
+          },
+          "end": {
+            "line": 124,
+            "column": 114
+          }
+        },
+        "Replacement": "\"(missing)\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "118",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 124,
+            "column": 46
+          },
+          "end": {
+            "line": 124,
+            "column": 91
+          }
+        },
+        "Replacement": "attribute.ConstructorArguments.First"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "119",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 124,
+            "column": 103
+          },
+          "end": {
+            "line": 124,
+            "column": 114
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "131",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 132,
+            "column": 52
+          },
+          "end": {
+            "line": 132,
+            "column": 60
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "133",
+        "Status": "NoCoverage",
+        "Location": {
+          "start": {
+            "line": 132,
+            "column": 73
+          },
+          "end": {
+            "line": 132,
+            "column": 81
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "160",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 155,
+            "column": 33
+          },
+          "end": {
+            "line": 155,
+            "column": 62
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "169",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 163,
+            "column": 13
+          },
+          "end": {
+            "line": 163,
+            "column": 49
+          }
+        },
+        "Replacement": "member.DeclaringSyntaxReferences.All"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "191",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 191,
+            "column": 9
+          },
+          "end": {
+            "line": 193,
+            "column": 19
+          }
+        },
+        "Replacement": "(true?\"@\" + name\r\n:name)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "195",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 191,
+            "column": 64
+          },
+          "end": {
+            "line": 191,
+            "column": 125
+          }
+        },
+        "Replacement": "SyntaxFacts.GetContextualKeywordKind(name) == SyntaxKind.None"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "200",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 201,
+            "column": 73
+          },
+          "end": {
+            "line": 201,
+            "column": 98
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "206",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 208,
+            "column": 36
+          },
+          "end": {
+            "line": 208,
+            "column": 58
+          }
+        },
+        "Replacement": "text.IndexOf('\\0') <= 0"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "277",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 264,
+            "column": 30
+          },
+          "end": {
+            "line": 264,
+            "column": 33
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "279",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 265,
+            "column": 31
+          },
+          "end": {
+            "line": 265,
+            "column": 35
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "280",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 266,
+            "column": 21
+          },
+          "end": {
+            "line": 266,
+            "column": 26
+          }
+        },
+        "Replacement": "true"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "281",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 266,
+            "column": 31
+          },
+          "end": {
+            "line": 266,
+            "column": 34
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "284",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 272,
+            "column": 20
+          },
+          "end": {
+            "line": 272,
+            "column": 68
+          }
+        },
+        "Replacement": "(true?$\"unchecked({cast})\" :cast)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "288",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 277,
+            "column": 13
+          },
+          "end": {
+            "line": 277,
+            "column": 19
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "289",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 277,
+            "column": 37
+          },
+          "end": {
+            "line": 277,
+            "column": 40
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "290",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 278,
+            "column": 13
+          },
+          "end": {
+            "line": 278,
+            "column": 19
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "291",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 278,
+            "column": 37
+          },
+          "end": {
+            "line": 278,
+            "column": 40
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "292",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 279,
+            "column": 13
+          },
+          "end": {
+            "line": 279,
+            "column": 20
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "293",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 279,
+            "column": 38
+          },
+          "end": {
+            "line": 279,
+            "column": 42
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.cs",
+        "Id": "330",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 320,
+            "column": 19
+          },
+          "end": {
+            "line": 320,
+            "column": 31
+          }
+        },
+        "Replacement": "\"Stryker was here!\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.Rendering.cs",
+        "Id": "348",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 16,
+            "column": 42
+          },
+          "end": {
+            "line": 16,
+            "column": 50
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.Rendering.cs",
+        "Id": "349",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 16,
+            "column": 53
+          },
+          "end": {
+            "line": 16,
+            "column": 63
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.Rendering.cs",
+        "Id": "351",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 17,
+            "column": 27
+          },
+          "end": {
+            "line": 17,
+            "column": 72
+          }
+        },
+        "Replacement": "(false?\"readonly \" :string.Empty)"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.Rendering.cs",
+        "Id": "352",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 17,
+            "column": 46
+          },
+          "end": {
+            "line": 17,
+            "column": 57
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.Rendering.cs",
+        "Id": "359",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 21,
+            "column": 59
+          },
+          "end": {
+            "line": 21,
+            "column": 67
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.Rendering.cs",
+        "Id": "370",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 24,
+            "column": 34
+          },
+          "end": {
+            "line": 25,
+            "column": 126
+          }
+        },
+        "Replacement": "(false?\"__ssnValue\" :            \"\"\"IsValid ? __ssnValue : throw new global::System.InvalidOperationException(\"Uninitialized bounded integer.\")\"\"\")"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.Rendering.cs",
+        "Id": "387",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 29,
+            "column": 37
+          },
+          "end": {
+            "line": 29,
+            "column": 40
+          }
+        },
+        "Replacement": "\"\""
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.Rendering.cs",
+        "Id": "391",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 33,
+            "column": 28
+          },
+          "end": {
+            "line": 33,
+            "column": 96
+          }
+        },
+        "Replacement": "(false?\"__ssnValue\" :$\"({textStorage})__ssnValue\")"
+      },
+      {
+        "File": "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\src\\SharpSafeNumerics.Generator\\BoundedIntegerGenerator.Rendering.cs",
+        "Id": "409",
+        "Status": "Survived",
+        "Location": {
+          "start": {
+            "line": 279,
+            "column": 21
+          },
+          "end": {
+            "line": 280,
+            "column": 55
+          }
+        },
+        "Replacement": "(true?\"destination[0] = unchecked((byte)__ssnValue);\"\r\n:\"destination[0] = (byte)__ssnValue;\")"
+      }
+    ]
+  }
+]

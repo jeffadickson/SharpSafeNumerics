@@ -1,0 +1,3 @@
+7.0.202 [C:\Program Files\dotnet\sdk]
+8.0.428 [C:\Program Files\dotnet\sdk]
+10.0.404 [C:\Program Files\dotnet\sdk]

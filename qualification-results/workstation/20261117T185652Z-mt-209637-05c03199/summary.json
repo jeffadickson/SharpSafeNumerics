@@ -1,0 +1,828 @@
+{
+  "RunId": "20261117T185652Z-mt-209637-05c03199",
+  "Repository": "jeffadickson/SharpSafeNumerics",
+  "SourceRef": "wide-arithmetic-policy",
+  "SourceRevision": "b98767333406e39c66d9e9a9e07e7daf27e91cb2",
+  "IssueNumber": 1,
+  "IssueUrl": "https://github.com/jeffadickson/SharpSafeNumerics/issues/1",
+  "ResultsBranch": "qualification/issue-1/20261117T185652Z-mt-209637-05c03199",
+  "Machine": "MT-209637",
+  "ProcessorCount": 20,
+  "StartedUtc": "2026-11-17T18:56:52.4089238Z",
+  "FinishedUtc": "2026-11-17T19:51:42.5207428Z",
+  "Hours": 1.0,
+  "DeadlineUtc": "2026-11-17T19:56:51.4915619Z",
+  "ArtifactDirectory": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199",
+  "FatalError": null,
+  "Checks": [
+    {
+      "Name": "repository-permissions",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:56:53.8577056Z",
+      "ElapsedSeconds": 0.7172635,
+      "Command": [
+        "C:\\Program Files\\GitHub CLI\\gh.exe",
+        "api",
+        "repos/jeffadickson/SharpSafeNumerics",
+        "--jq",
+        ".permissions.push"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\01-repository-permissions.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\01-repository-permissions.stderr.log",
+      "PeakWorkingSetBytes": 7127040
+    },
+    {
+      "Name": "clone",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:56:54.6228961Z",
+      "ElapsedSeconds": 1.2816568,
+      "Command": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "clone",
+        "--no-checkout",
+        "-c",
+        "credential.https://github.com.helper=",
+        "-c",
+        "credential.https://github.com.helper=!'C:/Program Files/GitHub CLI/gh.exe' auth git-credential",
+        "--",
+        "https://github.com/jeffadickson/SharpSafeNumerics.git",
+        "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\02-clone.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\02-clone.stderr.log",
+      "PeakWorkingSetBytes": 7135232
+    },
+    {
+      "Name": "fetch-source",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:56:55.9366966Z",
+      "ElapsedSeconds": 0.7806778,
+      "Command": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "fetch",
+        "--",
+        "origin",
+        "wide-arithmetic-policy"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\03-fetch-source.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\03-fetch-source.stderr.log",
+      "PeakWorkingSetBytes": 7131136
+    },
+    {
+      "Name": "checkout-source",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:56:56.7426125Z",
+      "ElapsedSeconds": 0.2678874,
+      "Command": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "checkout",
+        "-b",
+        "qualification/issue-1/20261117T185652Z-mt-209637-05c03199",
+        "FETCH_HEAD"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\04-checkout-source.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\04-checkout-source.stderr.log",
+      "PeakWorkingSetBytes": 7131136
+    },
+    {
+      "Name": "source-revision",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:56:57.0355662Z",
+      "ElapsedSeconds": 0.1765212,
+      "Command": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "rev-parse",
+        "HEAD"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\05-source-revision.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\05-source-revision.stderr.log",
+      "PeakWorkingSetBytes": 7131136
+    },
+    {
+      "Name": "installed-sdks",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:56:57.5244599Z",
+      "ElapsedSeconds": 0.11043,
+      "Command": [
+        "C:\\Program Files\\dotnet\\dotnet.exe",
+        "--list-sdks"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\06-installed-sdks.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\06-installed-sdks.stderr.log",
+      "PeakWorkingSetBytes": 4153344
+    },
+    {
+      "Name": "installed-runtimes",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:56:57.6602107Z",
+      "ElapsedSeconds": 0.0989584,
+      "Command": [
+        "C:\\Program Files\\dotnet\\dotnet.exe",
+        "--list-runtimes"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\07-installed-runtimes.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\07-installed-runtimes.stderr.log",
+      "PeakWorkingSetBytes": 7188480
+    },
+    {
+      "Name": "install-sdk",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:56:58.4196130Z",
+      "ElapsedSeconds": 44.5705818,
+      "Command": [
+        "C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.9.0_x64__8wekyb3d8bbwe\\pwsh.exe",
+        "-NoProfile",
+        "-File",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\dotnet-install.ps1",
+        "-Version",
+        "11.0.100",
+        "-InstallDir",
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100",
+        "-NoPath"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\08-install-sdk.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\08-install-sdk.stderr.log",
+      "PeakWorkingSetBytes": 7491584
+    },
+    {
+      "Name": "install-runtime-8.0",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:57:43.1562338Z",
+      "ElapsedSeconds": 5.6336357,
+      "Command": [
+        "C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.9.0_x64__8wekyb3d8bbwe\\pwsh.exe",
+        "-NoProfile",
+        "-File",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\dotnet-install.ps1",
+        "-Channel",
+        "8.0",
+        "-Runtime",
+        "dotnet",
+        "-InstallDir",
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100",
+        "-NoPath"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\09-install-runtime-8-0.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\09-install-runtime-8-0.stderr.log",
+      "PeakWorkingSetBytes": 7491584
+    },
+    {
+      "Name": "install-runtime-10.0",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:57:48.9510078Z",
+      "ElapsedSeconds": 6.2876653,
+      "Command": [
+        "C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.9.0_x64__8wekyb3d8bbwe\\pwsh.exe",
+        "-NoProfile",
+        "-File",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\dotnet-install.ps1",
+        "-Channel",
+        "10.0",
+        "-Runtime",
+        "dotnet",
+        "-InstallDir",
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100",
+        "-NoPath"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\10-install-runtime-10-0.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\10-install-runtime-10-0.stderr.log",
+      "PeakWorkingSetBytes": 7491584
+    },
+    {
+      "Name": "pinned-sdk-version",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:57:55.2748030Z",
+      "ElapsedSeconds": 0.2514712,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "--version"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\11-pinned-sdk-version.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\11-pinned-sdk-version.stderr.log",
+      "PeakWorkingSetBytes": 7188480
+    },
+    {
+      "Name": "sdk-info",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:57:55.5508410Z",
+      "ElapsedSeconds": 0.2131221,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "--info"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\12-sdk-info.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\12-sdk-info.stderr.log",
+      "PeakWorkingSetBytes": 7196672
+    },
+    {
+      "Name": "restore-pinned-tools",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:57:55.7998030Z",
+      "ElapsedSeconds": 20.4576777,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "tool",
+        "restore"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\13-restore-pinned-tools.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\13-restore-pinned-tools.stderr.log",
+      "PeakWorkingSetBytes": 7192576
+    },
+    {
+      "Name": "create-doc-environment",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:58:20.4541580Z",
+      "ElapsedSeconds": 7.867301,
+      "Command": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-m",
+        "venv",
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\strictdoc-0.30.4"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\14-create-doc-environment.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\14-create-doc-environment.stderr.log",
+      "PeakWorkingSetBytes": 3194880
+    },
+    {
+      "Name": "install-strictdoc",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:58:28.3481903Z",
+      "ElapsedSeconds": 49.5157019,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\strictdoc-0.30.4\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "install",
+        "--no-compile",
+        "strictdoc==0.30.4",
+        "--cache-dir",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\pip-cache"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\15-install-strictdoc.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\15-install-strictdoc.stderr.log",
+      "PeakWorkingSetBytes": 7155712
+    },
+    {
+      "Name": "probe-vc-tools",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:59:17.9032497Z",
+      "ElapsedSeconds": 0.1683155,
+      "Command": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vswhere.exe",
+        "-latest",
+        "-products",
+        "*",
+        "-version",
+        "[17.0,)",
+        "-requires",
+        "Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
+        "-property",
+        "installationPath"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\16-probe-vc-tools.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\16-probe-vc-tools.stderr.log",
+      "PeakWorkingSetBytes": 8347648
+    },
+    {
+      "Name": "pester-runner",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:59:19.1139292Z",
+      "ElapsedSeconds": 11.6655102,
+      "Command": [
+        "C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.9.0_x64__8wekyb3d8bbwe\\pwsh.exe",
+        "-NoProfile",
+        "-Command",
+        "Import-Module -Name $env:QUALIFICATION_PESTER -ErrorAction Stop; $r=Invoke-Pester -Path tests/WorkstationRunner.Tests.ps1 -PassThru; if(-not $r -or $r.Result -ne \"Passed\" -or $r.PassedCount -eq 0){exit 1}"
+      ],
+      "Environment": {
+        "QUALIFICATION_PESTER": "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\Pester\\5.7.1\\Pester.psd1"
+      },
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\17-pester-runner.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\17-pester-runner.stderr.log",
+      "PeakWorkingSetBytes": 7495680
+    },
+    {
+      "Name": "build",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T18:59:30.8049527Z",
+      "ElapsedSeconds": 32.0384932,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "build",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\build"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\18-build.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\18-build.stderr.log",
+      "PeakWorkingSetBytes": 7192576
+    },
+    {
+      "Name": "unit-generator-analyzer-tests",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:00:02.8865559Z",
+      "ElapsedSeconds": 10.9949625,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "test",
+        "-c",
+        "Release",
+        "--no-build",
+        "--artifacts-path",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\build",
+        "--collect:XPlat Code Coverage",
+        "--results-directory",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\coverage"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\19-unit-generator-analyzer-tests.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\19-unit-generator-analyzer-tests.stderr.log",
+      "PeakWorkingSetBytes": 2740224
+    },
+    {
+      "Name": "tests-SharpSafeNumerics.Tests",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:00:13.9047402Z",
+      "ElapsedSeconds": 1.2721287,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "run",
+        "--project",
+        "tests/SharpSafeNumerics.Tests",
+        "-c",
+        "Release",
+        "--no-build",
+        "--artifacts-path",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\build"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\20-tests-SharpSafeNumerics-Tests.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\20-tests-SharpSafeNumerics-Tests.stderr.log",
+      "PeakWorkingSetBytes": 7188480
+    },
+    {
+      "Name": "tests-SharpSafeNumerics.PropertyTests",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:00:15.2018114Z",
+      "ElapsedSeconds": 2.7530066,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "run",
+        "--project",
+        "tests/SharpSafeNumerics.PropertyTests",
+        "-c",
+        "Release",
+        "--no-build",
+        "--artifacts-path",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\build"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\21-tests-SharpSafeNumerics-PropertyTests.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\21-tests-SharpSafeNumerics-PropertyTests.stderr.log",
+      "PeakWorkingSetBytes": 7188480
+    },
+    {
+      "Name": "tests-SharpSafeNumerics.AnalyzerTests",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:00:17.9782932Z",
+      "ElapsedSeconds": 2.6306772,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "run",
+        "--project",
+        "tests/SharpSafeNumerics.AnalyzerTests",
+        "-c",
+        "Release",
+        "--no-build",
+        "--artifacts-path",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\build"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\22-tests-SharpSafeNumerics-AnalyzerTests.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\22-tests-SharpSafeNumerics-AnalyzerTests.stderr.log",
+      "PeakWorkingSetBytes": 7188480
+    },
+    {
+      "Name": "examples-GeneratedQueueDepth",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:00:20.6322331Z",
+      "ElapsedSeconds": 1.2149183,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "run",
+        "--project",
+        "examples/GeneratedQueueDepth",
+        "-c",
+        "Release",
+        "--no-build",
+        "--artifacts-path",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\build"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\23-examples-GeneratedQueueDepth.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\23-examples-GeneratedQueueDepth.stderr.log",
+      "PeakWorkingSetBytes": 7192576
+    },
+    {
+      "Name": "examples-RiscueQueueDepth",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:00:21.8706628Z",
+      "ElapsedSeconds": 1.2305052,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "run",
+        "--project",
+        "examples/RiscueQueueDepth",
+        "-c",
+        "Release",
+        "--no-build",
+        "--artifacts-path",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\build"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\24-examples-RiscueQueueDepth.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\24-examples-RiscueQueueDepth.stderr.log",
+      "PeakWorkingSetBytes": 7192576
+    },
+    {
+      "Name": "dafny",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:00:23.1246851Z",
+      "ElapsedSeconds": 1.9016912,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "tool",
+        "run",
+        "dafny",
+        "--",
+        "verify",
+        "formal/SafeInteger.dfy",
+        "--solver-path",
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\z3-4.12.1\\z3-4.12.1-x64-win\\bin\\z3.exe"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\25-dafny.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\25-dafny.stderr.log",
+      "PeakWorkingSetBytes": 7192576
+    },
+    {
+      "Name": "strictdoc",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:00:25.0596714Z",
+      "ElapsedSeconds": 22.8451944,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\strictdoc-0.30.4\\Scripts\\strictdoc.exe",
+        "export",
+        "docs/requirements.sdoc",
+        "docs/generator-requirements.sdoc",
+        "docs/analyzer-requirements.sdoc",
+        "--output-dir",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\requirements"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\26-strictdoc.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\26-strictdoc.stderr.log",
+      "PeakWorkingSetBytes": 7135232
+    },
+    {
+      "Name": "coverage-summary",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:00:47.9294399Z",
+      "ElapsedSeconds": 0.7078627,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "tool",
+        "run",
+        "reportgenerator",
+        "--",
+        "-reports:C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\coverage\\**\\coverage.cobertura.xml",
+        "-targetdir:C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\coverage-report",
+        "-reporttypes:JsonSummary;Html"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\27-coverage-summary.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\27-coverage-summary.stderr.log",
+      "PeakWorkingSetBytes": 7192576
+    },
+    {
+      "Name": "aot-publish",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:00:48.6604845Z",
+      "ElapsedSeconds": 18.1212648,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "publish",
+        "tests/SharpSafeNumerics.AotSmoke",
+        "-c",
+        "Release",
+        "-r",
+        "win-x64",
+        "-o",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\aot",
+        "--artifacts-path",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\aot-build"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\28-aot-publish.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\28-aot-publish.stderr.log",
+      "PeakWorkingSetBytes": 7184384
+    },
+    {
+      "Name": "aot-execute",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:01:06.9038292Z",
+      "ElapsedSeconds": 0.1684451,
+      "Command": [
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\aot\\SharpSafeNumerics.AotSmoke.exe"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\29-aot-execute.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\29-aot-execute.stderr.log",
+      "PeakWorkingSetBytes": 7151616
+    },
+    {
+      "Name": "pack",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:01:07.0985844Z",
+      "ElapsedSeconds": 5.4122501,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "pack",
+        "-c",
+        "Release",
+        "-o",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\packages",
+        "--artifacts-path",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\build"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\30-pack.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\30-pack.stderr.log",
+      "PeakWorkingSetBytes": 7192576
+    },
+    {
+      "Name": "package-consumer",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:01:12.7607430Z",
+      "ElapsedSeconds": 7.7028258,
+      "Command": [
+        "C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.9.0_x64__8wekyb3d8bbwe\\pwsh.exe",
+        "-NoProfile",
+        "-File",
+        "C:\\Users\\dickson\\Documents\\GitHub\\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\\eng\\VerifyPackages.ps1",
+        "-PackageDirectory",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\packages",
+        "-WorkDirectory",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\package-consumer"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\31-package-consumer.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\31-package-consumer.stderr.log",
+      "PeakWorkingSetBytes": 7491584
+    },
+    {
+      "Name": "prepare-soak",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:01:20.4890245Z",
+      "ElapsedSeconds": 4.2252814,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "publish",
+        "tests/SharpSafeNumerics.Soak",
+        "-c",
+        "Release",
+        "--no-self-contained",
+        "-p:UseAppHost=false",
+        "-o",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\soak-bin",
+        "--artifacts-path",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\soak-build"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\32-prepare-soak.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\32-prepare-soak.stderr.log",
+      "PeakWorkingSetBytes": 7286784
+    },
+    {
+      "Name": "mutation-Core",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:01:24.8182331Z",
+      "ElapsedSeconds": 109.8529382,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "stryker",
+        "--config-file",
+        "../../stryker-config.json",
+        "--target-framework",
+        "net11.0",
+        "--concurrency",
+        "3",
+        "--output",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\mutation-Core"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\35-mutation-Core.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\35-mutation-Core.stderr.log",
+      "PeakWorkingSetBytes": null
+    },
+    {
+      "Name": "mutation-Analyzers",
+      "Status": "Failed",
+      "ExitCode": 2,
+      "StartUtc": "2026-11-17T19:01:24.7580749Z",
+      "ElapsedSeconds": 399.1978433,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "stryker",
+        "--config-file",
+        "../../stryker-analyzers-config.json",
+        "--target-framework",
+        "net11.0",
+        "--concurrency",
+        "3",
+        "--output",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\mutation-Analyzers"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\33-mutation-Analyzers.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\33-mutation-Analyzers.stderr.log",
+      "PeakWorkingSetBytes": null
+    },
+    {
+      "Name": "mutation-Generator",
+      "Status": "Failed",
+      "ExitCode": 2,
+      "StartUtc": "2026-11-17T19:01:24.7895856Z",
+      "ElapsedSeconds": 462.3500759,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "stryker",
+        "--config-file",
+        "../../stryker-generator-config.json",
+        "--target-framework",
+        "net11.0",
+        "--concurrency",
+        "3",
+        "--output",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\mutation-Generator"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\34-mutation-Generator.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\34-mutation-Generator.stderr.log",
+      "PeakWorkingSetBytes": null
+    },
+    {
+      "Name": "soak-auto",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:01:24.9179085Z",
+      "ElapsedSeconds": 3017.2703099,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\soak-bin\\SharpSafeNumerics.Soak.dll",
+        "--seconds",
+        "3017",
+        "--seed",
+        "731925"
+      ],
+      "Environment": {
+        "DOTNET_EnableHWIntrinsic": "1",
+        "DOTNET_EnableAVX2": "1"
+      },
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\38-soak-auto.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\38-soak-auto.stderr.log",
+      "PeakWorkingSetBytes": null
+    },
+    {
+      "Name": "soak-128",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:01:24.8865472Z",
+      "ElapsedSeconds": 3017.3363963,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\soak-bin\\SharpSafeNumerics.Soak.dll",
+        "--seconds",
+        "3017",
+        "--seed",
+        "731925",
+        "--expected-width",
+        "128"
+      ],
+      "Environment": {
+        "DOTNET_EnableHWIntrinsic": "1",
+        "DOTNET_EnableAVX2": "0"
+      },
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\37-soak-128.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\37-soak-128.stderr.log",
+      "PeakWorkingSetBytes": null
+    },
+    {
+      "Name": "soak-scalar",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:01:24.8586043Z",
+      "ElapsedSeconds": 3017.3993404,
+      "Command": [
+        "C:\\Users\\dickson\\AppData\\Local\\SharpSafeNumericsQualification\\tools\\dotnet-11.0.100\\dotnet.exe",
+        "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\soak-bin\\SharpSafeNumerics.Soak.dll",
+        "--seconds",
+        "3017",
+        "--seed",
+        "731925",
+        "--expected-width",
+        "0"
+      ],
+      "Environment": {
+        "DOTNET_EnableHWIntrinsic": "0",
+        "DOTNET_EnableAVX2": "1"
+      },
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\36-soak-scalar.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\36-soak-scalar.stderr.log",
+      "PeakWorkingSetBytes": null
+    },
+    {
+      "Name": "source-changes",
+      "Status": "Passed",
+      "ExitCode": 0,
+      "StartUtc": "2026-11-17T19:51:42.2956435Z",
+      "ElapsedSeconds": 0.2234613,
+      "Command": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=normal"
+      ],
+      "Environment": {},
+      "Stdout": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\39-source-changes.stdout.log",
+      "Stderr": "C:\\Users\\dickson\\Documents\\QualificationArtifacts\\SharpSafeNumerics\\workstation\\20261117T185652Z-mt-209637-05c03199\\39-source-changes.stderr.log",
+      "PeakWorkingSetBytes": 7139328
+    }
+  ],
+  "Downloads": [
+    {
+      "Url": "https://dot.net/v1/dotnet-install.ps1",
+      "Sha256": "E8B873E18A81E5C4CD8AB69D84DAC8FEAD291D50B3C44633CD7FDDAD709A13D6"
+    },
+    {
+      "Url": "https://github.com/Z3Prover/z3/releases/download/z3-4.12.1/z3-4.12.1-x64-win.zip",
+      "Sha256": "CE2D658D007C4F5873D2279BD031D4E72500B388E1EF2D716BD5F86AF19B20D2"
+    },
+    {
+      "Url": "https://www.powershellgallery.com/api/v2/package/Pester/5.7.1",
+      "Sha256": "4A27904C6814A5FBE4758F8E49861F6A1994AEE77B71165A5C43C0371BA6C580"
+    }
+  ],
+  "SourceChanges": ""
+}

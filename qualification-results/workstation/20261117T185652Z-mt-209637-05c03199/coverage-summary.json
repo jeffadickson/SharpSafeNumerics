@@ -1,0 +1,35 @@
+{
+  "summary": {
+    "generatedon": "2026-11-17T19:00:48Z",
+    "parser": "MultiReport (3x Cobertura)",
+    "assemblies": 3,
+    "classes": 7,
+    "files": 9,
+    "coveredlines": 1031,
+    "uncoveredlines": 15,
+    "coverablelines": 1046,
+    "totallines": 1803,
+    "linecoverage": 98.5,
+    "coveredbranches": 848,
+    "totalbranches": 967,
+    "branchcoverage": 87.6,
+    "coveredmethods": 130,
+    "fullcoveredmethods": 121,
+    "totalmethods": 131,
+    "methodcoverage": 99.2,
+    "fullmethodcoverage": 92.3
+ },
+  "coverage": {
+    "assemblies": [
+      { "name": "SharpSafeNumerics.Analyzers", "classes": 2, "coverage": 96.5, "coveredlines": 362, "coverablelines": 375, "totallines": 668, "branchcoverage": 82, "coveredbranches": 463, "totalbranches": 564, "methodcoverage": 97.8, "fullmethodcoverage": 82.9, "coveredmethods": 46, "fullcoveredmethods": 39, "totalmethods": 47, "classesinassembly": [
+        { "name": "SharpSafeNumerics.Analyzers.NumericSymbols", "coverage": 96.4, "coveredlines": 134, "coverablelines": 139, "totallines": 276, "branchcoverage": 83.6, "coveredbranches": 209, "totalbranches": 250, "methodcoverage": 96.4, "fullmethodcoverage": 89.2, "coveredmethods": 27, "fullcoveredmethods": 25, "totalmethods": 28 },
+        { "name": "SharpSafeNumerics.Analyzers.StrictNumericAnalyzer", "coverage": 96.6, "coveredlines": 228, "coverablelines": 236, "totallines": 392, "branchcoverage": 80.8, "coveredbranches": 254, "totalbranches": 314, "methodcoverage": 100, "fullmethodcoverage": 73.6, "coveredmethods": 19, "fullcoveredmethods": 14, "totalmethods": 19 } ] },
+      { "name": "SharpSafeNumerics.Core", "classes": 4, "coverage": 100, "coveredlines": 158, "coverablelines": 158, "totallines": 436, "branchcoverage": 96.2, "coveredbranches": 129, "totalbranches": 134, "methodcoverage": 100, "fullmethodcoverage": 100, "coveredmethods": 40, "fullcoveredmethods": 40, "totalmethods": 40, "classesinassembly": [
+        { "name": "SharpSafeNumerics.Bounded\u00602", "coverage": 100, "coveredlines": 20, "coverablelines": 20, "totallines": 71, "branchcoverage": 100, "coveredbranches": 14, "totalbranches": 14, "methodcoverage": 100, "fullmethodcoverage": 100, "coveredmethods": 7, "fullcoveredmethods": 7, "totalmethods": 7 },
+        { "name": "SharpSafeNumerics.BoundedIntegerAttribute", "coverage": 100, "coveredlines": 14, "coverablelines": 14, "totallines": 78, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "fullmethodcoverage": 100, "coveredmethods": 10, "fullcoveredmethods": 10, "totalmethods": 10 },
+        { "name": "SharpSafeNumerics.NumericResult\u00601", "coverage": 100, "coveredlines": 10, "coverablelines": 10, "totallines": 31, "branchcoverage": 100, "coveredbranches": 6, "totalbranches": 6, "methodcoverage": 100, "fullmethodcoverage": 100, "coveredmethods": 7, "fullcoveredmethods": 7, "totalmethods": 7 },
+        { "name": "SharpSafeNumerics.SafeInteger", "coverage": 100, "coveredlines": 114, "coverablelines": 114, "totallines": 256, "branchcoverage": 95.6, "coveredbranches": 109, "totalbranches": 114, "methodcoverage": 100, "fullmethodcoverage": 100, "coveredmethods": 16, "fullcoveredmethods": 16, "totalmethods": 16 } ] },
+      { "name": "SharpSafeNumerics.Generator", "classes": 1, "coverage": 99.6, "coveredlines": 511, "coverablelines": 513, "totallines": 699, "branchcoverage": 95.1, "coveredbranches": 256, "totalbranches": 269, "methodcoverage": 100, "fullmethodcoverage": 95.4, "coveredmethods": 44, "fullcoveredmethods": 42, "totalmethods": 44, "classesinassembly": [
+        { "name": "SharpSafeNumerics.Generator.BoundedIntegerGenerator", "coverage": 99.6, "coveredlines": 511, "coverablelines": 513, "totallines": 699, "branchcoverage": 95.1, "coveredbranches": 256, "totalbranches": 269, "methodcoverage": 100, "fullmethodcoverage": 95.4, "coveredmethods": 44, "fullcoveredmethods": 42, "totalmethods": 44 } ] } ]
+  }
+}

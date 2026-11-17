@@ -1,0 +1,8 @@
+CsCheck replay seed: 00000002OIk1
+CsCheck: 30,000 generated arithmetic pairs
+CsCheck: 10,000 narrowing conversions
+Hedgehog: independently generated/shrunk arithmetic properties
+Hedgehog seed: 731921; 1,000 cases per property
+CsCheck wide arithmetic/policies: 2,000 UInt128 pairs across 12 types (24,000 type pairs)
+Hedgehog wide arithmetic/policies: 1,000 pairs across 12 types (12,000 type pairs)
+Property suites passed.

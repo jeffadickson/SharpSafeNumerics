@@ -1,0 +1,48 @@
+.NET SDK:
+ Version:           11.0.100
+ Commit:            297acf930f
+ Workload version:  11.0.100-manifests.08e30c08
+ MSBuild version:   18.12.2-1.26529.118+297acf930
+
+Runtime Environment:
+ OS Name:     Windows
+ OS Version:  10.0.26100
+ OS Platform: Windows
+ RID:         win-x64
+ Base Path:   C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\sdk\11.0.100
+
+.NET workloads installed:
+There are no installed workloads to display.
+Configured to use workload sets when installing new manifests.
+No workload sets are installed. Run "dotnet workload restore" to install a workload set.
+
+Host:
+  Version:      11.0.0
+  Architecture: x64
+  Commit:       297acf930f
+
+.NET SDKs installed:
+  11.0.100 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 11.0.0 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\shared\Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 8.0.34 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 10.0.15 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 11.0.0 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\shared\Microsoft.NETCore.App]
+  Microsoft.WindowsDesktop.App 11.0.0 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\shared\Microsoft.WindowsDesktop.App]
+
+Other architectures found:
+  x86   [C:\Program Files (x86)\dotnet]
+    registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+
+Environment variables:
+  DOTNET_ROOT                              [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100]
+
+global.json file:
+  C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\global.json
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download

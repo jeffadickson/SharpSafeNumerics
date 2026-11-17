@@ -1,0 +1,11 @@
+  Determining projects to restore...
+  Restored C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\src\SharpSafeNumerics.Core\SharpSafeNumerics.Core.csproj (in 119 ms).
+  Restored C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\tests\SharpSafeNumerics.Soak\SharpSafeNumerics.Soak.csproj (in 128 ms).
+  Restored C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\src\SharpSafeNumerics.Generator\SharpSafeNumerics.Generator.csproj (in 154 ms).
+CSC : warning CS1668: Invalid search path 'C:\GTK\LIB' specified in 'LIB environment variable' -- 'directory does not exist' [C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\src\SharpSafeNumerics.Core\SharpSafeNumerics.Core.csproj]
+  SharpSafeNumerics.Core -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T185652Z-mt-209637-05c03199\soak-build\bin\SharpSafeNumerics.Core\release\SharpSafeNumerics.Core.dll
+CSC : warning CS1668: Invalid search path 'C:\GTK\LIB' specified in 'LIB environment variable' -- 'directory does not exist' [C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\src\SharpSafeNumerics.Generator\SharpSafeNumerics.Generator.csproj]
+  SharpSafeNumerics.Generator -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T185652Z-mt-209637-05c03199\soak-build\bin\SharpSafeNumerics.Generator\release\SharpSafeNumerics.Generator.dll
+CSC : warning CS1668: Invalid search path 'C:\GTK\LIB' specified in 'LIB environment variable' -- 'directory does not exist' [C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T185652Z-mt-209637-05c03199\tests\SharpSafeNumerics.Soak\SharpSafeNumerics.Soak.csproj]
+  SharpSafeNumerics.Soak -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T185652Z-mt-209637-05c03199\soak-build\bin\SharpSafeNumerics.Soak\release\SharpSafeNumerics.Soak.dll
+  SharpSafeNumerics.Soak -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T185652Z-mt-209637-05c03199\soak-bin\

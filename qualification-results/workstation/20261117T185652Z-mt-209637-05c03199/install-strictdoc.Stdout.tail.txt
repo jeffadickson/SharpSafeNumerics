@@ -1,0 +1,120 @@
+   --------------------------------------- 844.5/844.5 kB 13.2 MB/s eta 0:00:00
+Downloading spdx_tools-0.8.5-py3-none-any.whl (286 kB)
+   ---------------------------------------- 286.6/286.6 kB 8.9 MB/s eta 0:00:00
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+   ---------------------------------------- 45.6/45.6 kB 1.1 MB/s eta 0:00:00
+Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+   ---------------------------------------- 87.4/87.4 kB 4.8 MB/s eta 0:00:00
+Downloading watchdog-7.1.0-py3-none-win_amd64.whl (103 kB)
+   ---------------------------------------- 103.3/103.3 kB 3.0 MB/s eta 0:00:00
+Downloading websockets-17.4-cp312-cp312-win_amd64.whl (219 kB)
+   ---------------------------------------- 219.6/219.6 kB 6.8 MB/s eta 0:00:00
+Downloading orjson-3.13.0-cp312-cp312-win_amd64.whl (121 kB)
+   ---------------------------------------- 121.5/121.5 kB 7.0 MB/s eta 0:00:00
+Downloading pandas-3.1.1-cp312-cp312-win_amd64.whl (10.8 MB)
+   ---------------------------------------- 10.8/10.8 MB 13.6 MB/s eta 0:00:00
+Downloading plotly-7.1.0-py3-none-any.whl (9.7 MB)
+   ---------------------------------------- 9.7/9.7 MB 17.7 MB/s eta 0:00:00
+Downloading python_multipart-0.0.34-py3-none-any.whl (32 kB)
+Downloading toml-0.10.2-py2.py3-none-any.whl (16 kB)
+Downloading tree_sitter_c-0.24.2-cp310-abi3-win_amd64.whl (84 kB)
+   ---------------------------------------- 84.7/84.7 kB 5.0 MB/s eta 0:00:00
+Downloading tree_sitter_cpp-0.23.4-cp39-abi3-win_amd64.whl (290 kB)
+   ---------------------------------------- 291.0/291.0 kB 9.1 MB/s eta 0:00:00
+Downloading tree_sitter_python-0.25.0-cp310-abi3-win_amd64.whl (76 kB)
+   ---------------------------------------- 76.1/76.1 kB 4.1 MB/s eta 0:00:00
+Downloading tree_sitter_rust-0.24.2-cp39-abi3-win_amd64.whl (129 kB)
+   ---------------------------------------- 129.4/129.4 kB 7.4 MB/s eta 0:00:00
+Downloading annotated_doc-0.0.6-py3-none-any.whl (5.3 kB)
+Downloading anyio-4.16.0-py3-none-any.whl (134 kB)
+   ---------------------------------------- 134.5/134.5 kB 8.3 MB/s eta 0:00:00
+Downloading Arpeggio-2.0.3-py2.py3-none-any.whl (54 kB)
+   ---------------------------------------- 54.7/54.7 kB 2.8 MB/s eta 0:00:00
+Downloading click-8.5.1-py3-none-any.whl (126 kB)
+   ---------------------------------------- 126.2/126.2 kB 7.2 MB/s eta 0:00:00
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading httptools-0.9.0-cp312-cp312-win_amd64.whl (92 kB)
+   ---------------------------------------- 92.4/92.4 kB 5.5 MB/s eta 0:00:00
+Downloading lxml-6.1.3-cp312-cp312-win_amd64.whl (4.0 MB)
+   ---------------------------------------- 4.0/4.0 MB 16.0 MB/s eta 0:00:00
+Downloading markupsafe-3.0.4-cp312-cp312-win_amd64.whl (14 kB)
+Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Downloading narwhals-2.29.0-py3-none-any.whl (501 kB)
+   --------------------------------------- 501.7/501.7 kB 10.5 MB/s eta 0:00:00
+Downloading numpy-2.5.5-cp312-cp312-win_amd64.whl (12.6 MB)
+   ---------------------------------------- 12.6/12.6 MB 10.1 MB/s eta 0:00:00
+Downloading opentelemetry_api-1.45.2-py3-none-any.whl (60 kB)
+   ---------------------------------------- 60.3/60.3 kB 1.6 MB/s eta 0:00:00
+Downloading pydantic-2.14.3-py3-none-any.whl (494 kB)
+   ---------------------------------------- 494.1/494.1 kB 7.7 MB/s eta 0:00:00
+Downloading pydantic_core-2.50.4-cp312-cp312-win_amd64.whl (2.3 MB)
+   ---------------------------------------- 2.3/2.3 MB 12.1 MB/s eta 0:00:00
+Downloading python_dateutil-4.0.0-py3-none-any.whl (92 kB)
+   ---------------------------------------- 92.9/92.9 kB 5.2 MB/s eta 0:00:00
+Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+Downloading pyyaml-6.0.3-cp312-cp312-win_amd64.whl (154 kB)
+   ---------------------------------------- 154.0/154.0 kB 9.6 MB/s eta 0:00:00
+Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+Downloading soupsieve-4.1.1-py3-none-any.whl (55 kB)
+   ---------------------------------------- 55.1/55.1 kB 2.8 MB/s eta 0:00:00
+Downloading starlette-1.10.0-py3-none-any.whl (80 kB)
+   ---------------------------------------- 80.6/80.6 kB 4.7 MB/s eta 0:00:00
+Downloading typing_inspection-0.4.5-py3-none-any.whl (14 kB)
+Downloading watchfiles-1.3.0-cp310-abi3-win_amd64.whl (290 kB)
+   ---------------------------------------- 290.6/290.6 kB 4.5 MB/s eta 0:00:00
+Downloading xmlschema-4.3.2-py3-none-any.whl (504 kB)
+   --------------------------------------- 504.6/504.6 kB 10.5 MB/s eta 0:00:00
+Downloading beartype-0.23.1-py3-none-any.whl (1.6 MB)
+   ---------------------------------------- 1.6/1.6 MB 14.3 MB/s eta 0:00:00
+Downloading et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
+Downloading license_expression-30.4.4-py3-none-any.whl (120 kB)
+   ---------------------------------------- 120.6/120.6 kB 3.4 MB/s eta 0:00:00
+Downloading packaging-26.3-py3-none-any.whl (129 kB)
+   ---------------------------------------- 130.0/130.0 kB 7.5 MB/s eta 0:00:00
+Downloading ply-3.11-py2.py3-none-any.whl (49 kB)
+   ---------------------------------------- 49.6/49.6 kB 2.6 MB/s eta 0:00:00
+Downloading rdflib-7.6.0-py3-none-any.whl (615 kB)
+   --------------------------------------- 615.4/615.4 kB 12.9 MB/s eta 0:00:00
+Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+   ---------------------------------------- 73.1/73.1 kB 2.0 MB/s eta 0:00:00
+Downloading selenium-4.53.0-py3-none-any.whl (12.2 MB)
+   ---------------------------------------- 12.2/12.2 MB 11.9 MB/s eta 0:00:00
+Downloading semantic_version-2.10.0-py2.py3-none-any.whl (15 kB)
+Downloading tzdata-2026.6-py2.py3-none-any.whl (348 kB)
+   --------------------------------------- 348.2/348.2 kB 10.9 MB/s eta 0:00:00
+Downloading uritools-7.0.0-py3-none-any.whl (12 kB)
+Downloading webdriver_manager-4.1.2-py3-none-any.whl (32 kB)
+Downloading webencodings-0.6.1-py3-none-any.whl (8.7 kB)
+Downloading xmltodict-1.0.4-py3-none-any.whl (13 kB)
+Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Downloading boolean_py-5.0-py3-none-any.whl (26 kB)
+Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+   ---------------------------------------- 135.1/135.1 kB 4.0 MB/s eta 0:00:00
+Downloading charset_normalizer-3.5.2-cp312-cp312-win_amd64.whl (207 kB)
+   ---------------------------------------- 207.5/207.5 kB 6.4 MB/s eta 0:00:00
+Downloading elementpath-5.1.4-py3-none-any.whl (261 kB)
+   ---------------------------------------- 261.9/261.9 kB 7.9 MB/s eta 0:00:00
+Downloading idna-3.20-py3-none-any.whl (69 kB)
+   ---------------------------------------- 69.6/69.6 kB 3.7 MB/s eta 0:00:00
+Downloading pyparsing-3.3.3-py3-none-any.whl (126 kB)
+   ---------------------------------------- 126.4/126.4 kB 3.7 MB/s eta 0:00:00
+Downloading trio-0.35.0-py3-none-any.whl (513 kB)
+   --------------------------------------- 513.2/513.2 kB 10.7 MB/s eta 0:00:00
+Downloading trio_websocket-0.12.2-py3-none-any.whl (21 kB)
+Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+   ---------------------------------------- 135.7/135.7 kB 4.0 MB/s eta 0:00:00
+Downloading websocket_client-1.9.2-py3-none-any.whl (95 kB)
+   ---------------------------------------- 95.8/95.8 kB 5.3 MB/s eta 0:00:00
+Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+   ---------------------------------------- 67.5/67.5 kB 3.8 MB/s eta 0:00:00
+Downloading cffi-2.1.1-cp312-cp312-win_amd64.whl (185 kB)
+   ---------------------------------------- 185.9/185.9 kB 5.7 MB/s eta 0:00:00
+Downloading outcome-1.3.0.post0-py2.py3-none-any.whl (10 kB)
+Downloading PySocks-1.7.1-py3-none-any.whl (16 kB)
+Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+Downloading wsproto-1.3.2-py3-none-any.whl (24 kB)
+Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)
+Downloading pycparser-3.12-py3-none-any.whl (62 kB)
+   ---------------------------------------- 62.6/62.6 kB 3.3 MB/s eta 0:00:00
+Installing collected packages: sortedcontainers, ply, boolean.py, Arpeggio, xmltodict, xlsxwriter, xlrd, websockets, websocket-client, webencodings, watchdog, urllib3, uritools, tzdata, typing-extensions, tree-sitter-rust, tree-sitter-python, tree-sitter-cpp, tree-sitter-c, tree-sitter, toml, textx, soupsieve, sniffio, six, semantic_version, robotframework, pyyaml, python-multipart, python-dotenv, pysocks, pypdf, pyparsing, pygments, pycparser, packaging, orjson, numpy, narwhals, mdurl, MarkupSafe, lxml, license_expression, lark, idna, httptools, h11, et-xmlfile, elementpath, docutils, click, charset_normalizer, certifi, beartype, attrs, annotated-types, annotated-doc, xmlschema, wsproto, uvicorn, typing-inspection, requests, rdflib, python-dateutil, python-datauri, pydantic-core, plotly, outcome, opentelemetry-api, openpyxl, markdown-it-py, jinja2, html5lib, cffi, beautifulsoup4, anyio, webdriver-manager, watchfiles, trio, starlette, spdx-tools, reqif, pydantic, pandas, trio-websocket, fastapi, selenium, html2pdf4doc, strictdoc
+Successfully installed Arpeggio-2.0.3 MarkupSafe-3.0.4 annotated-doc-0.0.6 annotated-types-0.8.0 anyio-4.16.0 attrs-26.1.0 beartype-0.23.1 beautifulsoup4-4.15.0 boolean.py-5.0 certifi-2026.10.23 cffi-2.1.1 charset_normalizer-3.5.2 click-8.5.1 docutils-0.23 elementpath-5.1.4 et-xmlfile-2.0.0 fastapi-0.163.2 h11-0.16.0 html2pdf4doc-0.0.35 html5lib-1.1 httptools-0.9.0 idna-3.20 jinja2-3.1.6 lark-1.3.1 license_expression-30.4.4 lxml-6.1.3 markdown-it-py-4.3.0 mdurl-0.1.2 narwhals-2.29.0 numpy-2.5.5 openpyxl-3.1.5 opentelemetry-api-1.45.2 orjson-3.13.0 outcome-1.3.0.post0 packaging-26.3 pandas-3.1.1 plotly-7.1.0 ply-3.11 pycparser-3.12 pydantic-2.14.3 pydantic-core-2.50.4 pygments-2.21.0 pyparsing-3.3.3 pypdf-6.21.4 pysocks-1.7.1 python-datauri-2.2.0 python-dateutil-4.0.0 python-dotenv-1.2.4 python-multipart-0.0.34 pyyaml-6.0.3 rdflib-7.6.0 reqif-0.1.1 requests-2.34.2 robotframework-7.5.1 selenium-4.53.0 semantic_version-2.10.0 six-1.17.0 sniffio-1.3.1 sortedcontainers-2.4.0 soupsieve-4.1.1 spdx-tools-0.8.5 starlette-1.10.0 strictdoc-0.30.4 textx-4.4.0 toml-0.10.2 tree-sitter-0.25.2 tree-sitter-c-0.24.2 tree-sitter-cpp-0.23.4 tree-sitter-python-0.25.0 tree-sitter-rust-0.24.2 trio-0.35.0 trio-websocket-0.12.2 typing-extensions-4.16.0 typing-inspection-0.4.5 tzdata-2026.6 uritools-7.0.0 urllib3-2.8.0 uvicorn-0.54.0 watchdog-7.1.0 watchfiles-1.3.0 webdriver-manager-4.1.2 webencodings-0.6.1 websocket-client-1.9.2 websockets-17.4 wsproto-1.3.2 xlrd-2.0.2 xlsxwriter-3.3.1 xmlschema-4.3.2 xmltodict-1.0.4

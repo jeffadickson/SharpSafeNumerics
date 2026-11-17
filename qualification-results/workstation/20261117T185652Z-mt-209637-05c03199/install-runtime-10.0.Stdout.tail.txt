@@ -1,0 +1,8 @@
+dotnet-install: Downloaded file https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.15/dotnet-runtime-10.0.15-win-x64.zip size is 36980907 bytes.
+dotnet-install: Either downloaded or local package size can not be measured. One of them may be corrupted.
+dotnet-install: Extracting the archive.
+dotnet-install: Binaries of dotnet can be found in C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\
+dotnet-install: Note that the script does not ensure your Windows version is supported during the installation.
+dotnet-install: To check the list of supported versions, go to https://learn.microsoft.com/dotnet/core/install/windows#supported-versions
+dotnet-install: Installed version is 10.0.15
+dotnet-install: Installation finished

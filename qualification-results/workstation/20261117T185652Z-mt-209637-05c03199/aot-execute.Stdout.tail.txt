@@ -1,0 +1,3 @@
+Detected batch width: 128 bits; 257 BigInteger-checked lanes.
+AOT oracle: 3,096 type pairs, 52,632 operation/policy outcomes; seed 731922; native width 64; Vector256 accelerated False.
+AOT smoke passed.
