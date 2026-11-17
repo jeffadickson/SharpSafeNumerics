@@ -1,0 +1,20 @@
+name: Core CI
+on:
+  push:
+  pull_request:
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+      - name: Test strict arithmetic
+        run: dotnet run --project tests/SharpSafeNumerics.Tests -c Release
+      - name: Compile C# 15 union adapter
+        run: dotnet build src/SharpSafeNumerics.Unions -c Release
+      - name: Native AOT smoke
+        run: |
+          dotnet publish tests/SharpSafeNumerics.AotSmoke -c Release -r linux-x64 -o artifacts/aot
+          ./artifacts/aot/SharpSafeNumerics.AotSmoke

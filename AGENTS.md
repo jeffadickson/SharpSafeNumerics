@@ -1,0 +1,3 @@
+# Coding agent instructions
+
+Implement measurable requirements; never claim builds or tests passed without logs. Preserve the core's BCL-only dependencies and net11.0/C#15 target. Distinguish API non-throwing behavior from *allocation-free* behavior. Never use compiler-generated value-type unions in strict zero-allocation code, since they box. Prefer bounded data structures and typed errors. Expand exhaustive and BigInteger oracle tests before optimization. Run the actual .NET 11 SDK compiler and GitHub Actions. Publish exact failures and follow up with fixes before calling the implementation green. Do not add runtime reflection or unchecked truncation without a named policy.
