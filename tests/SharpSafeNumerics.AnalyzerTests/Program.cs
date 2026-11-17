@@ -20,7 +20,7 @@ class Demo
 
 var refs = ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")!)
     .Split(Path.PathSeparator)
-    .Select(MetadataReference.CreateFromFile)
+    .Select(path => MetadataReference.CreateFromFile(path))
     .Append(MetadataReference.CreateFromFile(typeof(SharpSafeNumerics.SafeInteger).Assembly.Location));
 
 var tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.CSharp15));
