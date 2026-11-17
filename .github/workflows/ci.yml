@@ -43,6 +43,9 @@ jobs:
           ./artifacts/aot/SharpSafeNumerics.AotSmoke
       - name: Pack RC libraries and compiler extensions
         run: dotnet pack -c Release -o artifacts/packages
+      - name: Verify reproducible package archives
+        shell: pwsh
+        run: ./eng/VerifyPackageReproducibility.ps1 -ArtifactDirectory artifacts/reproducibility -RebuildBetweenPasses
       - name: Verify package consumer and packaged analyzer
         shell: pwsh
         run: ./eng/VerifyPackages.ps1 -PackageDirectory (Join-Path $PWD 'artifacts/packages') -WorkDirectory (Join-Path $PWD 'artifacts/package-consumer')

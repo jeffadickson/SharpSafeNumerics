@@ -62,6 +62,9 @@ public sealed class StrictNumericAnalyzerTests
     [InlineData("nint Cast(long value) => {|SSN1001:(nint)value|};")]
     [InlineData("int Cast(nint value) => {|SSN1001:(int)value|};")]
     [InlineData("byte Cast() => (byte)42;")]
+    [InlineData("byte Cast() => (byte)(short)42;")]
+    [InlineData("sbyte Cast() => (sbyte)(byte)42;")]
+    [InlineData("sbyte Cast() => (sbyte)(ushort)42;")]
     [InlineData("long Cast(uint value) => (long)value;")]
     [InlineData("Int128 Cast(ulong value) => value;")]
     [InlineData("long Cast(nint value) => (long)value;")]
@@ -279,6 +282,7 @@ public sealed class StrictNumericAnalyzerTests
     [InlineData("Func<int> M() { const int value = 42; return () => value; }")]
     [InlineData("string M() => $\"{nameof(Consumer)}\";")]
     [InlineData("void M(System.Text.StringBuilder destination, int value) => destination.Append($\"Data: {value}\");")]
+    [InlineData("void M(System.Text.StringBuilder destination, int value) => destination.Append($\"Data: {value}\" + $\" More: {value}\");")]
     [InlineData("int M() { Span<int> values = stackalloc int[1]; return values.Length; }")]
     [InlineData("int M(int value) { int Local() => value; return Local(); }")]
     [InlineData("Func<int> M(int value) { int Local() => value; return {|SSN1007:() => Local()|}; }")]
@@ -412,6 +416,27 @@ public sealed class StrictNumericAnalyzerTests
     }
 
     [Fact]
+    public async Task Explicit_unchecked_context_does_not_cross_function_boundaries()
+    {
+        await Verify("""
+            [StrictNumeric] class Consumer
+            {
+                Func<int, int> Lambda()
+                {
+                    {|SSN1002:unchecked { return static x => {|SSN1002:x + 1|}; }|}
+                }
+                int Local(int value)
+                {
+                    {|SSN1002:unchecked {
+                        int AddOne(int x) => {|SSN1002:x + 1|};
+                        return AddOne(value);
+                    }|}
+                }
+            }
+            """);
+    }
+
+    [Fact]
     public async Task Strict_scope_follows_lexical_symbols_including_nested_and_async_bodies()
     {
         await Verify("""
@@ -535,6 +560,14 @@ public sealed class StrictNumericAnalyzerTests
             Assert.Same(tree, diagnostic.Location.SourceTree);
             Assert.Equal(diagnostic.Id is "SSN1003" or "SSN1007" ? DiagnosticSeverity.Warning : DiagnosticSeverity.Error,
                 diagnostic.Severity);
+            if (diagnostic.Id == "SSN1007")
+            {
+                // An allocation warning must say what may allocate, not just name its scope.
+                string message = diagnostic.GetMessage(CultureInfo.InvariantCulture);
+                const string prefix = "Potential managed allocation in StrictNumeric scope: ";
+                Assert.StartsWith(prefix, message);
+                Assert.False(string.IsNullOrWhiteSpace(message[prefix.Length..]));
+            }
         }
     }
 

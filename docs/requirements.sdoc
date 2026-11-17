@@ -168,3 +168,21 @@ Implementation: docs/interactive-deep-dive.html and eng/DeepDiveEvidence.
 Verification: eng/VerifyDeepDive.cjs, eng/VerifyDeepDiveMutations.ps1,
 CI fixture agreement, and docs/verification/2026-11-17-html-deep-dive.md.
 <<<
+
+[REQUIREMENT]
+UID: SN-PACK-REPRO
+TITLE: Reproducible candidate package archives
+STATEMENT: >>>
+With the pinned SDK, identical source/configuration, fixed package timestamp and
+same build paths, repeated packaging shall produce byte-identical four NuGet
+packages and two symbol archives. Verification shall compare whole-file SHA256
+values, reject stale output directories and retain the tested scope. Rebuild
+reproducibility shall be reported separately from repacking unchanged binaries.
+<<<
+COMMENT: >>>
+Implementation: Directory.Build.props DeterministicTimestamp and
+eng/VerifyPackageReproducibility.ps1. Verification: local negative/positive
+repacking campaign and Core CI rebuild-between-passes check; see
+verification/2026-11-17-rc1-closeout.md. Cross-path/platform rebuild identity is
+not established by a same-path comparison.
+<<<
