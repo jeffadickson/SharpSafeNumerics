@@ -1,0 +1,9 @@
+{
+  "stryker-config": {
+    "project": "SharpSafeNumerics.Generator.csproj",
+    "test-projects": ["../../tests/SharpSafeNumerics.GeneratorTests/SharpSafeNumerics.GeneratorTests.csproj"],
+    "reporters": ["progress", "cleartext", "json"],
+    "mutation-level": "Standard",
+    "thresholds": {"high": 95, "low": 90, "break": 90}
+  }
+}

@@ -6,6 +6,7 @@ using SharpSafeNumerics;
 using HRange = Hedgehog.Linq.Range;
 using CGen = CsCheck.Gen;
 using HGen = Hedgehog.Linq.Gen;
+using SharpSafeNumerics.Verification;
 
 static bool AdditionMatchesOracle(int a, int b)
 {
@@ -76,5 +77,30 @@ var conversionProperty =
     from input in HGen.Int32(HRange.Constant(-256, 256)).ForAll()
     select ConversionMatchesOracle(input);
 conversionProperty.Check(config);
+
+Console.WriteLine("CsCheck wide arithmetic/policies: 2,000 UInt128 pairs across 12 types (24,000 type pairs)");
+CGen.Select(CGen.UInt128, CGen.UInt128).Sample(pair =>
+{
+    WideIntegerOracle.VerifyAll(pair.Item1, pair.Item2);
+}, seed: seed, iter: 2_000, threads: 1);
+
+// Independent long generators/shrinkers form full 128-bit bit patterns. Destination
+// widths consume low bits explicitly in the test harness, never in production paths.
+var wideProperty =
+    from ah in HGen.Int64(HRange.ConstantBoundedInt64()).ForAll()
+    from al in HGen.Int64(HRange.ConstantBoundedInt64()).ForAll()
+    from bh in HGen.Int64(HRange.ConstantBoundedInt64()).ForAll()
+    from bl in HGen.Int64(HRange.ConstantBoundedInt64()).ForAll()
+    select CheckWide(ah, al, bh, bl);
+Console.WriteLine("Hedgehog wide arithmetic/policies: 1,000 pairs across 12 types (12,000 type pairs)");
+wideProperty.Check(config);
+
+static bool CheckWide(long ah, long al, long bh, long bl)
+{
+    UInt128 a = ((UInt128)unchecked((ulong)ah) << 64) | unchecked((ulong)al);
+    UInt128 b = ((UInt128)unchecked((ulong)bh) << 64) | unchecked((ulong)bl);
+    WideIntegerOracle.VerifyAll(a, b);
+    return true;
+}
 
 Console.WriteLine("Property suites passed.");

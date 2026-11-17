@@ -1,6 +1,11 @@
 name: Platform Qualification
 on:
   workflow_dispatch:
+    inputs:
+      includeMac:
+        description: 'Run the explicitly enabled one-time macOS qualification'
+        type: boolean
+        default: false
   push:
     paths:
       - 'src/**'
@@ -17,13 +22,27 @@ jobs:
           - os: windows-latest
             rid: win-x64
             exe: artifacts/aot/SharpSafeNumerics.AotSmoke.exe
+          - os: ubuntu-24.04-arm
+            rid: linux-arm64
+            exe: ./artifacts/aot/SharpSafeNumerics.AotSmoke
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '11.0.x'
-      - run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release
+      - run: dotnet test -c Release
       - run: dotnet publish tests/SharpSafeNumerics.AotSmoke -c Release -r ${{ matrix.rid }} -o artifacts/aot
       - name: Run native smoke
         run: ${{ matrix.exe }}
+  mac-once:
+    if: github.event_name == 'workflow_dispatch' && inputs.includeMac && vars.ENABLE_MAC_QUALIFICATION == 'true'
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+      - run: dotnet test -c Release
+      - run: dotnet publish tests/SharpSafeNumerics.AotSmoke -c Release -r osx-arm64 -o artifacts/aot
+      - run: ./artifacts/aot/SharpSafeNumerics.AotSmoke

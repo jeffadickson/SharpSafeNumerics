@@ -1,0 +1,24 @@
+<Project>
+  <!-- Runtime libraries retain portable symbols; compiler extensions carry embedded
+       symbols and are loaded by Roslyn rather than exposed as runtime libraries. -->
+  <PropertyGroup Condition="'$(IsPackable)' == 'true' and '$(IsRoslynComponent)' != 'true'">
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EnablePackageValidation>true</EnablePackageValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsRoslynComponent)' == 'true'">
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <DebugType>embedded</DebugType>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/" />
+    <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="/" />
+  </ItemGroup>
+  <Target Name="IncludeCompilerExtensionInPackage" BeforeTargets="_GetPackageFiles"
+          DependsOnTargets="Build" Condition="'$(IsRoslynComponent)' == 'true'">
+    <ItemGroup>
+      <None Include="$(TargetPath)" Pack="true" PackagePath="analyzers/dotnet/cs/" />
+    </ItemGroup>
+  </Target>
+</Project>

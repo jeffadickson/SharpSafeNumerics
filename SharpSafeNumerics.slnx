@@ -7,10 +7,13 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/SharpSafeNumerics.UnitTests/SharpSafeNumerics.UnitTests.csproj" />
+    <Project Path="tests/SharpSafeNumerics.GeneratorTests/SharpSafeNumerics.GeneratorTests.csproj" />
+    <Project Path="tests/SharpSafeNumerics.AnalyzerUnitTests/SharpSafeNumerics.AnalyzerUnitTests.csproj" />
     <Project Path="tests/SharpSafeNumerics.Tests/SharpSafeNumerics.Tests.csproj" />
     <Project Path="tests/SharpSafeNumerics.PropertyTests/SharpSafeNumerics.PropertyTests.csproj" />
     <Project Path="tests/SharpSafeNumerics.AnalyzerTests/SharpSafeNumerics.AnalyzerTests.csproj" />
     <Project Path="tests/SharpSafeNumerics.AotSmoke/SharpSafeNumerics.AotSmoke.csproj" />
+    <Project Path="tests/SharpSafeNumerics.Soak/SharpSafeNumerics.Soak.csproj" />
   </Folder>
   <Folder Name="/examples/">
     <Project Path="examples/GeneratedQueueDepth/GeneratedQueueDepth.csproj" />

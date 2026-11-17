@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CsCheck" Version="5.0.1" />
-    <PackageReference Include="Hedgehog" Version="2.0.4" />
+    <Compile Include="../Shared/WideIntegerOracle.cs" Link="Verification/WideIntegerOracle.cs" />
+    <PackageReference Include="CsCheck" />
+    <PackageReference Include="Hedgehog" />
     <ProjectReference Include="../../src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
   </ItemGroup>
 </Project>

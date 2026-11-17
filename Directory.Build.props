@@ -6,5 +6,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Deterministic>true</Deterministic>
+    <Version>0.1.0-rc.1</Version>
+    <Authors>Jeff Dickson</Authors>
+    <RepositoryUrl>https://github.com/jeffadickson/SharpSafeNumerics</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/jeffadickson/SharpSafeNumerics</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Deterministic integer safety contracts and tooling for .NET 11.</Description>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+    <IsPackable>false</IsPackable>
+    <IsPackable Condition="'$(MSBuildProjectName)' == 'SharpSafeNumerics.Core' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Unions' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Generator' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Analyzers'">true</IsPackable>
   </PropertyGroup>
 </Project>

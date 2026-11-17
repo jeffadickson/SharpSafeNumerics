@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+    <PackageReference Include="BenchmarkDotNet" />
     <ProjectReference Include="../../src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
   </ItemGroup>
 </Project>

@@ -14,7 +14,9 @@ public readonly struct NumericResult<T> where T : struct
     /// <summary>Read the value without throwing; false on failure.</summary>
     public bool TryGetValue(out T value)
     {
-        value = IsSuccess ? _value : default;
+        // Fail constructs default storage and default(struct) also clears storage;
+        // no public construction path can pair failure with a non-default value.
+        value = _value;
         return IsSuccess;
     }
     /// <summary>Create a successful result.</summary>

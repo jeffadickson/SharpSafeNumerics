@@ -14,10 +14,17 @@ jobs:
         run: dotnet run --project tests/SharpSafeNumerics.Tests -c Release
       - name: Unit tests
         run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/coverage
+      - name: Generator contract tests
+        run: dotnet test tests/SharpSafeNumerics.GeneratorTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/generator-coverage
+      - name: Analyzer contract tests
+        run: dotnet test tests/SharpSafeNumerics.AnalyzerUnitTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/analyzer-coverage
       - uses: actions/upload-artifact@v4
         with:
           name: core-coverage
-          path: artifacts/coverage
+          path: |
+            artifacts/coverage
+            artifacts/generator-coverage
+            artifacts/analyzer-coverage
       - name: CsCheck and Hedgehog
         run: dotnet run --project tests/SharpSafeNumerics.PropertyTests -c Release
       - name: Generated annotated domain
@@ -32,6 +39,15 @@ jobs:
         run: |
           dotnet publish tests/SharpSafeNumerics.AotSmoke -c Release -r linux-x64 -o artifacts/aot
           ./artifacts/aot/SharpSafeNumerics.AotSmoke
+      - name: Pack RC libraries and compiler extensions
+        run: dotnet pack -c Release -o artifacts/packages
+      - name: Verify package consumer and packaged analyzer
+        shell: pwsh
+        run: ./eng/VerifyPackages.ps1 -PackageDirectory (Join-Path $PWD 'artifacts/packages') -WorkDirectory (Join-Path $PWD 'artifacts/package-consumer')
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rc-packages
+          path: artifacts/packages
 
   formal:
     runs-on: ubuntu-latest
@@ -53,4 +69,4 @@ jobs:
       - name: Validate StrictDoc requirements
         run: |
           python -m pip install --no-compile strictdoc==0.30.4
-          strictdoc export docs/requirements.sdoc --output-dir artifacts/requirements
+          strictdoc export docs --output-dir artifacts/requirements

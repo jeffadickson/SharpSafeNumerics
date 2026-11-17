@@ -1,11 +1,75 @@
 [DOCUMENT]
-TITLE: SharpSafeNumerics strict conversion requirements
+TITLE: SharpSafeNumerics requirements
 
 [REQUIREMENT]
 UID: SN-003
 TITLE: Expected arithmetic failures
 STATEMENT: Expected arithmetic failures return statuses, not exceptions.
 COMMENT: Parent baseline from PRODUCT_REQUIREMENTS.md; whole-library closure is not claimed.
+
+[REQUIREMENT]
+UID: SN-007
+TITLE: Explicit arithmetic policies
+STATEMENT: Reject, Saturate, Wrap and Throw shall be explicit arithmetic policies.
+
+[REQUIREMENT]
+UID: SN-007-VALIDATION
+TITLE: Undefined policy rejection
+STATEMENT: All undefined ArithmeticPolicy byte values shall throw ArgumentOutOfRangeException for policy before arithmetic, irrespective of whether operands overflow.
+COMMENT: Implementation SafeInteger.Add/Subtract/Multiply; verification PolicyValidationTests and wide arithmetic oracle campaigns.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-007
+
+[REQUIREMENT]
+UID: SN-010
+TITLE: Independent arithmetic oracles
+STATEMENT: Arithmetic shall have exhaustive small-domain and independent wide-integer oracle verification.
+
+[REQUIREMENT]
+UID: SN-010-WIDE
+TITLE: Wide arithmetic and policy campaign
+STATEMENT: Each supported built-in integer type shall be tested against exact BigInteger arithmetic for add/subtract/multiply/divide/negate and every Add/Subtract/Multiply policy, including failure outputs, endpoints, zero/sign transitions and seeded full-width values.
+COMMENT: >>>
+Verification: tests/Shared/WideIntegerOracle.cs, tests/SharpSafeNumerics.UnitTests/WideArithmeticTests.cs,
+tests/SharpSafeNumerics.PropertyTests/Program.cs and tests/SharpSafeNumerics.AotSmoke/Program.cs.
+Evidence: docs/verification/2026-11-17-rc1.md (qualification in progress).
+Finite deterministic and randomized campaigns are evidence, not a global correctness proof.
+Throw-path samples allocate intentionally.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-010
+
+[REQUIREMENT]
+UID: SN-011
+TITLE: Declarative bounded domains
+STATEMENT: Attributes and source generation shall provide strongly typed reflection-free bounded integer values.
+
+[REQUIREMENT]
+UID: SN-013
+TITLE: Strict numeric diagnostics
+STATEMENT: Roslyn diagnostics SSN1001 through SSN1008 shall enforce statically detectable numeric-safety contracts within their documented detection scope.
+
+[REQUIREMENT]
+UID: SN-010-SIMD
+TITLE: Detected SIMD batch addition
+STATEMENT: >>>
+Signed 32-bit batch addition shall use available 256-bit and 128-bit SIMD with
+scalar fallback and tails, preserving scalar exact results, error direction and
+zero failure outputs per lane. Length/capacity/overlap errors shall be returned as
+data before any destination write. Read-only inputs may alias; written prefixes
+shall be disjoint, and unused destination suffixes shall remain untouched.
+<<<
+COMMENT: >>>
+Implementation SafeInteger.Batch.cs; verification BatchArithmeticTests against
+BigInteger across width ceilings, byte-level aliases, malformed capacities and
+100000-call warmed allocation checks; Native AOT/platform smoke supplies detected
+dispatch evidence. Tests never force instructions absent on the executing CPU.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-010
 
 [REQUIREMENT]
 UID: SN-004

@@ -6,7 +6,10 @@
 ## M2 — Declarative numeric domains
 **Initial implementation complete.** `BoundedIntegerAttribute` is the public declaration surface; `BoundedIntegerGenerator` generates a partial value type with explicit validity, bounds, TryCreate/TryAdd/TrySubtract. This deliberately combines annotations with source generation: attributes are the specification; generated code is the zero-reflection implementation.
 
-Future M2 depth: parsing/formatting, serialization, configurable default semantics, richer policy annotations, generator diagnostics for member collisions.
+RC-1 implements invariant span parsing/formatting, fixed-width endian codecs,
+invalid/zero-valid defaults, policy helpers, metadata, exact conversions,
+comparison operators and declaration/collision diagnostics. Supported declarations
+and verification scope are specified in [GENERATOR_RC1.md](GENERATOR_RC1.md).
 
 ## M3 — Compile-time policy enforcement
 **Initial implementation complete.** `StrictNumericAttribute` plus analyzer rules:
@@ -14,7 +17,9 @@ Future M2 depth: parsing/formatting, serialization, configurable default semanti
 - SSN1003: ignored NumericResult<T> — warning
 - SSN1004: Throw policy in strict scope — error
 
-Future rules remain SSN1001 and SSN1005–SSN1008.
+RC-1 adds SSN1001 and SSN1005–SSN1008, operation-based scope handling and proper
+Roslyn unit tests. All eight rules have positive and negative tests; see
+[ANALYZERS_RC1.md](ANALYZERS_RC1.md) for static detection limitations.
 
 ## M4 — Verification stack
 **Implemented infrastructure; qualification evolves continuously.**
@@ -43,7 +48,8 @@ Conversion pass: exact nonexception-driven conversion, 144-pair BigInteger oracl
 100k-call allocation checks, core coverage and survivor-driven regression additions.
 Windows x64 AOT smoke has executed locally. See [dated evidence](verification/2026-11-17-conversion.md).
 
-Still required before a 1.0 qualification claim: Arm64 AOT, wide-type arithmetic
-BigInteger campaigns, full analyzer/generator qualification, robust benchmark
-baselines, RISCue/VeloSim integration, package signing/versioning and
-target-specific WCET/allocation evidence.
+RC-1 adds wide arithmetic/policy campaigns, package consumer verification and
+expanded platform qualification. Final evidence is recorded in the
+[RC report](verification/2026-11-17-rc1.md). Physical target WCET, actual
+RISCue/VeloSim integration, package signing and universal allocation/behavioral
+qualification remain outside this release candidate's evidence.
