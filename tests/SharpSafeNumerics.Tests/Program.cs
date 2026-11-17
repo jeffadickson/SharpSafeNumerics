@@ -70,7 +70,7 @@ static class Program
         Check(depth.TryAdd(1, out var nextDepth) == ArithmeticError.OutOfRange, "bounded overflow");
         Check(!nextDepth.IsValid, "failed bounded operation returns invalid");
         Check(depth.TrySubtract(63, out nextDepth) == ArithmeticError.None && nextDepth.Value == 0, "bounded subtract");
-        Check(nextDepth.TrySubtract(1, out _) == ArithmeticError.Underflow, "bounded underflow");
+        Check(nextDepth.TrySubtract(1, out _) == ArithmeticError.OutOfRange, "bounded range rejection");
         Check(Bounded<int, QueueRange>.TryCreate(64, out _) == ArithmeticError.OutOfRange, "bounded create fails");
 
         // Warm JIT paths before checking allocation; the test loop does no logging.
