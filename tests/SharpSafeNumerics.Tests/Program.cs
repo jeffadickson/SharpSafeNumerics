@@ -47,12 +47,12 @@ static class Program
             if (mul == ArithmeticError.None) Check(product == ai * bi, "sbyte multiply value");
         }
 
-        Check(SafeInteger.TryAdd(int.MaxValue, 1, out int a) == ArithmeticError.Overflow && a == 0, "int overflow");
-        Check(SafeInteger.TryAdd(int.MinValue, -1, out a) == ArithmeticError.Underflow, "int underflow");
-        Check(SafeInteger.TrySubtract(int.MinValue, 1, out a) == ArithmeticError.Underflow, "sub underflow");
-        Check(SafeInteger.TryMultiply(int.MinValue, -1, out a) == ArithmeticError.Overflow, "multiply min");
-        Check(SafeInteger.TryDivide(int.MinValue, -1, out a) == ArithmeticError.Overflow, "divide min");
-        Check(SafeInteger.TryNegate(int.MinValue, out a) == ArithmeticError.Overflow, "negate min");
+        Check(SafeInteger.TryAdd(int.MaxValue, 1, out int signedResult) == ArithmeticError.Overflow && signedResult == 0, "int overflow");
+        Check(SafeInteger.TryAdd(int.MinValue, -1, out signedResult) == ArithmeticError.Underflow, "int underflow");
+        Check(SafeInteger.TrySubtract(int.MinValue, 1, out signedResult) == ArithmeticError.Underflow, "sub underflow");
+        Check(SafeInteger.TryMultiply(int.MinValue, -1, out signedResult) == ArithmeticError.Overflow, "multiply min");
+        Check(SafeInteger.TryDivide(int.MinValue, -1, out signedResult) == ArithmeticError.Overflow, "divide min");
+        Check(SafeInteger.TryNegate(int.MinValue, out signedResult) == ArithmeticError.Overflow, "negate min");
         Check(SafeInteger.TryNegate((uint)1, out uint u) == ArithmeticError.Underflow && u == 0, "unsigned negate");
         Check(SafeInteger.TryAdd(UInt128.MaxValue, (UInt128)1, out _) == ArithmeticError.Overflow, "UInt128 overflow");
         Check(SafeInteger.TryConvert<int, byte>(256, out _) == ArithmeticError.OutOfRange, "narrowing conversion");
