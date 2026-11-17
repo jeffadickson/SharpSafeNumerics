@@ -132,3 +132,23 @@ Allocation evidence is runtime/platform-specific; no WCET or custom-provider gua
 RELATIONS:
 - TYPE: Parent
   VALUE: SN-005
+
+[REQUIREMENT]
+UID: SN-011-ALIASED-OUTPUT
+TITLE: Bounded receiver and input preservation
+STATEMENT: >>>
+Generic and generated bounded arithmetic shall support the receiver as its own
+out destination. Generated parsers and decoders shall consume input before
+publishing an overlapping result. Write and format APIs shall document that
+destination and count output storage must be distinct. Batch execution metadata
+shall return by value, and a default BatchArithmeticResult shall be uninitialized.
+<<<
+COMMENT: >>>
+Implementation: Bounded.TryAdd/TrySubtract, BoundedIntegerGenerator.Rendering.cs,
+SafeInteger.AddBatch and BatchArithmeticResult.
+Verification: InPlaceBoundedTests, GeneratedContractTests, GeneratedDomainTests,
+and BatchArithmeticTests. Evidence: docs/verification/2026-11-17-rc1.md.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-011

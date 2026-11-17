@@ -45,7 +45,7 @@ A numeric operation has two tracks: `Success(value)` or `Failure(error)`. This i
 ArithmeticError error = SafeInteger.TryAdd(int.MaxValue, 1, out int result);
 NumericResult<byte> bounded = SafeInteger.Add((byte)250, (byte)10, ArithmeticPolicy.Saturate);
 ```
-The original design also proposed generated `QueueDepth.From(42)`, a `TryAdd` returning a range-aware domain type and pattern matching over `Success`/`Overflow`/`OutOfRange` union cases. Generated `TryCreate`/`TryAdd`/`TrySubtract` now provide an initial range-aware implementation; the richer convenience surface remains planned.
+The original design also proposed generated `QueueDepth.From(42)`, a `TryAdd` returning a range-aware domain type and pattern matching over `Success`/`Overflow`/`OutOfRange` union cases. RC-1 implements `TryCreate`/`TryAdd`/`TrySubtract`, policy-aware Add/Subtract, span text, endian codecs, exact conversions and comparisons. The original From/union-domain convenience proposal is distinct from this implemented status-based surface; see GENERATOR_RC1.md.
 
 ## Requirement catalog from initial design
 | ID | Priority | Requirement |

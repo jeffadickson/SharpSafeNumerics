@@ -59,6 +59,11 @@ public sealed class BatchArithmeticTests
         var detailed = SafeInteger.AddBatch(oversized, oversized, [], []);
         Assert.Equal(BatchArithmeticError.InputTooLarge, detailed.Error);
         Assert.Equal(0, detailed.VectorWidthUsed); Assert.False(detailed.IsSuccess); Assert.Equal(91, sentinel);
+        // The largest representable byte length is admissible to the size guard;
+        // empty destinations must reject next, still before any memory access.
+        ReadOnlySpan<int> boundary = MemoryMarshal.CreateReadOnlySpan(ref sentinel, int.MaxValue / sizeof(int));
+        Assert.Equal(BatchArithmeticError.DestinationTooSmall, SafeInteger.AddBatch(boundary, boundary, [], []).Error);
+        Assert.Equal(91, sentinel);
     }
 
     [Fact]
