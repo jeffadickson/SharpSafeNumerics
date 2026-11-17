@@ -29,7 +29,7 @@ an exception for expected range rejection. Failure shall clear the output to zer
 COMMENT: >>>
 Implementation: src/SharpSafeNumerics.Core/SafeInteger.cs, TryConvert.
 Verification: tests/SharpSafeNumerics.UnitTests/ConversionTests.cs.
-Evidence: docs/verification/2026-11-17-conversion.md (pending).
+Evidence: docs/verification/2026-11-17-conversion.md (bounded conversion pass).
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -46,7 +46,8 @@ Int128, UInt128, nint and nuint. Native widths follow the executing architecture
 COMMENT: >>>
 Implementation: SafeInteger.TryConvert. Verification: ConversionTests matrix,
 BigInteger oracle, exhaustive 8-bit sources and deterministic seed 731921.
-Evidence pending. A finite campaign does not prove all wide integer values.
+Evidence: docs/verification/2026-11-17-conversion.md.
+A finite campaign does not prove all wide integer values.
 <<<
 RELATIONS:
 - TYPE: Parent

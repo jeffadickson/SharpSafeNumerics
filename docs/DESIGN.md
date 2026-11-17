@@ -12,7 +12,7 @@ Signed multiplication uses sign cases and quotient-based bounds. Division detect
 Reject returns failure; Saturate returns Min/Max; Wrap executes explicit unchecked arithmetic; Throw creates an OverflowException. Policies are per operation, never ambient global state. Invalid policy throws programmer-contract exception.
 
 ## Limitations
-The current policy API handles addition, subtraction and multiplication, not policy-driven division or negation. Range-aware source generation, analyzers, decimal and formal proof support are future deliverables. All generic math providers outside built-in integral primitives require explicit qualification.
+The current policy API handles addition, subtraction and multiplication, not policy-driven division or negation. Initial bounded-domain generation and SSN1002/1003/1004 enforcement exist; richer domain contracts and the remaining analyzer rules are open. Dafny verifies mathematical models, including conversion admission, without proving equivalence to C#. Decimal support remains planned. All generic math providers outside built-in integral primitives require explicit qualification.
 
 ## Sources
 https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/union

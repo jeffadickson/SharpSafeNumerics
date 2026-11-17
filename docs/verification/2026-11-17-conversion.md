@@ -4,6 +4,9 @@ Baseline main: `4970be40517c12ca968f48fc1e01baec8766128c`.
 Environment: Windows x64, .NET SDK 11.0.100, runtime 11.0.0, C# 15,
 warnings as errors. Implementation and test paths are traced in requirements.sdoc.
 Results below are local execution on the working source for this pass, not new CI results.
+The same unit suite/coverage and property campaigns were rerun successfully on
+committed revision `002e755e99c792728a10af6a15da82f7a9180ec5`; coverage counts
+were unchanged. Later commits change workflow integration/documentation only.
 
 Tested source SHA-256:
 
@@ -148,3 +151,29 @@ remain parents, with distinct conversion child IDs; tested implementation/test/m
 hashes now identify the source independently of the historical baseline. The
 reproduction block also explicitly discovers SDK MSBuild and Z3. This was source
 review, not independent execution or an external expert qualification.
+
+## Remote qualification and final disposition
+
+| Revision | Evidence | Result |
+| --- | --- | --- |
+| 002e755e99c792728a10af6a15da82f7a9180ec5 | [Core CI](https://github.com/jeffadickson/SharpSafeNumerics/actions/runs/44140964900) | 123 unit cases, 693,195 harness assertions, property suites, examples, analyzer probe, unions, Linux AOT and 6 Dafny verifications pass |
+| 002e755e99c792728a10af6a15da82f7a9180ec5 | [Platform qualification](https://github.com/jeffadickson/SharpSafeNumerics/actions/runs/44140964847) | Windows x64 and Linux x64 unit tests, AOT publish and native execution pass |
+| 4b046680090c965c7aa946784b9782c9f342bdbe | [Mutation](https://github.com/jeffadickson/SharpSafeNumerics/actions/runs/44141661637) | Corrected solution integration; 103 killed, 10 survived, 0 no-coverage, 1 compile error, 18 ignored; 91.15%, 90% gate passes |
+| 9b00ec61391db31079ff012c9f2fe789bbeafe55 | [Core CI + StrictDoc](https://github.com/jeffadickson/SharpSafeNumerics/actions/runs/44141871747) | Core regression/AOT, Dafny and real StrictDoc 0.30.4 HTML export pass |
+
+Local StrictDoc installation used its required Python tooling in the artifact run
+directory. Dependency installation on exFAT was slow; a known task-owned pip
+process was stopped and installation resumed with --no-compile. No unrelated
+process was stopped. CI independently validated the complete SDoc graph/export.
+
+The repository visibility was changed from private to public and read back as
+PUBLIC through GitHub. New commits use jeffadickson's existing GitHub noreply
+identity. Content and all-branch history were searched for unwanted attribution;
+the artifact-root environment variable in reproduction is a configuration name,
+not attribution. No history rewrite was required.
+
+The complete remaining prioritized work is in [QUALIFICATION_BACKLOG.md](../QUALIFICATION_BACKLOG.md).
+The next recommended pass is wide arithmetic/policy oracle qualification together
+with unconditional invalid-policy validation, followed by generator diagnostics
+and proper analyzer unit tests. See the [raw bounded benchmark table](2026-11-17-conversion-benchmark.md)
+for all nine cases and measurement-floor limitations.

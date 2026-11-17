@@ -28,7 +28,7 @@ Steps:
 - [x] Implement candidate validation; test all 144 ordered built-in type pairs at
   endpoints, destination boundaries and deterministic byte-generated values.
 - [x] Extend Native AOT smoke and independent property suites for conversion.
-- [ ] Run regression, coverage, mutation, formal, AOT and benchmark checks; inspect
+- [x] Run regression, coverage, mutation, formal, AOT and benchmark checks; inspect
   surviving mutants, update status documents and push coherent verified commits.
 
 Baseline: main 4970be40517c12ca968f48fc1e01baec8766128c; Windows x64 .NET

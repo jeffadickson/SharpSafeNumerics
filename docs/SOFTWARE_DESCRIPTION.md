@@ -45,7 +45,7 @@ A numeric operation has two tracks: `Success(value)` or `Failure(error)`. This i
 ArithmeticError error = SafeInteger.TryAdd(int.MaxValue, 1, out int result);
 NumericResult<byte> bounded = SafeInteger.Add((byte)250, (byte)10, ArithmeticPolicy.Saturate);
 ```
-The original design also proposed generated `QueueDepth.From(42)`, a `TryAdd` returning a range-aware domain type and pattern matching over `Success`/`Overflow`/`OutOfRange` union cases. Those features are **future requirements**, not completed code.
+The original design also proposed generated `QueueDepth.From(42)`, a `TryAdd` returning a range-aware domain type and pattern matching over `Success`/`Overflow`/`OutOfRange` union cases. Generated `TryCreate`/`TryAdd`/`TrySubtract` now provide an initial range-aware implementation; the richer convenience surface remains planned.
 
 ## Requirement catalog from initial design
 | ID | Priority | Requirement |
@@ -96,8 +96,8 @@ Exhaust small integer domains; use `BigInteger` independent oracle for wider val
 ```text
 src/SharpSafeNumerics.Core/
 src/SharpSafeNumerics.Unions/
-src/SharpSafeNumerics.Generator/       (planned)
-src/SharpSafeNumerics.Analyzers/        (planned)
+src/SharpSafeNumerics.Generator/
+src/SharpSafeNumerics.Analyzers/
 tests/SharpSafeNumerics.Tests/
 tests/SharpSafeNumerics.AotSmoke/
 docs/PRODUCT_REQUIREMENTS.md

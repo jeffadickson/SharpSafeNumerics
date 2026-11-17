@@ -19,7 +19,7 @@
 | x64/Arm64 AOT | Windows x64 smoke locally executed; Linux baseline CI green | Arm64 remains unverified |
 | Managed allocation validation | Conversion matrix and narrow arithmetic check | Runtime-specific; not whole-library guarantee |
 | Performance budget | Planned | Not measured |
-| Formal verification | Initial Dafny model | add/sub/mul/div + bounded add; not a refinement proof |
+| Formal verification | Six locally/CI verified Dafny model methods | add/sub/mul/div, bounded add, conversion admission; not a refinement proof |
 | CsCheck 5.0.1 | Executed | 40,000 cases; fixed replay seed |
 | Hedgehog 2.0.4 | Executed | 3,000 cases; independent generator/shrinker |
 | Stryker.NET 5.1.0 | Executed | 91.15%; gate raised to 90%; surviving mutants retained |
