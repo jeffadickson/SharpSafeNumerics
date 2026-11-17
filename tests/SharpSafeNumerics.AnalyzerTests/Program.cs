@@ -32,7 +32,7 @@ var diagnostics = await compilation
     .GetAnalyzerDiagnosticsAsync();
 
 var ids = diagnostics.Select(d => d.Id).OrderBy(x => x).ToArray();
-string[] expected = ["SSN1002", "SSN1003", "SSN1004"];
+string[] expected = ["SSN1002", "SSN1003", "SSN1003", "SSN1004"];
 if (!ids.SequenceEqual(expected))
     throw new Exception("Analyzer diagnostics mismatch: " + string.Join(",", ids));
 Console.WriteLine("Analyzer rules verified: " + string.Join(", ", ids));
