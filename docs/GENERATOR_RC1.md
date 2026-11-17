@@ -317,3 +317,13 @@ $filter = 'FullyQualifiedName~Every_reserved_generated_name|FullyQualifiedName~R
 # Add --test-case-filter $filter to the Stryker command.
 ```
 
+
+## Coordinator final-source follow-up
+
+The final renderer completed full Standard Stryker: 439 candidates, 329 killed,
+34 survived, 3 uncovered, 59 compile errors, 14 ignored, no timeouts; 89.89%.
+This replaces the earlier-renderer full score for current renderer evidence,
+not the final tests added afterwards. Diagnostic category/type-name hardening
+then passed 89 tests; scoped replay killed prior candidates 117 and 160 while
+retaining a guarded-equivalent First replacement and an uncovered metadata fallback.
+Commands, counts and provenance are recorded in verification/2026-11-17-rc1.md.

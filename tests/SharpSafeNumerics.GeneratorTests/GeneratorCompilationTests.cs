@@ -90,10 +90,21 @@ public sealed class GeneratorCompilationTests
         var diagnostic = Assert.Single(result.Diagnostics);
         Assert.Equal(expectedId, diagnostic.Id);
         Assert.Equal(DiagnosticSeverity.Error, diagnostic.Severity);
+        // Consumers can select generator diagnostics by category in editorconfig.
+        Assert.Equal("SharpSafeNumerics.Generator", diagnostic.Descriptor.Category);
         Assert.True(diagnostic.Location.IsInSource);
         Assert.False(string.IsNullOrWhiteSpace(diagnostic.Descriptor.Title.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(diagnostic.GetMessage()));
         Assert.Empty(result.GeneratedTrees);
+    }
+
+    [Fact]
+    public void Unsupported_storage_diagnostic_identifies_the_rejected_type()
+    {
+        var (_, result) = Generate("using SharpSafeNumerics; [BoundedInteger(typeof(float), \"0\", \"1\")] partial struct D;");
+        var diagnostic = Assert.Single(result.Diagnostics);
+        Assert.Equal("SSNG002", diagnostic.Id);
+        Assert.Contains("float", diagnostic.GetMessage(System.Globalization.CultureInfo.InvariantCulture));
     }
 
     [Fact]

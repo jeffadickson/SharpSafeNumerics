@@ -35,6 +35,24 @@ public sealed class StrictNumericAnalyzerTests
 
         """ + "\n";
 
+    [Fact]
+    public void Diagnostic_catalog_has_actionable_default_enabled_editor_metadata()
+    {
+        // IDEs and editorconfig consume these descriptors before a diagnostic fires.
+        var descriptors = new StrictNumericAnalyzer().SupportedDiagnostics;
+        Assert.Equal(8, descriptors.Length);
+        Assert.Equal(8, descriptors.Select(rule => rule.Id).Distinct().Count());
+        foreach (var rule in descriptors)
+        {
+            Assert.Equal("SharpSafeNumerics.Safety", rule.Category);
+            Assert.True(rule.IsEnabledByDefault);
+            Assert.False(string.IsNullOrWhiteSpace(rule.Title.ToString(CultureInfo.InvariantCulture)));
+            Assert.False(string.IsNullOrWhiteSpace(rule.MessageFormat.ToString(CultureInfo.InvariantCulture)));
+            Assert.Equal(rule.Id is "SSN1003" or "SSN1007" ? DiagnosticSeverity.Warning : DiagnosticSeverity.Error,
+                rule.DefaultSeverity);
+        }
+    }
+
     [Theory]
     [InlineData("byte Cast(int x) => {|SSN1001:(byte)x|};")]
     [InlineData("int Cast(uint x) => checked({|SSN1001:(int)x|});")]
@@ -236,6 +254,9 @@ public sealed class StrictNumericAnalyzerTests
     [InlineData("int[] M() => {|SSN1007:[1, 2]|};")]
     [InlineData("int[] M() => [];")]
     [InlineData("object M(int value) => {|SSN1007:value|};")]
+    [InlineData("object M(string value) => value;")]
+    [InlineData("string M(object value) => (string)value;")]
+    [InlineData("object M<T>(T value) where T : class => value;")]
     [InlineData("IFormattable M(int value) => {|SSN1007:value|};")]
     [InlineData("string M(int value) => {|SSN1007:$\"Data: {value}\"|};")]
     [InlineData("FormattableString M(int value) => {|SSN1007:$\"Data: {value}\"|};")]

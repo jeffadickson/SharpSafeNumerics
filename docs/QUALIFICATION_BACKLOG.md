@@ -9,8 +9,8 @@ and all eight strict diagnostics.
 | Priority | Remaining qualification | Evidence needed |
 | --- | --- | --- |
 | P0 | Application allocation and hard real-time behavior | Representative target kernels, contention and timing audit |
-| P1 | Final-source compiler-extension mutation breadth | Full Standard reruns; scoped hardening scores do not replace whole-project scores |
-| P1 | Release reproducibility and public API baselines | Immutable-source packages, hashes and consumer checks |
+| P1 | Final-source compiler-extension mutation breadth | Resolve remaining symbol/formatting guards and diagnostic variants; full scores 89.89% generator / 85.82% analyzer precede the last diagnostic-only test hardening |
+| P1 | Release reproducibility and public API baselines | Package consumer checks passed; corresponding archive entry bytes matched, but whole-archive hashes differed; public API baselines remain open |
 | P1 | Production SIMD performance | Matched output/status layout and representative workload timings |
 | P1 | Application integration | Actual RISCue/VeloSim/SharpUnits consumers, beyond repository examples |
 | P1 | Additional architecture coverage | 32-bit runtime execution and native-width contracts |

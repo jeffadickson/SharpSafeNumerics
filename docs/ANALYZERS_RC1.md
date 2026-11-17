@@ -196,3 +196,14 @@ StrictDoc 0.30.4 exported the analyzer requirements and the central
 requirements together and built the traceability graph. The eight analyzer
 obligations are traced to `SN-013`.
 [Analyzer requirements](analyzer-requirements.sdoc)
+
+## Coordinator full Standard follow-up
+
+The final analyzer completed Standard Stryker with the 108-test snapshot:
+522 candidates, 336 killed, 53 survived, 9 timeouts, 4 uncovered, 86 compile
+errors, 34 ignored; 85.82%. VSTest retried sessions and emitted a disposed-stream
+cancellation warning; a final JSON report was produced. Timeouts are detected
+candidates under Stryker's calculation, not assertion kills. Later diagnostic
+catalog/reference-conversion hardening passed 112 tests. Whole-project mutation
+closure is not claimed. See verification/2026-11-17-rc1.md for exact source scope,
+artifact paths and separate hardening replay evidence.
