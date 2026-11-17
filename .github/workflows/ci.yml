@@ -10,7 +10,6 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '11.0.x'
-      - run: dotnet restore
       - name: Exhaustive deterministic harness
         run: dotnet run --project tests/SharpSafeNumerics.Tests -c Release
       - name: Unit tests
