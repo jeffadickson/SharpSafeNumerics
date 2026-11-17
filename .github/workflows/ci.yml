@@ -37,5 +37,9 @@ jobs:
         with:
           dotnet-version: '11.0.x'
       - run: dotnet tool restore
+      - name: Install Z3
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y z3
       - name: Verify Dafny arithmetic model
-        run: dotnet tool run dafny -- verify formal/SafeInteger.dfy
+        run: dotnet tool run dafny -- verify formal/SafeInteger.dfy --solver-path $(which z3)
