@@ -13,7 +13,7 @@ jobs:
       - name: Exhaustive deterministic harness
         run: dotnet run --project tests/SharpSafeNumerics.Tests -c Release
       - name: Unit tests
-        run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release --no-restore
+        run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release
       - name: CsCheck and Hedgehog
         run: dotnet run --project tests/SharpSafeNumerics.PropertyTests -c Release
       - name: Generated annotated domain
