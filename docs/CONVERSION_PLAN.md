@@ -23,11 +23,11 @@ candidate is sign-preserving modulo round-trip admission; this pass instead mode
 mathematical conversion admission separately, without claiming C# equivalence.
 
 Steps:
-- [ ] Introduce StrictDoc requirements preserving SN identifiers; link implementation,
+- [x] Introduce StrictDoc requirements preserving SN identifiers; link implementation,
   tests and bounded evidence. Add failing success/failure allocation regression.
-- [ ] Implement candidate validation; test all 144 ordered built-in type pairs at
+- [x] Implement candidate validation; test all 144 ordered built-in type pairs at
   endpoints, destination boundaries and deterministic byte-generated values.
-- [ ] Extend Native AOT smoke and independent property suites for conversion.
+- [x] Extend Native AOT smoke and independent property suites for conversion.
 - [ ] Run regression, coverage, mutation, formal, AOT and benchmark checks; inspect
   surviving mutants, update status documents and push coherent verified commits.
 

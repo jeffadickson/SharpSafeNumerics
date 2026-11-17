@@ -47,3 +47,10 @@ jobs:
           sudo apt-get install -y z3
       - name: Verify Dafny arithmetic model
         run: dotnet tool run dafny -- verify formal/SafeInteger.dfy --solver-path $(which z3)
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Validate StrictDoc requirements
+        run: |
+          python -m pip install --no-compile strictdoc==0.30.4
+          strictdoc export docs/requirements.sdoc --output-dir artifacts/requirements
