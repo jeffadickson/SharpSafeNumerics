@@ -1,8 +1,8 @@
 {
   "stryker-config": {
-    "project": "src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj",
+    "project": "SharpSafeNumerics.Core.csproj",
     "test-projects": [
-      "tests/SharpSafeNumerics.UnitTests/SharpSafeNumerics.UnitTests.csproj"
+      "../../tests/SharpSafeNumerics.UnitTests/SharpSafeNumerics.UnitTests.csproj"
     ],
     "reporters": [ "progress", "cleartext", "json" ],
     "thresholds": {
