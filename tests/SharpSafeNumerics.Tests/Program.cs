@@ -64,10 +64,42 @@ static class Program
         Check(!SafeInteger.Add((byte)250, (byte)10).IsSuccess, "reject");
         Check(!default(NumericResult<int>).IsSuccess, "default invalid");
         Check(new BigInteger(int.MaxValue) + 1 > int.MaxValue, "oracle sanity");
+        Check(!default(Bounded<int, QueueRange>).IsValid, "bounded default must be invalid");
+        Check(Bounded<int, QueueRange>.TryCreate(63, out var depth) == ArithmeticError.None, "bounded create");
+        Check(depth.Value == 63, "bounded value");
+        Check(depth.TryAdd(1, out var nextDepth) == ArithmeticError.OutOfRange, "bounded overflow");
+        Check(!nextDepth.IsValid, "failed bounded operation returns invalid");
+        Check(depth.TrySubtract(63, out nextDepth) == ArithmeticError.None && nextDepth.Value == 0, "bounded subtract");
+        Check(nextDepth.TrySubtract(1, out _) == ArithmeticError.Underflow, "bounded underflow");
+        Check(Bounded<int, QueueRange>.TryCreate(64, out _) == ArithmeticError.OutOfRange, "bounded create fails");
+
+        // Warm JIT paths before checking allocation; the test loop does no logging.
+        for (int i = 0; i < 1000; i++)
+        {
+            _ = SafeInteger.TryAdd(10, 20, out _);
+            _ = SafeInteger.TryAdd(int.MaxValue, 1, out _);
+            _ = depth.TryAdd(1, out _);
+        }
+        long before = GC.GetAllocatedBytesForCurrentThread();
+        for (int i = 0; i < 100_000; i++)
+        {
+            _ = SafeInteger.TryAdd(10, 20, out _);
+            _ = SafeInteger.TryAdd(int.MaxValue, 1, out _);
+            _ = depth.TryAdd(1, out _);
+        }
+        long bytes = GC.GetAllocatedBytesForCurrentThread() - before;
+        Check(bytes == 0, "strict arithmetic allocated " + bytes + " bytes");
+
         Console.WriteLine("Passed " + assertions + " assertions.");
     }
 
     static ArithmeticError Expected(int value)
         => value > sbyte.MaxValue ? ArithmeticError.Overflow
          : value < sbyte.MinValue ? ArithmeticError.Underflow : ArithmeticError.None;
+}
+
+readonly struct QueueRange : IStaticIntegerRange<int>
+{
+    public static int Minimum => 0;
+    public static int Maximum => 63;
 }

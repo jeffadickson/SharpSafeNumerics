@@ -12,6 +12,8 @@ jobs:
           dotnet-version: '11.0.x'
       - name: Test strict arithmetic
         run: dotnet run --project tests/SharpSafeNumerics.Tests -c Release
+      - name: Build and run bounded domain example
+        run: dotnet run --project examples/RiscueQueueDepth -c Release
       - name: Compile C# 15 union adapter
         run: dotnet build src/SharpSafeNumerics.Unions -c Release
       - name: Native AOT smoke
