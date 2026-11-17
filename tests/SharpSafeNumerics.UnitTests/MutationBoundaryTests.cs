@@ -130,8 +130,8 @@ public sealed class MutationBoundaryTests
     }
 
     [Theory]
-    [InlineData(250, 10, 255)]
-    [InlineData(0, -1, int.MinValue)]
+    [InlineData(int.MaxValue, 1, int.MaxValue)]
+    [InlineData(int.MinValue, -1, int.MinValue)]
     public void Saturating_add_uses_correct_endpoint(int left, int right, int expected)
     {
         var result = SafeInteger.Add(left, right, ArithmeticPolicy.Saturate);
