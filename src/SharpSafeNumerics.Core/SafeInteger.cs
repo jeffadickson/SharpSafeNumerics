@@ -8,6 +8,7 @@ namespace SharpSafeNumerics;
 /// </summary>
 public static class SafeInteger
 {
+    /// <summary>Add with explicit overflow or underflow status and deterministic output.</summary>
     public static ArithmeticError TryAdd<T>(T left, T right, out T value)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
@@ -18,6 +19,7 @@ public static class SafeInteger
         return ArithmeticError.None;
     }
 
+    /// <summary>Subtract with explicit overflow or underflow status and deterministic output.</summary>
     public static ArithmeticError TrySubtract<T>(T left, T right, out T value)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
@@ -28,6 +30,7 @@ public static class SafeInteger
         return ArithmeticError.None;
     }
 
+    /// <summary>Multiply with preflight overflow checks, returning a status.</summary>
     public static ArithmeticError TryMultiply<T>(T left, T right, out T value)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
@@ -47,6 +50,7 @@ public static class SafeInteger
         return ArithmeticError.None;
     }
 
+    /// <summary>Divide, rejecting zero divisor and signed MinValue divided by minus one.</summary>
     public static ArithmeticError TryDivide<T>(T left, T right, out T value)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
@@ -58,6 +62,7 @@ public static class SafeInteger
         return ArithmeticError.None;
     }
 
+    /// <summary>Negate without silent wraparound; reject unsigned nonzero values.</summary>
     public static ArithmeticError TryNegate<T>(T input, out T value)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
@@ -89,6 +94,7 @@ public static class SafeInteger
         }
     }
 
+    /// <summary>Admit a value into an inclusive numeric range.</summary>
     public static ArithmeticError TryInRange<T>(T input, T minimum, T maximum, out T value)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
@@ -99,6 +105,7 @@ public static class SafeInteger
         return ArithmeticError.None;
     }
 
+    /// <summary>Add using an explicitly selected overflow policy.</summary>
     public static NumericResult<T> Add<T>(T left, T right, ArithmeticPolicy policy = ArithmeticPolicy.Reject)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
@@ -107,6 +114,7 @@ public static class SafeInteger
         return Resolve(left, right, error, policy, static (a, b) => unchecked(a + b));
     }
 
+    /// <summary>Subtract using an explicitly selected overflow policy.</summary>
     public static NumericResult<T> Subtract<T>(T left, T right, ArithmeticPolicy policy = ArithmeticPolicy.Reject)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
@@ -115,6 +123,7 @@ public static class SafeInteger
         return Resolve(left, right, error, policy, static (a, b) => unchecked(a - b));
     }
 
+    /// <summary>Multiply using an explicitly selected overflow policy.</summary>
     public static NumericResult<T> Multiply<T>(T left, T right, ArithmeticPolicy policy = ArithmeticPolicy.Reject)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
