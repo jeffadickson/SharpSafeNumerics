@@ -1,0 +1,5 @@
+  Determining projects to restore...
+  Restored C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\package-consumer\PackageSmoke.csproj (in 248 ms).
+CSC : warning CS1668: Invalid search path 'C:\GTK\LIB' specified in 'LIB environment variable' -- 'directory does not exist' [C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\package-consumer\PackageSmoke.csproj]
+All four RC packages consumed; generated domain and union adapter passed.
+Packaged analyzer rejected the deliberate Strict violation with SSN1004.

@@ -1,0 +1,17 @@
+Test run for C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\build\bin\SharpSafeNumerics.UnitTests\release\SharpSafeNumerics.UnitTests.dll (.NETCoreApp,Version=v11.0)
+Test run for C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\build\bin\SharpSafeNumerics.GeneratorTests\release\SharpSafeNumerics.GeneratorTests.dll (.NETCoreApp,Version=v11.0)
+Test run for C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\build\bin\SharpSafeNumerics.AnalyzerUnitTests\release\SharpSafeNumerics.AnalyzerUnitTests.dll (.NETCoreApp,Version=v11.0)
+A total of 1 test files matched the specified pattern.A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+
+
+Passed!  - Failed:     0, Passed:   175, Skipped:     0, Total:   175, Duration: 2 s - SharpSafeNumerics.UnitTests.dll (net11.0)
+
+Passed!  - Failed:     0, Passed:    89, Skipped:     0, Total:    89, Duration: 3 s - SharpSafeNumerics.GeneratorTests.dll (net11.0)
+
+Passed!  - Failed:     0, Passed:   120, Skipped:     0, Total:   120, Duration: 4 s - SharpSafeNumerics.AnalyzerUnitTests.dll (net11.0)
+
+Attachments:
+  C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\coverage\c39eb2c3-63d9-4bd4-aa52-b43331720f58\coverage.cobertura.xml
+  C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\coverage\cb8b3e84-e217-4150-b7b0-f7f955cb5a15\coverage.cobertura.xml
+  C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\coverage\1af11670-2f8f-4b93-a1d2-3a394060df2c\coverage.cobertura.xml

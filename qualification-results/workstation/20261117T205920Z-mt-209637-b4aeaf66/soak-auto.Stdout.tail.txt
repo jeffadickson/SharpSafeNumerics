@@ -1,0 +1,2 @@
+Soak start UTC 2026-11-17T21:01:24.1952913Z; seconds=64365; seed=731925/00000002OIo1; workers=1; detected-width=256; native-width=64
+Soak passed UTC 2026-11-18T14:53:54.9419156Z; elapsed=64365.046s; samples=325881737; type-pairs=3910580844; arithmetic-policy-outcomes=66479874348; batch-lanes=41488842023; managed-live-heap-before=24960; after=76472; GC0=2570720; GC1=6437; GC2=645

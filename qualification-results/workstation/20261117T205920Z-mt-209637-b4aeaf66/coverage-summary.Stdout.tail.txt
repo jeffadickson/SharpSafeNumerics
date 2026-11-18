@@ -1,0 +1,7 @@
+2026-11-17T13:00:37: Arguments
+2026-11-17T13:00:37:  -reports:C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\coverage\**\coverage.cobertura.xml
+2026-11-17T13:00:37:  -targetdir:C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\coverage-report
+2026-11-17T13:00:37:  -reporttypes:JsonSummary;Html
+2026-11-17T13:00:37: Writing report file 'C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\coverage-report\index.html'
+2026-11-17T13:00:38: Writing report file 'C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\coverage-report\Summary.json'
+2026-11-17T13:00:38: Report generation took 0.3 seconds

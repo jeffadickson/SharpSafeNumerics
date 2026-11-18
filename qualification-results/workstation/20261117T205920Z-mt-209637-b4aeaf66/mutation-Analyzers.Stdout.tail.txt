@@ -1,0 +1,65 @@
+
+   _____ _              _               _   _ ______ _______ �
+  / ____| |            | |             | \ | |  ____|__   __|�
+ | (___ | |_ _ __ _   _| | _____ _ __  |  \| | |__     | |   �
+  \___ \| __| '__| | | | |/ / _ \ '__| | . ` |  __|    | |   �
+  ____) | |_| |  | |_| |   <  __/ |    | |\  | |____   | |   �
+ |_____/ \__|_|   \__, |_|\_\___|_| (_)|_| \_|______|  |_|   �
+                   __/ |                                     �
+                  |___/                                      �
+
+
+Version: 5.1.0
+
+[13:01:25 INF] Stryker will use a max of 3 parallel testsessions.
+[13:01:25 INF] Analysis starting.
+[13:01:25 INF] Analyzing 1 test project(s).
+[13:01:27 WRN] Failed to identify target frameworks for project C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\tests\SharpSafeNumerics.AnalyzerUnitTests\SharpSafeNumerics.AnalyzerUnitTests.csproj. Assuming selected framework (net11.0) is present.
+[13:01:27 WRN] Project ..\..\tests\SharpSafeNumerics.AnalyzerUnitTests\SharpSafeNumerics.AnalyzerUnitTests.csproj simulated build failed. Trying again with a nuget restore.
+[13:01:29 WRN] Failed to identify target frameworks for project C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\tests\SharpSafeNumerics.AnalyzerUnitTests\SharpSafeNumerics.AnalyzerUnitTests.csproj. Assuming selected framework (net11.0) is present.
+[13:01:29 WRN] Analysis of project ..\..\tests\SharpSafeNumerics.AnalyzerUnitTests\SharpSafeNumerics.AnalyzerUnitTests.csproj succeeded.
+[13:01:30 WRN] Failed to identify target frameworks for project C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\src\SharpSafeNumerics.Core\SharpSafeNumerics.Core.csproj. Assuming selected framework (net11.0) is present.
+[13:01:30 WRN] Project ..\SharpSafeNumerics.Generator\SharpSafeNumerics.Generator.csproj simulated build failed. Trying again with a nuget restore.
+[13:01:32 WRN] Analysis of project ..\SharpSafeNumerics.Generator\SharpSafeNumerics.Generator.csproj succeeded.
+[13:01:32 INF] Found project C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\src\SharpSafeNumerics.Analyzers\SharpSafeNumerics.Analyzers.csproj to mutate.
+[13:01:32 INF] Analysis complete.
+[13:01:32 INF] Building test project C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\tests\SharpSafeNumerics.AnalyzerUnitTests\SharpSafeNumerics.AnalyzerUnitTests.csproj (1/1)
+[13:01:32 INF] Building project SharpSafeNumerics.AnalyzerUnitTests.csproj using dotnet build SharpSafeNumerics.AnalyzerUnitTests.csproj -c Debug --property:Platform=AnyCPU (directory C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\tests\SharpSafeNumerics.AnalyzerUnitTests.)
+[13:01:39 INF] Number of tests found: 120 for project C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\src\SharpSafeNumerics.Analyzers\SharpSafeNumerics.Analyzers.csproj. Initial test run started.
+[13:01:49 INF] 522 mutants created
+[13:01:49 INF] Capture mutant coverage using 'CoverageBasedTest' mode.
+[13:01:56 INF] 86    mutants got status CompileError. Reason: Mutant caused compile errors
+[13:01:56 INF] 4     mutants got status NoCoverage.   Reason: Not covered by any test.
+[13:01:56 INF] 34    mutants got status Ignored.      Reason: Removed by block already covered filter
+[13:01:56 INF] 124   total mutants are skipped for the above mentioned reasons
+[13:01:56 INF] 398   total mutants will be tested
+
+Killed:   371
+Survived:  27
+Timeout:    0
+Errors:    0
+
+
+All mutants have been tested, and your mutation score has been calculated
+������������������������������������������������������������������������������Ŀ
+� File                                                �  � # � #  �  #  � # �  �
+�                                                     �  � . � t. � su. � . �  �
+�                                                     �  �   �    �     � . �  �
+������������������������������������������������������������������������������Ĵ
+� C:\Users\dickson\Documents\GitHub\SharpSafeNumerics �  � 3 �  0 � 151 � 4 �  �
+� -qualification-20261117T205920Z-mt-209637-b4aeaf66\ �  � 7 �    �     �   �  �
+� src                                                 �  � 1 �    �     �   �  �
+� NumericSymbols.cs                                   �  � 1 �  0 �  83 � 2 �  �
+�                                                     �  � 5 �    �     �   �  �
+�                                                     �  � 7 �    �     �   �  �
+� StrictNumericAnalyzer.cs                            �  � 2 �  0 �  68 � 2 �  �
+�                                                     �  � 1 �    �     �   �  �
+�                                                     �  � 4 �    �     �   �  �
+��������������������������������������������������������������������������������
+
+Your json report has been generated at:
+file://C:/Users/dickson/Documents/QualificationArtifacts/SharpSafeNumerics/works
+tation/20261117T205920Z-mt-209637-b4aeaf66/mutation-Analyzers/reports/mutation-r
+eport.json
+[13:07:46 INF] Time Elapsed 00:06:35.3060683
+[13:07:46 INF] The final mutation score is 92.29 %

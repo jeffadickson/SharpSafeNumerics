@@ -1,0 +1,37 @@
+[95m
+[95mStarting discovery in 1 files.[0m
+[95mDiscovery found 14 tests in 217ms.[0m
+[95mRunning tests.[0m
+Started streams; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\01-streams.stdout.log
+streams: Failed (exit 7)
+Started timeout; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\01-timeout.stdout.log
+timeout: TimedOut (exit -1)
+Started argument-test; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\01-argument-test.stdout.log
+argument-test: Passed (exit 0)
+Started descendant; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\01-descendant.stdout.log
+descendant: Passed (exit 0)
+Started still-running; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\01-still-running.stdout.log
+still-running: Cancelled (exit -1)
+Started init; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\01-init.stdout.log
+init: Passed (exit 0)
+Started base; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\02-base.stdout.log
+base: Passed (exit 0)
+Started revision; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\03-revision.stdout.log
+revision: Passed (exit 0)
+Started stage-unrelated; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\04-stage-unrelated.stdout.log
+stage-unrelated: Passed (exit 0)
+Started stage-results; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\05-stage-results.stdout.log
+stage-results: Passed (exit 0)
+Started commit-results; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\06-commit-results.stdout.log
+commit-results: Passed (exit 0)
+Started results-parent; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\07-results-parent.stdout.log
+results-parent: Passed (exit 0)
+Started results-paths; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\08-results-paths.stdout.log
+results-paths: Passed (exit 0)
+Started results-identity; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\09-results-identity.stdout.log
+results-identity: Passed (exit 0)
+Started still-staged; logs: C:\Users\dickson\AppData\Local\Temp\91265769-36a9-4330-bc98-3075bbe7de2f\logs with spaces\10-still-staged.stdout.log
+still-staged: Passed (exit 0)
+[32m[+] C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\tests\WorkstationRunner.Tests.ps1[0m[90m 8.18s (7.27s|739ms)[0m
+[97mTests completed in 8.21s[0m
+[32mTests Passed: 14, [0m[90mFailed: 0, [0m[90mSkipped: 0, [0m[90mInconclusive: 0, [0m[37m[0m[90mNotRun: 0[0m

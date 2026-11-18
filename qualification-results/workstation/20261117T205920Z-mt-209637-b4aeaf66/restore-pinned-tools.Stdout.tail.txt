@@ -1,0 +1,5 @@
+Tool 'dafny' (version '4.11.0') was restored. Available commands: dafny
+Tool 'dotnet-stryker' (version '5.1.0') was restored. Available commands: dotnet-stryker
+Tool 'dotnet-reportgenerator-globaltool' (version '5.6.0') was restored. Available commands: reportgenerator
+
+Restore was successful.

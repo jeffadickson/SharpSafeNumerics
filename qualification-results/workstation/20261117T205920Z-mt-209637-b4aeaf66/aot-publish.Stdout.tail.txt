@@ -1,0 +1,12 @@
+  Determining projects to restore...
+  Restored C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\src\SharpSafeNumerics.Generator\SharpSafeNumerics.Generator.csproj (in 304 ms).
+  Restored C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\tests\SharpSafeNumerics.AotSmoke\SharpSafeNumerics.AotSmoke.csproj (in 297 ms).
+  Restored C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\src\SharpSafeNumerics.Core\SharpSafeNumerics.Core.csproj (in 297 ms).
+CSC : warning CS1668: Invalid search path 'C:\GTK\LIB' specified in 'LIB environment variable' -- 'directory does not exist' [C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\src\SharpSafeNumerics.Core\SharpSafeNumerics.Core.csproj]
+  SharpSafeNumerics.Core -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\aot-build\bin\SharpSafeNumerics.Core\release\SharpSafeNumerics.Core.dll
+CSC : warning CS1668: Invalid search path 'C:\GTK\LIB' specified in 'LIB environment variable' -- 'directory does not exist' [C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\src\SharpSafeNumerics.Generator\SharpSafeNumerics.Generator.csproj]
+  SharpSafeNumerics.Generator -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\aot-build\bin\SharpSafeNumerics.Generator\release\SharpSafeNumerics.Generator.dll
+CSC : warning CS1668: Invalid search path 'C:\GTK\LIB' specified in 'LIB environment variable' -- 'directory does not exist' [C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\tests\SharpSafeNumerics.AotSmoke\SharpSafeNumerics.AotSmoke.csproj]
+  SharpSafeNumerics.AotSmoke -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\aot-build\bin\SharpSafeNumerics.AotSmoke\release_win-x64\SharpSafeNumerics.AotSmoke.dll
+  Generating native code
+  SharpSafeNumerics.AotSmoke -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\aot\

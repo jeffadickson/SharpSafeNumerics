@@ -1,0 +1,14 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  SharpSafeNumerics.Core -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\build\bin\SharpSafeNumerics.Core\release\SharpSafeNumerics.Core.dll
+  Successfully created package 'C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\packages\SharpSafeNumerics.Core.0.1.0-rc.1.nupkg'.
+  Successfully created package 'C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\packages\SharpSafeNumerics.Core.0.1.0-rc.1.snupkg'.
+  SharpSafeNumerics.Unions -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\build\bin\SharpSafeNumerics.Unions\release\SharpSafeNumerics.Unions.dll
+  Successfully created package 'C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\packages\SharpSafeNumerics.Unions.0.1.0-rc.1.nupkg'.
+  Successfully created package 'C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\packages\SharpSafeNumerics.Unions.0.1.0-rc.1.snupkg'.
+CSC : warning CS1668: Invalid search path 'C:\GTK\LIB' specified in 'LIB environment variable' -- 'directory does not exist' [C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\src\SharpSafeNumerics.Analyzers\SharpSafeNumerics.Analyzers.csproj]
+CSC : warning CS1668: Invalid search path 'C:\GTK\LIB' specified in 'LIB environment variable' -- 'directory does not exist' [C:\Users\dickson\Documents\GitHub\SharpSafeNumerics-qualification-20261117T205920Z-mt-209637-b4aeaf66\src\SharpSafeNumerics.Generator\SharpSafeNumerics.Generator.csproj]
+  SharpSafeNumerics.Generator -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\build\bin\SharpSafeNumerics.Generator\release\SharpSafeNumerics.Generator.dll
+  SharpSafeNumerics.Analyzers -> C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\build\bin\SharpSafeNumerics.Analyzers\release\SharpSafeNumerics.Analyzers.dll
+  Successfully created package 'C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\packages\SharpSafeNumerics.Generator.0.1.0-rc.1.nupkg'.
+  Successfully created package 'C:\Users\dickson\Documents\QualificationArtifacts\SharpSafeNumerics\workstation\20261117T205920Z-mt-209637-b4aeaf66\packages\SharpSafeNumerics.Analyzers.0.1.0-rc.1.nupkg'.

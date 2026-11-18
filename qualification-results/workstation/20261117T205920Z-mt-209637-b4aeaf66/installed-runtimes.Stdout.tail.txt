@@ -1,0 +1,5 @@
+Microsoft.AspNetCore.App 11.0.0 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\shared\Microsoft.AspNetCore.App]
+Microsoft.NETCore.App 8.0.34 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\shared\Microsoft.NETCore.App]
+Microsoft.NETCore.App 10.0.15 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\shared\Microsoft.NETCore.App]
+Microsoft.NETCore.App 11.0.0 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\shared\Microsoft.NETCore.App]
+Microsoft.WindowsDesktop.App 11.0.0 [C:\Users\dickson\AppData\Local\SharpSafeNumericsQualification\tools\dotnet-11.0.100\shared\Microsoft.WindowsDesktop.App]

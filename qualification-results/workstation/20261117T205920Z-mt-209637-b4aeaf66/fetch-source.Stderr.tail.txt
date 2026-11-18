@@ -1,0 +1,2 @@
+From https://github.com/jeffadickson/SharpSafeNumerics
+ * branch            2e242881cb9a5075cb4fceb9f4df7cb7585efc3a -> FETCH_HEAD
