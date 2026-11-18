@@ -19,6 +19,14 @@ Describe 'Pinned SharpUnits integration boundaries' {
         { & $script:helper -ArtifactDirectory $output -SharpUnitsSource (Join-Path $TestDrive 'missing-source') } | Should -Throw '*Missing supplied SharpUnits*'
         Test-Path -LiteralPath $output | Should -BeFalse
     }
+    It 'rejects a nested clone before leaking consumer build policy upstream' {
+        $repo = Split-Path -Parent $PSScriptRoot
+        $parent = Join-Path $repo 'artifacts'
+        if (-not (Test-Path -LiteralPath $parent -PathType Container)) { New-Item -ItemType Directory -Path $parent | Out-Null }
+        $output = Join-Path $parent ('source-boundary-' + [guid]::NewGuid().ToString('N'))
+        { & $script:helper -ArtifactDirectory $output } | Should -Throw '*outside the numeric checkout*'
+        Test-Path -LiteralPath $output | Should -BeFalse
+    }
     It 'rejects an unpinned checkout without changing it' {
         $source = Join-Path $TestDrive 'unpinned-source'
         if (-not (Test-Path -LiteralPath $source -PathType Container)) { New-Item -ItemType Directory -Path $source | Out-Null }

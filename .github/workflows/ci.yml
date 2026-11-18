@@ -44,7 +44,15 @@ jobs:
         run: dotnet run --project eng/NativeWidthProbe -c Release -- --expected-bits 64
       - name: Pinned SharpUnits integration sample
         shell: pwsh
-        run: ./eng/VerifySharpUnitsIntegration.ps1 -ArtifactDirectory artifacts/sharpunits-integration
+        run: ./eng/VerifySharpUnitsIntegration.ps1 -ArtifactDirectory (Join-Path $env:RUNNER_TEMP 'SharpSafeNumerics-SharpUnits')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sharpunits-integration-evidence
+          path: |
+            ${{ runner.temp }}/SharpSafeNumerics-SharpUnits/*.log
+            ${{ runner.temp }}/SharpSafeNumerics-SharpUnits/summary.json
+          if-no-files-found: ignore
       - name: Generated annotated domain
         run: dotnet run --project examples/GeneratedQueueDepth -c Release
       - name: Static range-policy example

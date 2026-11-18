@@ -15,6 +15,12 @@ if ($SharpUnitsSource) {
     $SharpUnitsSource = [IO.Path]::GetFullPath($SharpUnitsSource)
     if (-not (Test-Path -LiteralPath $SharpUnitsSource -PathType Container)) { throw 'Missing supplied SharpUnits checkout' }
 }
+$plannedSource = if ($SharpUnitsSource) { $SharpUnitsSource } else { Join-Path $ArtifactDirectory 'SharpUnits' }
+$comparison = if ([IO.Path]::DirectorySeparatorChar -eq '\') { [StringComparison]::OrdinalIgnoreCase } else { [StringComparison]::Ordinal }
+$consumerPrefix = [IO.Path]::GetFullPath($repo).TrimEnd([char[]]'\/') + [IO.Path]::DirectorySeparatorChar
+if ([IO.Path]::GetFullPath($plannedSource).StartsWith($consumerPrefix, $comparison)) {
+    throw 'Keep SharpUnits source outside the numeric checkout so each project retains its own Directory.Build policy'
+}
 New-Item -ItemType Directory -Path $ArtifactDirectory | Out-Null
 if (-not $SharpUnitsSource) {
     $SharpUnitsSource = Join-Path $ArtifactDirectory 'SharpUnits'
@@ -38,7 +44,10 @@ if (-not (Test-Path -LiteralPath $project -PathType Leaf)) { throw 'Missing inte
 $build = Join-Path $ArtifactDirectory 'build'
 if (-not (Test-Path -LiteralPath $build -PathType Container)) { New-Item -ItemType Directory -Path $build | Out-Null }
 & dotnet build $project -c Release "-p:SharpUnitsProjectPath=$library" --artifacts-path $build *> (Join-Path $ArtifactDirectory 'build.log')
-if ($LASTEXITCODE -ne 0) { throw 'Integration build failed; inspect build.log' }
+if ($LASTEXITCODE -ne 0) {
+    Get-Content -LiteralPath (Join-Path $ArtifactDirectory 'build.log') -Tail 60 | Write-Output
+    throw 'Integration build failed; inspect build.log'
+}
 & dotnet run --project $project -c Release --no-build "-p:SharpUnitsProjectPath=$library" --artifacts-path $build *> (Join-Path $ArtifactDirectory 'run.log')
 if ($LASTEXITCODE -ne 0) { throw 'Integration behavior failed; inspect run.log' }
 $output = [IO.File]::ReadAllText((Join-Path $ArtifactDirectory 'run.log'))

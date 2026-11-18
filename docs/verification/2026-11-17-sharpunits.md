@@ -97,3 +97,19 @@ match the exact pinned SHA. The standalone optional sample is intentionally
 outside the normal solution, so normal integer builds need no SharpUnits source.
 CI executes the same default-clone integration helper explicitly. Actual CI
 success is recorded only after that workflow completes.
+
+## CI source-boundary correction
+
+Core CI44220094229 on7abdf07 initially failed the integration build. The clone
+was under this repository's artifacts directory, so MSBuild inherited the
+consumer's Directory.Build.props into the unrelated upstream project and made
+its19 existing CS1591 warnings errors. A local matching nested checkout
+reproduced that failure. No numerical assertion failed.
+
+CI now puts the source checkout under RUNNER_TEMP outside the consumer tree.
+The helper rejects nested source locations before cloning/building, with a
+specific regression test. Five helper Pester cases passed and an external
+supplied-source run passed4,030 assertions after this correction. Build failure
+tails and integration artifacts are now retained in CI. Neither project's
+warning policy is relaxed. This is an MSBuild producer/consumer boundary fix,
+not a change to the upstream source or numerical contracts.
