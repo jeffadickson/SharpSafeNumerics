@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 namespace SharpSafeNumerics;
 
 /// <summary>Uninitialized is zero so default(NumericResult&lt;T&gt;) never looks successful.</summary>

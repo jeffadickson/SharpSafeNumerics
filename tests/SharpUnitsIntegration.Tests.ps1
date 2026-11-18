@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 Describe 'Pinned SharpUnits integration boundaries' {
     BeforeAll {
         $script:helper = Join-Path (Split-Path -Parent $PSScriptRoot) 'eng/VerifySharpUnitsIntegration.ps1'

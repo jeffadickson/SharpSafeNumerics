@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 // SN-019-IEEE-CONTEXT: exact coefficient selection, not a refinement proof of C#.
 module DecimalRounding {
   datatype Mode = NearestEven | NearestAway | TowardZero | TowardNegative | TowardPositive

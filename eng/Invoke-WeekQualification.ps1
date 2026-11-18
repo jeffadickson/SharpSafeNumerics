@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 <#
 .SYNOPSIS
 Run a resumable week of managed IEEE qualification with daily bounded results.

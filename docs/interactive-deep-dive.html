@@ -1,4 +1,6 @@
 <!doctype html>
+<!-- Copyright (c) 2026 Jeff Dickson.
+     SPDX-License-Identifier: MIT -->
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -72,13 +74,13 @@ depth.TryWrite(bytes, out int written);
 <div class="controls"><label>Diagnostic scenario<select id="rule"></select></label></div><div class="grid"><pre id="rule-code"></pre><article class="panel tint"><div id="rule-id" class="status"></div><h3 id="rule-title"></h3><p id="rule-detail"></p><p id="rule-fix" class="small"></p></article></div>
 <p class="small">These are curated, source-reviewed examples, not a browser-hosted Roslyn compiler. SSN1003 is independent of Strict scope. SSN1007 warns about detectable allocation sites; it does not prove allocation freedom. Dataflow and indirect-call limitations remain documented.</p>
 </section>
-<section id="simd"><span class="section-number">06 / BATCH CONTRACT</span><h2>SIMD is only part of the API.</h2>
-<p class="intro">.NET supplies the vector instructions. The batch API adds per-lane exactness and validation. Explore how full vector groups and scalar tails partition a batch.</p>
+<section id="simd"><span class="section-number">06 / BATCH CONTRACT</span><h2>Call AddBatch. It picks the SIMD width.</h2>
+<p class="intro">A lane is one pair of elements at the same position in two input arrays. Adding two arrays of 1,000 integers gives you 1,000 lanes. SIMD256 can add eight pairs at once, and AVX-512 can add sixteen. Call <code>SafeInteger.AddBatch</code> and it selects the available path and handles any leftover pairs.</p>
 <div class="controls"><label>Conceptual available width<select id="s-width"><option value="512">AVX-512 / 16 Int32 lanes</option><option value="256">256 bits / 8 Int32 lanes</option><option value="128">128 bits / 4 Int32 lanes</option><option value="0">Scalar fallback</option></select></label><label>Batch length<input id="s-length" type="range" min="0" max="288" value="271"></label><label>Buffer contract<select id="s-contract"><option value="valid">Valid disjoint outputs</option><option value="overlap">Written output overlaps input</option><option value="length">Unequal input lengths</option><option value="small">Destination too small</option></select></label></div>
 <div id="s-summary" class="evidence" aria-live="polite"></div><div id="s-lanes" class="lanes" aria-label="Illustrative lane outcomes"></div><div class="legend"><span>Green: exact vector result</span><span>Rose: overflow/underflow → zero</span><span>Sand: scalar tail or fallback</span></div>
 <pre>var outcome = SafeInteger.AddBatch(left, right, values, errors);
 if (!outcome.IsSuccess) { /* handle buffer-contract failure */ }
-// outcome.VectorWidthUsed: widest vector loop actually executed.
+// VectorWidthUsed is optional diagnostic information.
 // Inspect errors[i] before consuming values[i].</pre>
 <p class="small">Conceptual visualization only: it does not detect this browser’s ISA or execute SIMD. On supported hardware, batches of at least 256 lanes start with AVX-512. Remaining lanes use SIMD256, SIMD128 and scalar as available. The preview shows the first 24 lanes. Buffer errors occur before writes; read-only inputs may alias, written prefixes must be disjoint, and destination suffixes are preserved. SIMD currently covers Int32 batch addition.</p>
 <p>In a repeated sweep at 262,147 lanes, AVX-512 took 37–42% longer than SIMD256 on the tested Xeon 8573C hosts and about 24% less time on the tested AMD EPYC 9V74. The Xeon 6975P-C had a smaller SIMD256 lead of about 2–3%. Dispatch has no large-batch cutoff. <a href="https://github.com/jeffadickson/SharpSafeNumerics/actions/runs/44397230428">Timing samples and CPU details</a></p>

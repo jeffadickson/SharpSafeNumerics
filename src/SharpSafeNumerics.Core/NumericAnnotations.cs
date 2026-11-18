@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 namespace SharpSafeNumerics;
 
 /// <summary>Determines whether zero-initialized generated values may be used.</summary>

@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 [package]
 name = "qualcompact"
 version = "0.1.0"

@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 namespace SharpSafeNumerics;
 
 /// <summary>Non-boxing numeric result; default is invalid, not success.</summary>

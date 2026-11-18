@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 //! Explicit campaign schemas. A completed upload or a running checkpoint is not a pass.
 use serde_json::{Value, json};
 use std::collections::BTreeMap;

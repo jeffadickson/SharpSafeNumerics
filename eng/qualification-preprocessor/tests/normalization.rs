@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 //! Requirement-oriented negative and randomized regression checks.
 use proptest::prelude::*;
 use qualcompact::{compact, normalize};

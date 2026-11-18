@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 //! SN-QUAL-COMPACT: explicit campaign states never become implicit qualification.
 use proptest::prelude::*;
 use qualcompact::{compact, normalize};

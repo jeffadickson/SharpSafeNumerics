@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 BeforeAll {
     $script:weekRunner=Join-Path (Split-Path -Parent $PSScriptRoot) 'eng/Invoke-WeekQualification.ps1'
     if (!(Test-Path -LiteralPath $script:weekRunner -PathType Leaf)) { throw 'Missing week runner' }

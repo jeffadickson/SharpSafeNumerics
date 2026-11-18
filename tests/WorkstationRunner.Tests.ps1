@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 BeforeAll {
     $repository=Split-Path -Parent $PSScriptRoot
     if(-not(Test-Path -LiteralPath $repository -PathType Container)){throw 'Missing repository'}

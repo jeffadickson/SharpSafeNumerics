@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 # Verifies the mathematical model, then exercises C# emitted from that verified source.
 [CmdletBinding()]
 param([Parameter(Mandatory)][string]$ArtifactDirectory,[Parameter(Mandatory)][string]$SolverPath)

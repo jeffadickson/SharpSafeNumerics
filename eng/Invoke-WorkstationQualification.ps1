@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 <#
 .SYNOPSIS
 Run bounded Windows x64 qualification in an isolated checkout and push reports only.

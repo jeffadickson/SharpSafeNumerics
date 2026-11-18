@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 /* Verification-only adapter for unmodified decNumber 3.68 (ICU license).
  * Compile with -DDECNUMDIGITS=2000 for this adapter and decNumber.c alike.
  * One request per process; parse operands at 2000 digits before applying the

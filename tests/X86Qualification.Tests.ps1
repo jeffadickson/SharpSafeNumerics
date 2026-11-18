@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 param([string]$FullRunArtifactDirectory = '', [string]$FullRunRuntimeDirectory = '')
 
 BeforeAll {

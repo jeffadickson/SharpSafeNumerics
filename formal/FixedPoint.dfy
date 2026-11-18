@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 // SN-018-FIXED: mathematical Q32.32 model, not a C# refinement proof.
 module FixedPoint {
   datatype Error = Ok | DivideByZero | Inexact | BelowRange | AboveRange

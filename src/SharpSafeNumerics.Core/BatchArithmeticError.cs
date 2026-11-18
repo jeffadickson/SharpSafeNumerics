@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 namespace SharpSafeNumerics;
 
 /// <summary>Buffer-contract outcome for batch arithmetic; lane arithmetic errors are reported separately.</summary>

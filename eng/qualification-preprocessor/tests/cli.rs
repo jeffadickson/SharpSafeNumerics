@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 //! End-to-end checks exercise the actual native CLI and filesystem contract.
 use serde_json::{Value, json};
 use std::{

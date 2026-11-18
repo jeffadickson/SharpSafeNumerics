@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 window.decimalLab = {
     setup(initial) {
         const fallback = document.getElementById('case-input');

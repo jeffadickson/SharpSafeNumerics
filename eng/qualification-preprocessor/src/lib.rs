@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 //! Normalization deliberately retains each evidence record independently.
 use serde_json::{Value, json};
 mod campaigns;

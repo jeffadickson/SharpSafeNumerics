@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 datatype ArithmeticError = None | Overflow | Underflow | DivideByZero | OutOfRange
 
 const MIN32: int := -2147483648

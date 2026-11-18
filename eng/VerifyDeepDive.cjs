@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 // Browser verification uses an explicitly supplied existing Playwright module.
 // No npm install or machine-specific module path is part of the document.
 const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');

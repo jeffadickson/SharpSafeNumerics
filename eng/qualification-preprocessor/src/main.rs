@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 //! Native CLI: read-only inputs, deterministic output, fresh-file publication.
 use clap::Parser;
 use serde_json::{Value, json};

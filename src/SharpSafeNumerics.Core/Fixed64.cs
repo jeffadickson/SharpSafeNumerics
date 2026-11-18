@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 namespace SharpSafeNumerics;
 
 /// <summary>A signed Q32.32 value whose exact value is <see cref="RawValue"/> divided by 2^32. Default is zero.</summary>

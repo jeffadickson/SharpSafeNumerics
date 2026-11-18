@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 using PeterO.Numbers;
 using System.Globalization;
 using System.Numerics;

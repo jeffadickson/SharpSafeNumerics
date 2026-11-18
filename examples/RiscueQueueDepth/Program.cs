@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 using SharpSafeNumerics;
 
 if (Bounded<int, QueueDepthRange>.TryCreate(62, out var depth) != ArithmeticError.None)

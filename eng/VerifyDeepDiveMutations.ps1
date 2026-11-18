@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 param([Parameter(Mandatory)][string]$PlaywrightModule, [Parameter(Mandatory)][string]$ArtifactDirectory)
 $ErrorActionPreference = 'Stop'
 if (-not (Test-Path -LiteralPath $ArtifactDirectory -PathType Container)) { throw 'Missing run-specific artifact directory' }

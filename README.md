@@ -27,10 +27,34 @@ The project is organized as M1–M5; see [milestones](docs/MILESTONES.md). Numer
 
 ## SIMD batch addition
 
-`SafeInteger.AddBatch` returns the widest SIMD loop actually executed in
-`VectorWidthUsed`. Int32 batches of 256 lanes or more can use AVX-512 when the
-runtime enables it. Smaller batches and remaining lanes use available SIMD256,
-SIMD128 and scalar loops. All paths produce the same per-lane value and status.
+A lane is one pair of elements at the same position in two input arrays. Adding
+two arrays of 1,000 integers gives you 1,000 lanes. SIMD256 can add eight pairs
+at once, and AVX-512 can add sixteen.
+
+Call `SafeInteger.AddBatch` and let it choose automatically. It uses AVX-512 for
+batches of at least 256 lanes when the runtime supports it, then uses available
+SIMD256, SIMD128 and scalar loops for shorter batches and leftovers. Every path
+returns the same sums and overflow or underflow statuses.
+
+```csharp
+using SharpSafeNumerics;
+
+int[] left = [10, int.MaxValue];
+int[] right = [5, 1];
+int[] values = new int[left.Length];
+var errors = new ArithmeticError[left.Length];
+
+var result = SafeInteger.AddBatch(left, right, values, errors);
+if (result.IsSuccess)
+{
+    // values: [15, 0]; errors: [None, Overflow]
+    // Check errors[i] before using values[i].
+}
+```
+
+`IsSuccess` tells you the buffers were accepted. `VectorWidthUsed` is available
+for diagnostics if you want to see which width ran.
+
 Repeated large-batch measurements favored SIMD256 on the tested Intel hosts
 and AVX-512 on the tested AMD host. Dispatch has no large-batch cutoff.
 Try the [SIMD lab](docs/interactive-deep-dive.html#simd) and see the

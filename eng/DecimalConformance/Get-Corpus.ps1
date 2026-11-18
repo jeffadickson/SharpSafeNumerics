@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 param([string] $ArtifactDirectory)
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'

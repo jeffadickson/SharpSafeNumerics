@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 /* Independent, verification-only fixture generator using GNU MPFR 4.2.1.
  * Compile against the system MPFR/GMP libraries; no library sources are copied.
  * Run at 1024 and 2048 bits and compare all 200-significant-digit output rows.

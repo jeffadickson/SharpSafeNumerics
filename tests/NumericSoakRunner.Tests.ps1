@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 Describe 'Numeric soak CLI contract' {
  BeforeAll {
   $script:project = Join-Path $PSScriptRoot 'SharpSafeNumerics.NumericSoak\SharpSafeNumerics.NumericSoak.csproj'

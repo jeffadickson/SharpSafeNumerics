@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 using System.Globalization;
 using System.Numerics;
 
@@ -36,7 +39,9 @@ public static partial class IeeeDecimal<T> where T : struct, IFloatingPointIeee7
         if (!RepresentationValid(context)) return RepresentationFailure<bool>();
         var canonical = IeeeDecimalCodec<T>.Encode(IeeeDecimalCodec<T>.Decode(value));
         return RepresentationResult(EncodeBinary(value).Value == EncodeBinary(canonical).Value, 0, context);
-    }    /// <summary>Returns whether the representation is a signaling NaN; never signals.</summary>
+    }
+
+    /// <summary>Returns whether the representation is a signaling NaN; never signals.</summary>
     public static IeeeDecimalResult<bool> IsSignaling(T value, IeeeDecimalContext context = default) => RepresentationValid(context) ? RepresentationResult(IeeeDecimalCodec<T>.Decode(value).Kind == DecimalKind.SignalingNaN, 0, context) : RepresentationFailure<bool>();
     /// <summary>Returns the sign bit, including signs of zeros and NaNs.</summary>
     public static IeeeDecimalResult<bool> IsSignMinus(T value, IeeeDecimalContext context = default) => RepresentationValid(context) ? RepresentationResult(T.IsNegative(value), 0, context) : RepresentationFailure<bool>();

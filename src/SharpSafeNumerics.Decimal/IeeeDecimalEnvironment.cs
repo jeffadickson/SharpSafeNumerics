@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 namespace SharpSafeNumerics;
 
 /// <summary>Immutable decimal/binary conversion modes and trap selection; defaults are nearest-even without traps.</summary>

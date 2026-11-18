@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;

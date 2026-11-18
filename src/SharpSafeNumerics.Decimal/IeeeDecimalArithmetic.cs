@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 using System.Numerics;
 namespace SharpSafeNumerics;
 /// <summary>Stateless IEEE decimal operations with explicit rounding and status.</summary>

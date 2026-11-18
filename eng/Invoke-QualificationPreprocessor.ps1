@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 # Builds the optional native evidence reader incrementally and preserves its exit status.
 [CmdletBinding()]
 param(
