@@ -1,8 +1,14 @@
 name: Benchmarks
 on:
   workflow_dispatch:
+    inputs:
+      avx512:
+        type: boolean
+        default: false
+        description: Compare hardware SIMD256 and AVX-512
 jobs:
   benchmark:
+    if: ${{ !inputs.avx512 }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,4 +20,32 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: benchmark-results
+          path: BenchmarkDotNet.Artifacts
+
+  avx512:
+    if: inputs.avx512
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+      - shell: pwsh
+        run: |
+          dotnet run --project benchmarks/SharpSafeNumerics.Benchmarks -c Release -- --filter '*Avx512Comparison*' --job short --inProcess
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $report = 'BenchmarkDotNet.Artifacts/results/Avx512Comparison-report.csv'
+          if (!(Test-Path -LiteralPath $report -PathType Leaf)) { throw 'Benchmark produced no report' }
+          $rows = @(Import-Csv -LiteralPath $report)
+          if ($rows.Count -ne 8 -or @($rows | Where-Object { $_.Mean -notmatch '^\d' }).Count) {
+            throw 'Hardware comparison did not produce eight measurements'
+          }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: avx512-${{ matrix.os }}
           path: BenchmarkDotNet.Artifacts
