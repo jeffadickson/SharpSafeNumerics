@@ -1,0 +1,10 @@
+-- Original negative adapter controls; none may become passing numerical evidence.
+precision: 7
+maxExponent: 96
+minExponent: -95
+clamp: 1
+rounding: half_even
+broken001 add 1 ->
+broken002 add 1 2 -> three
+broken003 add '12 0 -> 1
+broken004 add '1'0 -> 1

@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup><PackageReference Include="PeterO.Numbers" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../../src/SharpSafeNumerics.Decimal/SharpSafeNumerics.Decimal.csproj" /></ItemGroup>
+</Project>

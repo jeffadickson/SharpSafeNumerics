@@ -1,0 +1,29 @@
+{
+  "retrievedUtcDate": "2026-11-18",
+  "artifacts": [
+    {
+      "name": "General Decimal Arithmetic extended testcases 2.62 (2010-04-19)",
+      "url": "https://speleotrove.com/decimal/dectest.zip",
+      "sha256": "B70A224CD52E82B7A8150AEDAC5EFA2D0CB3941696FD829BDBE674F9F65C3926",
+      "license": "ICU license; https://speleotrove.com/decimal/#testcases explicitly applies it to the testcases",
+      "licenseUrl": "https://speleotrove.com/decimal/ICU-license.html",
+      "notice": "Copyright (c) Mike Cowlishaw, 1981, 2010. All rights reserved. Parts copyright (c) IBM Corporation, 1981, 2008. Preserve each file's actual notices and original archive. Experimental beta testcases, not a conformance guarantee.",
+      "repositoryPolicy": "Archive, expanded corpus, license and raw reports outside Git; never silently replace an archive whose hash differs."
+    },
+    {
+      "name": "decNumber ICU 3.68",
+      "url": "https://speleotrove.com/decimal/decNumber-icu-368.zip",
+      "sha256": "14EC2CF30B58758493A7661B78B80ABFB281652B61A425B85CDA83173518FE25",
+      "license": "ICU license; retain archive ICU-license.html and source notices",
+      "notice": "Copyright IBM Corporation and others; exact year ranges and notices remain in original files. Reference-only, not redistributed with product.",
+      "limitation": "Predates IEEE 754-2019; consult published errata; not an oracle for 2019 additions."
+    },
+    {
+      "name": "PeterO.Numbers",
+      "version": "1.8.2",
+      "url": "https://www.nuget.org/packages/PeterO.Numbers/1.8.2",
+      "source": "https://github.com/peteroupc/Numbers",
+      "usage": "Central-version test-only PackageReference, restored through repository NuGet setup; no production dependency. Retain NuGet package license metadata."
+    }
+  ]
+}

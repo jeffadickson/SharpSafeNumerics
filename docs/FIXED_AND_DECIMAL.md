@@ -79,3 +79,41 @@ SN-018-FIXED and SN-019-DECIMAL are in requirements.sdoc. The pinned workstation
 integer soak predates these APIs and cannot qualify them. See the
 [numeric expansion verification report](verification/2026-11-17-fixed-decimal.md)
 for exact commands, scopes and remaining limitations.
+
+## Explicit IEEE decimal operations
+
+`IeeeDecimal<T>` is a separate API in the same optional package. It supports the
+three BCL decimal formats and keeps IEEE values (including NaNs and infinities),
+five exception flags, rounding and optional traps separate from API validation.
+`SafeDecimal` continues to reject nonfinite values and defaults to exact admission.
+
+```csharp
+var context = new IeeeDecimalContext(IeeeDecimalRounding.TowardPositive);
+var third = IeeeDecimal<Decimal64>.Divide(Decimal64.One, Decimal64.CreateChecked(3), context);
+// third.IsSuccess; third.Flags includes Inexact; Value is rounded upward.
+var pole = IeeeDecimal<Decimal64>.Divide(Decimal64.One, Decimal64.Zero);
+// A valid +Infinity result with DivisionByZero, rather than API validation failure.
+var trapped = IeeeDecimal<Decimal64>.Divide(Decimal64.One, Decimal64.Zero,
+    new(Traps: IeeeDecimalFlags.DivisionByZero));
+// trapped.IsSuccess=false, cleared value storage, DivisionByZero flag retained.
+```
+
+Arithmetic includes FMA, remainder, square root and quantization; representation
+operations include raw BID/DPD, cohorts, signed zeros, quiet/signaling comparisons,
+total ordering, payloads, invariant text, adjacent values and scaling. Exact-source
+integer and Half/Single/Double conversions round once. Elementary functions,
+eight extrema variants, exact reductions and scaled products are exposed explicitly.
+See [the operation matrix](IEEE_DECIMAL_OPERATION_MATRIX.md) for the complete
+inventory, normative clauses, binding choices and remaining qualification limits.
+
+Decimal underflow uses **tininess before rounding**. Binary conversion tininess
+uses the documented post-precision-rounding policy. No global/thread state is
+modified: `IeeeDecimalEnvironment` manages immutable snapshots for modes and sticky
+flags. Callers pass `state.DecimalContext` or `state.BinaryContext` and accumulate
+returned flags explicitly. Default result is invalid; default context is nearest-even.
+
+The expanded APIs allocate. BigInteger arithmetic preserves exact coefficients;
+elementary intervals refine precision until endpoint rounding and tininess agree.
+There is no fixed execution-time or allocation bound for adaptive functions.
+Independent finite comparisons, corpus tests and mutation/coverage are qualification
+evidence, not a global formal proof or a host-language IEEE conformance declaration.

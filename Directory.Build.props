@@ -4,6 +4,8 @@
     <LangVersion>15.0</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Relocated artifact builds must also exclude outputs left by ordinary builds. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/bin/**;**/obj/**</DefaultItemExcludes>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Deterministic>true</Deterministic>
     <!-- Use the ZIP epoch (1980-01-01 UTC, Unix seconds) for reproducible package

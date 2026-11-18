@@ -395,3 +395,132 @@ options, boundary/subnormal/conversion cases, coverage, mutation and Native AOT.
 Closure requires executed evidence; the existing pinned integer soak does not
 qualify these newly added operations.
 <<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-CONTEXT
+TITLE: Explicit IEEE decimal rounding and exception context
+STATEMENT: >>>
+The optional decimal package shall provide an IEEE operation API for Decimal32,
+Decimal64 and Decimal128 independently of the finite-only SafeDecimal contract.
+Each call shall take explicit nearest-even, nearest-away, toward-zero,
+toward-negative or toward-positive rounding and optional trap flags. Invalid,
+divisionByZero, overflow, underflow and inexact shall be independent flags.
+IEEE NaN and infinity results shall remain available unless trapped; invalid
+types/options shall fail before operand-dependent paths with cleared storage.
+Decimal tininess shall be detected before rounding. Default result is invalid;
+default context is nearest-even without traps. No ambient process state changes.
+<<<
+COMMENT: >>>
+User-authorized expansion 2026-11-18. Implementation: IeeeDecimalContracts.cs,
+IeeeDecimalArithmetic.cs. Existing SN-019-DECIMAL remains the compatible finite
+API contract. IEEE exceptions are not the directional SafeDecimal range errors.
+Evidence: independent arithmetic oracles and applicable GDA corpus; full closure
+requires the operation-specific matrix, not an API-presence assertion.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-REPRESENTATION
+TITLE: IEEE decimal representations and predicates
+STATEMENT: >>>
+The IEEE API shall preserve signed zeros, cohorts and NaN sign/signaling/payload
+where required by the selected operation. It shall provide BID/DPD interchange,
+classification, all required quiet/signaling Boolean comparison predicates,
+totalOrder, totalOrderMag, quantum, adjacent values, decimal scaling, integral
+rounding, invariant parsing/formatting and payload operations. Invalid syntax
+shall not produce a numeric value. Valid extreme decimal exponents shall round
+by value rather than fail solely because the exponent exceeds Int32.
+<<<
+COMMENT: >>>
+Implementation: IeeeDecimalCodec.cs, IeeeDecimalRepresentation.cs,
+IeeeDecimalPredicates.cs. Verification: raw-pattern tests, predicate truth/flag
+tables, cohort/sign cases, malformed input, payload and extreme exponent tests.
+NaN payload narrowing policies for mixed conversions are explicit library choices.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-CONVERSIONS
+TITLE: Exact-source mixed numeric conversion
+STATEMENT: >>>
+Integer and binary Half/Single/Double conversions shall use exact source values
+and one final destination rounding, with flags, trap behavior and unsupported
+carrier validation. Integer invalid conversion shall return the documented
+selected integer zero plus Invalid unless trapped. Binary tininess selection
+shall be documented separately from decimal tininess. Exact and non-exact
+integer conversion shall differ in their Inexact signaling contract.
+<<<
+COMMENT: >>>
+Implementation: IeeeDecimalConversions.cs. Independent verification includes
+all 65536 Half encodings, integer/binary boundaries, exact rational and PeterO
+references, flags, payloads and every rounding direction.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-FUNCTIONS
+TITLE: Recommended IEEE decimal elementary operations
+STATEMENT: >>>
+The decimal API shall provide the recommended elementary functions in the
+IEEE754-2019 operation matrix with explicit rounding, flags, special-value
+domains, exact identities and preferred exponents. Fused definitions shall not
+round an intermediate destination value. Approximate BCL forwarding or a fixed
+guard-digit count alone shall not establish correctly rounded behavior.
+<<<
+COMMENT: >>>
+Implementation: DecimalIntervalMath.cs, IeeeDecimalFunctions.cs,
+IeeeDecimalPiFunctions.cs. Outward interval refinement certifies unique final
+rounding for non-exact elementary results; exact identities are handled directly.
+Finite reference sweeps and source review are not a global formal proof.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-REDUCTIONS
+TITLE: IEEE extrema and exact decimal reductions
+STATEMENT: >>>
+All eight IEEE754-2019 extrema variants shall implement their distinct NaN,
+signed-zero and magnitude-tie rules. Sum, sumAbs, sumSquare and dot shall use
+exact accumulation and one final rounding. Scaled product, product-of-sums and
+product-of-differences shall return a normalized source-format fraction and an
+explicit integer scale without premature destination exponent overflow.
+<<<
+COMMENT: >>>
+Implementation: IeeeDecimalReductions.cs. Exact accumulation is this binding's
+documented accuracy choice. IEEE9.5 augmented arithmetic recommendations are
+binary-format operations and are not asserted as decimal mandates.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-ENVIRONMENT
+TITLE: Explicit immutable IEEE mode and status snapshots
+STATEMENT: >>>
+The library shall provide validated explicit state snapshots for decimal and
+binary destination rounding directions, traps and sticky flags, with save,
+restore, raise, lower and test operations. Defaulting/restoring modes shall
+preserve sticky flags. Failed validation shall not publish partial state.
+These bindings shall not change the host hardware, thread or process floating
+point environment or claim host-language IEEE conformance.
+<<<
+COMMENT: >>>
+Implementation: IeeeDecimalEnvironment.cs. Explicit state provides composable
+library behavior; IEEE host environment/version predicates remain outside the
+package's conformance claim, as recorded in IEEE_DECIMAL_OPERATION_MATRIX.md.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-QUALIFICATION
+TITLE: Reproducible independent IEEE decimal verification
+STATEMENT: >>>
+Qualification shall retain source/run provenance, applicable independent
+reference versions and licenses, actual pass/fail/skip counts, reproducible
+seeds, measured line/branch coverage, mutation outcomes and known exclusions.
+Malformed or unreadable corpus inputs shall not count as passing evidence.
+Required/recommended decimal operations, binary-only recommendations and
+host-environment claims shall remain distinguished. Verification tools and
+corpora shall not become runtime arithmetic dependencies.
+<<<
+COMMENT: >>>
+Implementation: eng/DecimalConformance, IEEE-specific tests, Native AOT smoke and
+CI. Formal model: formal/DecimalRounding.dfy proves coefficient rounding properties;
+eng/VerifyDecimalRoundingModel.ps1 verifies, emits CSharp and executes that model.
+This is not a refinement proof of the handwritten CLR implementation or a
+global proof of elementary-function correctness. Raw artifacts stay outside Git;
+bounded reports, fixtures/provenance, helper source and reproduction steps stay in Git.
+<<<

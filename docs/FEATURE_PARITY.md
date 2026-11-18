@@ -10,6 +10,7 @@
 | Non-boxing NumericResult<T> | Implemented | Default is invalid |
 | C#15 union convenience adapter | Implemented in separate project | Generated value-type unions box |
 | Safe IEEE decimal support | Implemented; expanded RC1 qualification | Optional BCL Decimal32/64/128 finite wrapper; exact/default or explicit nearest-even with inexactness; may allocate |
+| Explicit IEEE decimal operations | Implemented; qualification tracked per operation | Five rounding directions/flags, representations, mixed conversions, elementary functions, reductions and explicit state; see IEEE_DECIMAL_OPERATION_MATRIX.md; no host-environment conformance claim |
 | Signed Q32.32 fixed point | Implemented; expanded RC1 qualification | Owned Int128 intermediate arithmetic, six rounding modes, BigInteger references |
 | SharpUnits integration SN-017 | Referenced source example implemented | Exact whole-volt ingress through ±2^53, real dimensional checks; pinned development source, not general exact unit arithmetic |
 | Static range-constrained bounded value type | Implemented | default invalid; CI tests added |

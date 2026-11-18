@@ -22,6 +22,31 @@ jobs:
         run: dotnet test tests/SharpSafeNumerics.AnalyzerUnitTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/analyzer-coverage
       - name: Safe decimal contracts and independent oracle
         run: dotnet test tests/SharpSafeNumerics.DecimalTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/decimal-coverage
+      - name: Replay pinned independent decimal corpus
+        shell: pwsh
+        run: |
+          $run = Join-Path $env:RUNNER_TEMP 'decimal-corpus'
+          ./eng/DecimalConformance/Get-Corpus.ps1 -ArtifactDirectory $run
+          dotnet build eng/DecimalConformance -c Release --artifacts-path artifacts/decimal-conformance-build
+          if ($LASTEXITCODE -ne 0) { throw 'Conformance helper build failed' }
+          $helper = Join-Path $PWD 'artifacts/decimal-conformance-build/bin/DecimalConformance/release/DecimalConformance.dll'
+          dotnet $helper eng/DecimalConformance/malformed.decTest > (Join-Path $run 'negative-control.jsonl') 2> (Join-Path $run 'negative-control-summary.json')
+          if ($LASTEXITCODE -ne 2) { throw 'Malformed conformance inputs were not rejected' }
+          $negative = Get-Content -LiteralPath (Join-Path $run 'negative-control-summary.json') -Raw | ConvertFrom-Json
+          if ($negative.passed -ne 0 -or $negative.malformed -ne 4) { throw 'Malformed input became passing evidence' }
+          foreach ($entry in @(@('dd','decimal64'), @('dq','decimal128'))) {
+            $inputs = @('Add','Subtract','Multiply','Divide','FMA','Quantize') | ForEach-Object { Join-Path $run "corpus/$($entry[0])$_.decTest" }
+            foreach ($inputFile in $inputs) { if (-not (Test-Path -LiteralPath $inputFile -PathType Leaf)) { throw "Corpus input missing: $inputFile" } }
+            dotnet $helper --production $entry[1] @inputs > (Join-Path $run "$($entry[1]).jsonl") 2> (Join-Path $run "$($entry[1])-summary.json")
+            if ($LASTEXITCODE -ne 0) { throw "Decimal corpus replay failed: $($entry[1])" }
+          }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: decimal-corpus-evidence
+          path: |
+            ${{ runner.temp }}/decimal-corpus/*.json
+            ${{ runner.temp }}/decimal-corpus/*.jsonl
       - name: Verify public API drift controls
         shell: pwsh
         run: ./eng/VerifyPublicApi.ps1 -ArtifactDirectory artifacts/api-contract -ConstraintTestAssembly tests/SharpSafeNumerics.UnitTests/bin/Release/net11.0/SharpSafeNumerics.UnitTests.dll
@@ -96,6 +121,9 @@ jobs:
         run: dotnet tool run dafny -- verify formal/SafeInteger.dfy --solver-path $(which z3)
       - name: Verify fixed-point rounding model
         run: dotnet tool run dafny -- verify formal/FixedPoint.dfy --solver-path $(which z3)
+      - name: Verify and execute decimal coefficient model
+        shell: pwsh
+        run: ./eng/VerifyDecimalRoundingModel.ps1 -ArtifactDirectory (Join-Path $env:RUNNER_TEMP 'decimal-rounding-model') -SolverPath (Get-Command z3).Source
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'

@@ -57,6 +57,8 @@ if (SafeFixed.FromRatio(1, 2).Value.RawValue != 2147483648L) return 20;
 if (SafeFixed.Multiply(Fixed64.FromRaw(long.MaxValue), Fixed64.FromRaw(long.MaxValue)).Error != ArithmeticError.Inexact) return 21;
 if (SafeFixed.Divide(default, default).Error != ArithmeticError.DivideByZero) return 22;
 if (!VerifyDecimal<Decimal32>() || !VerifyDecimal<Decimal64>() || !VerifyDecimal<Decimal128>()) return 23;
+if (!VerifyIeeeDecimal<Decimal32>() || !VerifyIeeeDecimal<Decimal64>() || !VerifyIeeeDecimal<Decimal128>()) return 24;
+Console.WriteLine("Explicit IEEE decimal arithmetic, flags, encodings, conversions, functions and reductions passed Native AOT smoke.");
 Console.WriteLine("Fixed Q32.32 and three safe decimal formats passed Native AOT contract checks.");
 Console.WriteLine($"Detected batch width: {batchWidth} bits; 257 BigInteger-checked lanes.");
 Console.WriteLine($"AOT oracle: 3,096 type pairs, 52,632 operation/policy outcomes; seed 731922; native width {IntPtr.Size * 8}; Vector256 accelerated {Vector256.IsHardwareAccelerated}.");
@@ -79,6 +81,29 @@ static bool VerifyDecimal<T>() where T : struct, IFloatingPointIeee754<T>
         SafeDecimal.TryAdd(T.NaN, T.Zero).Error == ArithmeticError.NonFinite &&
         SafeDecimal.TryDivide(T.One, T.Zero).Error == ArithmeticError.DivideByZero &&
         SafeDecimal.TryNegate(T.One, (DecimalRounding)255).Error == ArithmeticError.OutOfRange;
+}
+
+static bool VerifyIeeeDecimal<T>() where T : struct, IFloatingPointIeee754<T>
+{
+    var third = IeeeDecimal<T>.Divide(T.One, T.CreateChecked(3));
+    var pole = IeeeDecimal<T>.Divide(T.One, T.Zero);
+    var sine = IeeeDecimal<T>.Sin(T.One);
+    var exact = IeeeDecimal<T>.Hypot(T.CreateChecked(3), T.CreateChecked(4));
+    var bits = IeeeDecimal<T>.EncodeDecimal(T.NegativeZero);
+    var zero = IeeeDecimal<T>.DecodeDecimal(bits.Value);
+    var payload = IeeeDecimal<T>.SetPayloadSignaling(T.CreateChecked(123));
+    var quieted = IeeeDecimal<T>.Add(payload.Value, T.One);
+    var binary = IeeeDecimal<T>.ToBinary<double>(T.CreateChecked(0.5m));
+    var sum = IeeeDecimal<T>.Dot([T.CreateChecked(2), T.CreateChecked(3)], [T.CreateChecked(3), T.CreateChecked(4)]);
+    string sineReference = typeof(T) == typeof(Decimal32) ? "0.8414710" : typeof(T) == typeof(Decimal64) ? "0.8414709848078965" : "0.8414709848078965066525023216302990";
+    return third.IsSuccess && third.Flags == IeeeDecimalFlags.Inexact &&
+        third.Value == T.One / T.CreateChecked(3) &&
+        T.IsPositiveInfinity(pole.Value) && pole.Flags == IeeeDecimalFlags.DivisionByZero &&
+        sine.IsSuccess && sine.Flags == IeeeDecimalFlags.Inexact && sine.Value == T.Parse(sineReference, System.Globalization.CultureInfo.InvariantCulture) &&
+        exact.Value == T.CreateChecked(5) && exact.Flags == IeeeDecimalFlags.None &&
+        T.IsNegative(zero.Value) && T.IsZero(zero.Value) &&
+        quieted.Flags == IeeeDecimalFlags.Invalid && T.IsNaN(quieted.Value) && IeeeDecimal<T>.GetPayload(quieted.Value).Value == 123 &&
+        binary.Value == 0.5 && binary.Flags == IeeeDecimalFlags.None && sum.Value == T.CreateChecked(18);
 }
 
 [BoundedInteger(typeof(ushort), "0", "4095", OverflowPolicy = ArithmeticPolicy.Saturate,
