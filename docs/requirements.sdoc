@@ -518,7 +518,9 @@ corpora shall not become runtime arithmetic dependencies.
 <<<
 COMMENT: >>>
 Implementation: eng/DecimalConformance, IEEE-specific tests, Native AOT smoke and
-CI. Formal model: formal/DecimalRounding.dfy proves coefficient rounding properties;
+CI. External DPD verification uses the pinned GDA dsEncode, ddEncode and dqEncode
+vectors, including diagnostic NaN payloads. Known BID/DPD words are checked in
+IeeeNaNInterchangeVectors. Formal model: formal/DecimalRounding.dfy proves coefficient rounding properties;
 eng/VerifyDecimalRoundingModel.ps1 verifies, emits CSharp and executes that model.
 This is not a refinement proof of the handwritten CLR implementation or a
 global proof of elementary-function correctness. Raw artifacts stay outside Git;

@@ -10,7 +10,7 @@
 <p>Edit the operands and rounding mode, then run Decimal64 division in .NET WebAssembly.</p>
 <div id="case-editor" aria-label="Decimal inputs"></div>
 <label for="case-input">Inputs</label>
-<textarea id="case-input" @bind="input"></textarea>
+<textarea id="case-input" @bind="input" @bind:event="oninput"></textarea>
 <button @onclick="Run">Run C#</button>
 <pre role="status">@result</pre>
 <details><summary>C# executed by the lab</summary><pre><code>var division = IeeeDecimal&lt;Decimal64&gt;.Divide(a, b, new(rounding));</code></pre></details>
@@ -21,12 +21,17 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender) await JS.InvokeVoidAsync("decimalLab.setup", input);
+        if (!firstRender) return;
+        try { await JS.InvokeVoidAsync("decimalLab.setup", input); }
+        catch (JSException) { /* The native input remains available if the editor fails. */ }
     }
 
     private async Task Run()
     {
-        var lines = (await JS.InvokeAsync<string>("decimalLab.read")).Replace("\r", "").Split('\n');
+        string source;
+        try { source = await JS.InvokeAsync<string>("decimalLab.read"); }
+        catch (JSException) { source = input; }
+        var lines = source.Replace("\r", "").Split('\n');
         if (lines.Length != 3 || !Enum.TryParse<IeeeDecimalRounding>(lines[2], out var rounding) ||
             !Enum.IsDefined(rounding) || lines[0].Length > 128 || lines[1].Length > 128)
         {

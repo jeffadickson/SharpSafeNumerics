@@ -142,7 +142,7 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '11.0.x'
-      - run: dotnet workload restore eng/DeepDiveWasm
+      - run: dotnet workload restore eng/DeepDiveWasm/DeepDiveWasm.csproj
       - run: dotnet publish eng/DeepDiveWasm -c Release -o artifacts/browser-lab
       - uses: actions/upload-artifact@v4
         with:

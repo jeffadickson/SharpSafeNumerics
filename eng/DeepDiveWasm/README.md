@@ -3,7 +3,7 @@
 The deep dive ships as a standalone guide and as part of this browser bundle.
 Build from the checkout with the pinned .NET SDK:
 
-    dotnet workload restore eng/DeepDiveWasm
+    dotnet workload restore eng/DeepDiveWasm/DeepDiveWasm.csproj
     dotnet publish eng/DeepDiveWasm -c Release
 
 Serve the published wwwroot over HTTP and open interactive-deep-dive.html or
