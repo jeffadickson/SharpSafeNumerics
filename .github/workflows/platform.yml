@@ -46,7 +46,7 @@ jobs:
           - width: 256
             avx512: 0
     env:
-      DOTNET_EnableAVX512F: ${{ matrix.avx512 }}
+      DOTNET_EnableAVX512: ${{ matrix.avx512 }}
       SSN_REQUIRED_BATCH_WIDTH: ${{ matrix.width }}
     steps:
       - uses: actions/checkout@v4

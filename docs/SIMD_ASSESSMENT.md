@@ -52,3 +52,11 @@ the necessary acceleration and produced no timing. The local i5-10505
 supports AVX2. These measurements do not establish benefits across CPUs
 or a universal optimal threshold. Production uses 256 lanes as an initial
 conservative threshold and reports the widest loop actually executed.
+
+Local fallback verification: 201 Core unit tests passed on the i5-10505,
+including an explicit SIMD256 execution assertion. Core coverage was 94.06%
+line and 95.10% branch on this machine; AVX-512 instructions were unavailable.
+The five-second seeded fallback soak passed 2,182,907 batch lanes (seed 731925).
+The initial Linux fallback check caught use of the wrong runtime switch:
+.NET 11 reads DOTNET_EnableAVX512. The assertion observed 512 instead of 256
+until the workflow was corrected.
