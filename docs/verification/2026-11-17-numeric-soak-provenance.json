@@ -1,0 +1,82 @@
+{
+  "BaseRevision": "4df84e5b5394c98aa0fa1125ae12e744e152b61f",
+  "StartedUtc": "2026-11-18T01:18:03.4195745Z",
+  "Seconds": 4500,
+  "Seed": 731930,
+  "SourceHashes": [
+    {
+      "Path": "tests/SharpSafeNumerics.NumericSoak/Program.cs",
+      "SHA256": "BD4C07114C52BD06A55D83EDECADD95BFE8A244AD42C9D44561FB5FF890631DC"
+    },
+    {
+      "Path": "tests/SharpSafeNumerics.NumericSoak/SharpSafeNumerics.NumericSoak.csproj",
+      "SHA256": "A359F488D2342156A5238D4E5471C798F39B029FEBC2EBC78BA5E511CF1795E3"
+    },
+    {
+      "Path": "src/SharpSafeNumerics.Core/Fixed64.cs",
+      "SHA256": "F4519D5E5C8399DB8EB8606643DDB493B366E37D404B707626F88A7E9A68EA8D"
+    },
+    {
+      "Path": "src/SharpSafeNumerics.Core/ArithmeticError.cs",
+      "SHA256": "E8E093ED1C3D5704B34C1AE448C9F76E87990AB51724AA88C963F9EDA724A922"
+    },
+    {
+      "Path": "src/SharpSafeNumerics.Decimal/SafeDecimal.cs",
+      "SHA256": "96023707C5ECD697CCF36CCD9BC132450581173C312CD52447162AA0F23AF893"
+    }
+  ],
+  "BinaryHashes": [
+    {
+      "File": "CsCheck.dll",
+      "SHA256": "98616EF1DB111573EDECC035BF28FB400435B8E65E79DF1C72E3579B62BEFC8B"
+    },
+    {
+      "File": "Numbers.dll",
+      "SHA256": "F97ACD7A32006104A953BDA2FCF944D4B316D0236B30BA007CA8D38B21A0703F"
+    },
+    {
+      "File": "SharpSafeNumerics.Core.dll",
+      "SHA256": "D7CAC11D8BEC71F207E99C88C3E14ECEE695EB38EE76F154972DC141283F86C1"
+    },
+    {
+      "File": "SharpSafeNumerics.Core.pdb",
+      "SHA256": "2024F704AE19859AE55DDD8DDCEE65EE690E2B3D1809D6A9F2E5B780676634CA"
+    },
+    {
+      "File": "SharpSafeNumerics.Core.xml",
+      "SHA256": "0D514970D0F61A4BB0FEAD60CA5B2CF5EEDAA27D1201ECAEED3FC01C4C9DEFE5"
+    },
+    {
+      "File": "SharpSafeNumerics.Decimal.dll",
+      "SHA256": "A2CA8529D790829CBB8B731C5F482306EB1B46E8DEFDA204CCA6D85D0E59CB6A"
+    },
+    {
+      "File": "SharpSafeNumerics.Decimal.pdb",
+      "SHA256": "80E6B7AEB248D131E4A1692696DB2D230F758D64BE007877BA4865916E922B72"
+    },
+    {
+      "File": "SharpSafeNumerics.Decimal.xml",
+      "SHA256": "670C74B8C1F89C5B4603075E78661E45BB1E1B99B8F62C8C2A23152BDAD1F6B7"
+    },
+    {
+      "File": "SharpSafeNumerics.NumericSoak.deps.json",
+      "SHA256": "5A1FA69D707632FE00AA301F1253253C1F6663762B28A802A6A72E3F3639EF62"
+    },
+    {
+      "File": "SharpSafeNumerics.NumericSoak.dll",
+      "SHA256": "257F2EDB4FC52224DA94D06CE735C4C4D1698CFAD5E034774208E84B9A8AA659"
+    },
+    {
+      "File": "SharpSafeNumerics.NumericSoak.exe",
+      "SHA256": "938F961B50B90EE931CAFAAC892A16FD744C640A416650237CCF9511CCCAED2A"
+    },
+    {
+      "File": "SharpSafeNumerics.NumericSoak.pdb",
+      "SHA256": "05CD24388B9FF003197907C09311DD6B2C04C70B28FC9ED300BC08AB059C5719"
+    },
+    {
+      "File": "SharpSafeNumerics.NumericSoak.runtimeconfig.json",
+      "SHA256": "7BAAA10DC21F2A7CF009E76DE09F1A2F706CDFB2139AF15629791D7D2CB7FD4F"
+    }
+  ]
+}
