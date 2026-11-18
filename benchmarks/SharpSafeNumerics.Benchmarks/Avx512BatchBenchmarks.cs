@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 using BenchmarkDotNet.Attributes;
@@ -11,7 +10,7 @@ public class Avx512Comparison
     private int[] left = [], right = [], values = [];
     private ArithmeticError[] errors = [];
 
-    [Params(17, 257, 4099, 262147)]
+    [Params(256, 257, 4099, 262147)]
     public int Length { get; set; }
 
     [GlobalSetup]
@@ -35,6 +34,9 @@ public class Avx512Comparison
             };
         }
 
+        Verify(AddScalar(), 0);
+        Array.Fill(values, int.MinValue);
+        Array.Fill(errors, (ArithmeticError)255);
         Verify(Add256(), 256);
         Array.Fill(values, int.MinValue);
         Array.Fill(errors, (ArithmeticError)255);
@@ -55,51 +57,19 @@ public class Avx512Comparison
     }
 
     [Benchmark(Baseline = true)]
-    public int Add256()
-    {
-        _ = SafeInteger.TryAddBatchCore(left, right, values, errors, 256, out int width);
-        return width;
-    }
+    public int AddScalar() => AddWithCeiling(0);
 
     [Benchmark]
-    public int Add512() => Add512Core(left, right, values, errors);
+    public int Add256() => AddWithCeiling(256);
 
-    private static int Add512Core(ReadOnlySpan<int> left, ReadOnlySpan<int> right,
-        Span<int> values, Span<ArithmeticError> errors)
+    [Benchmark]
+    public int Add512() => AddWithCeiling(512);
+
+    private int AddWithCeiling(int ceiling)
     {
-        // Match production validation and byte-backed output before timing any stores.
-        int count = left.Length;
-        if (right.Length != count || count > int.MaxValue / sizeof(int) ||
-            values.Length < count || errors.Length < count) return 0;
-        Span<int> written = values[..count];
-        Span<byte> statusBytes = MemoryMarshal.AsBytes(errors[..count]);
-        Span<byte> valueBytes = MemoryMarshal.AsBytes(written);
-        var leftBytes = MemoryMarshal.AsBytes(left);
-        var rightBytes = MemoryMarshal.AsBytes(right);
-        if (valueBytes.Overlaps(leftBytes) || valueBytes.Overlaps(rightBytes) ||
-            statusBytes.Overlaps(leftBytes) || statusBytes.Overlaps(rightBytes) || valueBytes.Overlaps(statusBytes))
-            return 0;
-
-        int i = 0;
-        for (; i <= count - Vector512<int>.Count; i += Vector512<int>.Count)
-        {
-            var a = Vector512.LoadUnsafe(ref MemoryMarshal.GetReference(left), (nuint)i);
-            var b = Vector512.LoadUnsafe(ref MemoryMarshal.GetReference(right), (nuint)i);
-            var sum = a + b;
-            var overflow = Vector512.LessThan((a ^ sum) & (b ^ sum), Vector512<int>.Zero);
-            var failure = Vector512.ConditionalSelect(Vector512.LessThan(a, Vector512<int>.Zero),
-                Vector512.Create((int)ArithmeticError.Underflow), Vector512.Create((int)ArithmeticError.Overflow));
-            var status = Vector512.ConditionalSelect(overflow, failure, Vector512.Create((int)ArithmeticError.None));
-            Vector512.ConditionalSelect(overflow, Vector512<int>.Zero, sum)
-                .StoreUnsafe(ref MemoryMarshal.GetReference(written), (nuint)i);
-            // Each validated status fits in one byte. VPMOVDB packs all sixteen lanes.
-            Avx512F.ConvertToVector128Byte(status.AsUInt32())
-                .StoreUnsafe(ref MemoryMarshal.GetReference(statusBytes), (nuint)i);
-        }
-
-        int width = i > 0 ? 512 : 0;
-        if (i == count) return width;
-        var tail = SafeInteger.AddBatch(left[i..], right[i..], written[i..], errors[i..count]);
-        return Math.Max(width, tail.VectorWidthUsed);
+        var error = SafeInteger.TryAddBatchCore(left, right, values, errors, ceiling, out int width);
+        if (error != BatchArithmeticError.None)
+            throw new InvalidOperationException($"Batch rejected: {error}.");
+        return width;
     }
 }

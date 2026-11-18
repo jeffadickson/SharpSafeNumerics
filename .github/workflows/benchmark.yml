@@ -5,7 +5,7 @@ on:
       avx512:
         type: boolean
         default: false
-        description: Compare hardware SIMD256 and AVX-512
+        description: Compare scalar, SIMD256 and AVX-512
 jobs:
   benchmark:
     if: ${{ !inputs.avx512 }}
@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -41,8 +41,8 @@ jobs:
           $report = 'BenchmarkDotNet.Artifacts/results/Avx512Comparison-report.csv'
           if (!(Test-Path -LiteralPath $report -PathType Leaf)) { throw 'Benchmark produced no report' }
           $rows = @(Import-Csv -LiteralPath $report)
-          if ($rows.Count -ne 8 -or @($rows | Where-Object { $_.Mean -notmatch '^\d' }).Count) {
-            throw 'Hardware comparison did not produce eight measurements'
+          if ($rows.Count -ne 12 -or @($rows | Where-Object { $_.Mean -notmatch '^\d' }).Count) {
+            throw 'Hardware comparison did not produce twelve measurements'
           }
       - uses: actions/upload-artifact@v4
         if: always()
