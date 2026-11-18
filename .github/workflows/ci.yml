@@ -34,6 +34,8 @@ jobs:
           if ($LASTEXITCODE -ne 2) { throw 'Malformed conformance inputs were not rejected' }
           $negative = Get-Content -LiteralPath (Join-Path $run 'negative-control-summary.json') -Raw | ConvertFrom-Json
           if ($negative.passed -ne 0 -or $negative.malformed -ne 4) { throw 'Malformed input became passing evidence' }
+          dotnet $helper --encoding (Join-Path $run 'corpus') > (Join-Path $run 'dpd-encoding.log')
+          if ($LASTEXITCODE -ne 0) { throw 'DPD encoding corpus replay failed' }
           foreach ($entry in @(@('dd','decimal64'), @('dq','decimal128'))) {
             $inputs = @('Add','Subtract','Multiply','Divide','FMA','Quantize') | ForEach-Object { Join-Path $run "corpus/$($entry[0])$_.decTest" }
             foreach ($inputFile in $inputs) { if (-not (Test-Path -LiteralPath $inputFile -PathType Leaf)) { throw "Corpus input missing: $inputFile" } }
@@ -47,6 +49,7 @@ jobs:
           path: |
             ${{ runner.temp }}/decimal-corpus/*.json
             ${{ runner.temp }}/decimal-corpus/*.jsonl
+            ${{ runner.temp }}/decimal-corpus/dpd-encoding.log
       - name: Verify public API drift controls
         shell: pwsh
         run: ./eng/VerifyPublicApi.ps1 -ArtifactDirectory artifacts/api-contract -ConstraintTestAssembly tests/SharpSafeNumerics.UnitTests/bin/Release/net11.0/SharpSafeNumerics.UnitTests.dll
@@ -131,3 +134,18 @@ jobs:
         run: |
           python -m pip install --no-compile strictdoc==0.30.4
           strictdoc export docs/requirements.sdoc docs/generator-requirements.sdoc docs/analyzer-requirements.sdoc --output-dir artifacts/requirements
+
+  browser-lab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+      - run: dotnet workload restore eng/DeepDiveWasm
+      - run: dotnet publish eng/DeepDiveWasm -c Release -o artifacts/browser-lab
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deep-dive-browser-lab
+          path: artifacts/browser-lab/wwwroot
+          if-no-files-found: error

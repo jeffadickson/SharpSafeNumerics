@@ -104,3 +104,14 @@ Open corpus work: raw sNaN/payload admission and all-format external encoding
 vectors. Those exclusions do not erase direct API raw-bit tests. Cross-platform
 CI and exhaustive/global correct-rounding conformance are separate evidence axes;
 do not publish a whole-IEEE conformance claim from finite probes.
+
+Replay the pinned external DPD encoding files with
+`dotnet run --project eng/DecimalConformance -c Release -- --encoding <corpus-directory>`.
+The workflow downloads and verifies the original archive before replaying it.
+The encoding mode covers both directions, including signed and signaling NaNs,
+diagnostic payloads, and noncanonical input encodings. The archive supplies DPD
+vectors. Separate unit tests assert known BID and DPD NaN words.
+
+Windows x64, .NET SDK 11.0.100: Decimal32 248 passed (21 NaN), Decimal64
+358 passed (22 NaN), Decimal128 349 passed (22 NaN). Zero mismatches.
+Non-interchange rows skipped: 20, 18, and 19 respectively.

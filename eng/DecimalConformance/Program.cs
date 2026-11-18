@@ -8,6 +8,7 @@ using SharpSafeNumerics;
 // This executable is an independent corpus/reference probe, not a certification runner.
 // Input contexts are retained per file, including exponent bounds and clamp. No production
 // dependencies or global IEEE status are introduced by this verification-only executable.
+if (args.Length == 2 && args[0] == "--encoding") return EncodingCorpus.Run(args[1]);
 if (args.Length == 1 && args[0] == "--probe")
 {
     Probe<Decimal32>(); Probe<Decimal64>(); Probe<Decimal128>();
