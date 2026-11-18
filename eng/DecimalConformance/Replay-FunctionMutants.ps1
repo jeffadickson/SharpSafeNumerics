@@ -2,7 +2,9 @@ param(
     [Parameter(Mandatory)] [string] $Checkout,
     [Parameter(Mandatory)] [string] $Report,
     [Parameter(Mandatory)] [string] $ArtifactDirectory,
-    [string[]] $Mutants = @('1834','1592','1602','1699','1737')
+    [string[]] $Mutants = @('1834','1592','1602','1699','1737'),
+    [string] $TestFileName = 'IeeeFunctionMatrixTests.cs',
+    [string] $TestCaseFilter = 'FullyQualifiedName~SurvivorCounterexamplesForExactPowersQuantumAndPiLattice|FullyQualifiedName~CoreSpecialValuesQuadrantsAndUnsupportedCarrierOrdering'
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -11,7 +13,7 @@ foreach ($directory in @($Checkout,$ArtifactDirectory)) {
 }
 if (!(Test-Path -LiteralPath $Report -PathType Leaf)) { throw 'Stryker report missing' }
 $production = Join-Path $Checkout 'src\SharpSafeNumerics.Decimal'
-$test = Join-Path $Checkout 'tests\SharpSafeNumerics.DecimalTests\IeeeFunctionMatrixTests.cs'
+$test = Join-Path (Join-Path $Checkout 'tests\SharpSafeNumerics.DecimalTests') $TestFileName
 if (!(Test-Path -LiteralPath $production -PathType Container)) { throw 'Production source missing' }
 if (!(Test-Path -LiteralPath $test -PathType Leaf)) { throw 'Counterexample tests missing' }
 $sources = Join-Path $ArtifactDirectory 'sources'
@@ -33,7 +35,7 @@ $tests = @'
 '@
 $project = Join-Path $ArtifactDirectory 'Replay.Tests.csproj'
 [IO.File]::WriteAllText($project,$tests)
-$filter = 'FullyQualifiedName~SurvivorCounterexamplesForExactPowersQuantumAndPiLattice|FullyQualifiedName~CoreSpecialValuesQuadrantsAndUnsupportedCarrierOrdering'
+$filter = $TestCaseFilter
 $results = [Collections.Generic.List[object]]::new()
 foreach ($id in @('baseline') + $Mutants) {
     foreach ($entry in $affected) { [IO.File]::WriteAllText((Join-Path $sources ([IO.Path]::GetFileName($entry.Name))),$entry.Value.source) }

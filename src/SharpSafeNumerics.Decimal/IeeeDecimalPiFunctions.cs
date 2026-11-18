@@ -43,10 +43,11 @@ public static partial class IeeeDecimal<T> where T : struct, IFloatingPointIeee7
                 return Special(new(a.Negative ^ !twice.IsEven, 1, 0), context);
             // Reduce modulo two exactly before any irrational multiplication.
             // This also keeps large decimal arguments inexpensive and bounded.
-            numerator = a.Coefficient; denominator = 1;
-            if (a.Exponent >= 0) numerator *= Pow(a.Exponent); else denominator = Pow(-a.Exponent);
+            // A nonnegative quantum makes the operand integral, which already
+            // returned through the exact lattice branch. Here its quantum is negative.
+            numerator = a.Coefficient; denominator = Pow(-a.Exponent);
             numerator %= 2 * denominator;
-            var reduced = new DecimalParts(a.Negative, numerator, a.Exponent < 0 ? a.Exponent : 0);
+            var reduced = new DecimalParts(a.Negative, numerator, a.Exponent);
             return Certified(reduced, context, (m, x) => { var pair = m.SinCos(m.Multiply(x, m.Pi())); return operation == 0 ? pair.Sin : operation == 1 ? pair.Cos : m.Divide(pair.Sin, pair.Cos); });
         }
         if (T.Abs(value) == T.One)
@@ -131,15 +132,17 @@ public static partial class IeeeDecimal<T> where T : struct, IFloatingPointIeee7
         if (a.Kind != DecimalKind.Finite) return PowN(value, n, context);
         int e = Math.Min(a.Exponent, 0);
         var coefficient = (a.Negative ? -a.Coefficient : a.Coefficient) * Pow(a.Exponent - e) + Pow(-e);
-        var sum = new DecimalParts(coefficient.Sign < 0, BigInteger.Abs(coefficient), e);
+        // The validated finite domain value>=-1 guarantees 1+value>=0 exactly.
+        // Zero is handled below, so no negative-result path is reachable.
+        var sum = new DecimalParts(false, coefficient, e);
         if (sum.Coefficient.IsZero || n == 0) return n == 0 ? Special(new(false, 1, 0), context) : n < 0 ? Special(new(false, 0, 0, DecimalKind.Infinity), context, IeeeDecimalFlags.DivisionByZero) : Round(0, 1, 0, false, ClampPreferred((BigInteger)e * n), context);
-        long count = Math.Abs((long)n); bool negative = sum.Negative && (n & 1) != 0;
-        if (sum.Coefficient == Pow(-e)) return Round(1, 1, 0, negative, ClampPreferred((BigInteger)e * n), context);
+        long count = Math.Abs((long)n);
+        if (sum.Coefficient == Pow(-e)) return Round(1, 1, 0, false, ClampPreferred((BigInteger)e * n), context);
         if (count <= 100000)
         {
             var power = BigInteger.Pow(sum.Coefficient, (int)count); int exponent = checked(e * (int)count);
-            return n > 0 ? Round(power, 1, exponent, negative, exponent, context) : Round(1, power, -exponent, negative, -exponent, context);
+            return n > 0 ? Round(power, 1, exponent, false, exponent, context) : Round(1, power, -exponent, false, -exponent, context);
         }
-        return Certified(sum with { Negative = false }, context, (m, x) => { var result = m.Exp(m.Multiply(m.Log(x), n)); return negative ? m.Negate(result) : result; }, negative);
+        return Certified(sum, context, (m, x) => m.Exp(m.Multiply(m.Log(x), n)));
     }
 }

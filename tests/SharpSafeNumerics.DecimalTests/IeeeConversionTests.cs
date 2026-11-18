@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using PeterO.Numbers;
 using Xunit;
 
@@ -210,7 +211,13 @@ public sealed class IeeeConversionTests
     [Fact]
     public void NaNSignPayloadAndSignalingSurviveConversionPolicy()
     {
-        double source = BitConverter.UInt64BitsToDouble(0xfff0000000000123);
+        // Returning a double from BitConverter can quiet an sNaN through the x86
+        // floating-point return ABI before this API sees it. Write/read integer bits
+        // in the actual argument storage so the signaling-input precondition is tested.
+        const ulong sourceBits = 0xfff0000000000123UL;
+        double source = default;
+        Unsafe.As<double, ulong>(ref source) = sourceBits;
+        Assert.Equal(sourceBits, Unsafe.As<double, ulong>(ref source));
         var decimalResult = IeeeDecimal<Decimal128>.FromBinary(source);
         Assert.Equal(IeeeDecimalFlags.Invalid, decimalResult.Flags);
         var roundtrip = IeeeDecimal<Decimal128>.ToBinary<double>(decimalResult.Value);

@@ -86,13 +86,22 @@ internal sealed class DecimalIntervalMath(int digits)
     internal Interval Log(Interval value)
     {
         if (value.Lower <= 0) throw new IntervalRefinementRequiredException();
-        // Decimal scaling keeps the atanh argument <=9/11. Log(10) is itself
-        // enclosed by the same series; no stored approximate constant is used.
+        // Log is monotone. Splitting non-point inputs avoids losing the correlation
+        // between x-1 and x+1: interval division could otherwise enclose values
+        // outside (-1,1), where the logarithm series does not converge.
+        if (value.Lower != value.Upper)
+            return new(Log(new(value.Lower, value.Lower)).Lower, Log(new(value.Upper, value.Upper)).Upper);
+        // The positive point has d decimal digits. Scaling by 10^(d-digits-1)
+        // places its outward bounds in [1,10], with width at most one scale unit.
+        // No correction loop is needed; Log(10) uses the same bounded series.
         int exponent = value.Lower.ToString(System.Globalization.CultureInfo.InvariantCulture).Length - Scale.ToString(System.Globalization.CultureInfo.InvariantCulture).Length;
         var scaled = exponent >= 0 ? Divide(value, BigInteger.Pow(10, exponent)) : Multiply(value, BigInteger.Pow(10, -exponent));
-        while (scaled.Lower < Scale) { scaled = Multiply(scaled, 10); exponent--; }
-        while (scaled.Upper > Scale * 10) { scaled = Divide(scaled, 10); exponent++; }
-        return Add(LogMantissa(scaled), Multiply(LogMantissa(Integer(10)), exponent));
+
+
+        var mantissa = LogMantissa(scaled);
+        // Near-one certification can use thousands of digits. Multiplication by
+        // zero is exact, so do not evaluate the unused log(10) series in that case.
+        return exponent == 0 ? mantissa : Add(mantissa, Multiply(LogMantissa(Integer(10)), exponent));
     }
     private Interval LogMantissa(Interval x)
     {
@@ -103,7 +112,10 @@ internal sealed class DecimalIntervalMath(int digits)
             power = Multiply(power, square); var term = Divide(power, 2 * n + 1); sum = Add(sum, term);
             if (Magnitude(term) <= 2)
             {
-                // |z|<=9/11 gives 1/(1-z*z)<4; signed enclosure is safe too.
+                // Point normalization has at most one integer unit of width. Before
+                // outward rounding, |z| <= 9*Scale/(11*Scale-1); one extra
+                // unit gives |z|<0.82 for the tested Scale>=1000 (production
+                // uses at least 10^39). Thus 1/(1-z*z)<4 bounds the tail.
                 return Multiply(Widen(sum, 4 * Magnitude(term)), 2);
             }
         }

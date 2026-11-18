@@ -20,6 +20,10 @@ This document prepares the release; it does not indicate a published NuGet versi
 - Safe finite BCL Decimal32/64/128 arithmetic and cross-format conversions:
   exact by default, explicit nearest-even acceptance with inexactness reporting.
   Optional decimal exactness checks allocate; integer/fixed hot paths stay separate.
+- Explicit IEEE decimal API with five rounding directions, status flags/traps,
+  raw BID/DPD and payload operations, exact-source integer/binary conversions,
+  elementary functions, extrema, exact reductions and scaled products. Immutable
+  environment snapshots retain modes/sticky flags without ambient state.
 - SSN1003 recognizes decimal results; SSN1007 warns for known allocating decimal
   arithmetic/conversion helpers in strict scopes, excluding nonallocating negation.
 - Int32 batch addition detects SIMD256/SIMD128 and retains scalar fallback/tails,
@@ -66,3 +70,14 @@ builds in the same checkout/configuration; cross-path/platform identity is not c
 
 macOS qualification is gated off again; normal platform CI retains Windows and
 Linux. No release tag or NuGet publication is implied by this candidate's checks.
+
+## IEEE expansion qualification checkpoint (2026-11-18)
+
+The earlier 437-case/mutation results above describe the earlier finite-only
+snapshot. The IEEE expansion passed 1,928 solution tests and measured 99.4% line/
+97.1% branch coverage in the Decimal assembly. Windows x64 Native AOT and current
+Linux x64/ARM64 CI execution passed. Full-package mutation acceptance and the
+managed-x86 signaling-NaN fixture correction await final CI; this is not
+a declaration that the expanded candidate is ready to publish. See the
+[IEEE evidence report](verification/2026-11-18-ieee-decimal.md) for exact scopes,
+independent references, formal-model limits and final dispositions.

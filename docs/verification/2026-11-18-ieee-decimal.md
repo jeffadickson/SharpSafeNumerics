@@ -31,8 +31,8 @@ reused under WSL Ubuntu24.04. Raw artifacts are outside Git under
 
 | Check | Result and scope |
 |---|---|
-| Strict Release solution test | 1,827 passed: 197 Core, 89 generator, 1,405 Decimal, 136 analyzer; zero failed/skipped; no warning suppressions |
-| Integrated Decimal coverage | 990/999 lines (99.0%); 1,751/1,823 branches (96.0%); Coverlet collector + ReportGenerator assembly filter; scripts/native references/dependencies excluded |
+| Strict Release solution test | 1,928 passed: 197 Core, 89 generator, 1,487 Decimal, 155 analyzer; zero failed/skipped; no warning suppressions |
+| Integrated Decimal coverage | 991/996 lines (99.4%); 1,749/1,801 branches (97.1%); Coverlet collector + ReportGenerator assembly filter; scripts/native references/dependencies excluded |
 | MPFR/analytic function matrix | 1,290 cases across three formats and five rounding directions; 39 IEEE elementary operations plus Cbrt; independent 1024/2048-bit bounds reproduce retained destination decisions |
 | General Decimal Arithmetic corpus | Decimal64: 3,759 passed/1,072 skipped; Decimal128: 3,823 passed/1,007 skipped; zero failed/malformed; fixed add/subtract/multiply/divide/FMA/quantize files only |
 | Exact conversions | All 65,536 Half bit patterns, 12 built-in integer types plus BigInteger, three formats/five modes; separate conversion tests |
@@ -45,6 +45,7 @@ reused under WSL Ubuntu24.04. Raw artifacts are outside Git under
 | StrictDoc | All three requirement documents exported successfully |
 | API compatibility controls | 17 controls passed, including deliberate drift rejection and metadata constraints |
 | Package integration | Eight archives byte-for-byte reproducible across rebuild; all five packages consumed; packaged analyzer rejected deliberate violations |
+| Integrated analyzer coverage | 388/395 lines (98.2%),541/610 branches (88.6%); separate assembly scope |
 | Conformance helper coverage | 172/191 lines (90.05%),243/305 branches (79.67%); Coverlet.Console10.1.1 primary assembly included; dependencies/scripts/native glue excluded |
 | Malformed helper control | Four malformed token fixtures: zero passed/four malformed, direct exit2; unreadable input also structured exit2 |
 
@@ -70,9 +71,10 @@ Separate scopes must not be combined into a synthetic aggregate:
   zero uncovered/timeouts,1 compile error,12 default block ignores. One later
   directed small-decimal fixture was added without claiming a rerun score.
 - Broad remaining seven files: campaign02 scored81.84% (1,346 killed,132 timeout,
-  264 survived,64 uncovered). This failed the 90% acceptance threshold. Final
-  campaign03 is being executed against the new regression matrix; its result is
-  recorded below before acceptance. Exploratory campaign configs use break=0 to
+  264 survived,64 uncovered). This failed the 90% acceptance threshold. Campaign03 improved to87.02% (1,441 killed,134 timeout,
+  209 survived,26 uncovered; denominator1,810), elapsed17m21.821s. This is a
+  seven-file diagnostic scope, not the full repository acceptance gate. Final
+  full-package mutation is pending on the subsequent fixes. Exploratory campaign configs use break=0 to
   retain reports even on a low score; the repository acceptance threshold remains
   90% and no explicit mutation ignores were added. Process exit0 alone is not a
   qualification pass. Timeouts count as detected under Stryker, not individually
@@ -123,3 +125,62 @@ coefficient model, requiring explicit artifact and solver paths. It reuses uncha
 translation inputs while still verifying on each invocation.
 
 
+
+## Post-checkpoint corrections
+
+Checkpoint6dc5fb4 passed Core CI (core+formal) and Windows x64/Linux x64/Linux
+ARM64 tests and Native AOT. Managed x86 exposed a test-fixture issue: returning
+an sNaN double from BitConverter quieted it before the API received it. Raw-memory
+construction plus an integer-bit precondition preserves the intended input. The
+corrected26-test conversion class passed on both x86/x64 against the identical
+unchanged binary. No production arithmetic correction was inferred from that
+fixture failure. Current remote checks are repeated after integration below.
+
+A further integration review found that analyzers did not yet recognize the new
+IEEE result/helper types. SSN1003 now recognizes discarded IeeeDecimalResult,
+including nullable/out/aliases, and SSN1007 warns for allocating IEEE helpers.
+Only inspected Copy/IsSignMinus/Radix paths are exempt. IEEE sign-changing helpers
+use BigInteger codecs and warn. The19 added regressions bring the analyzer suite
+to155 passes. Scoped mutation killed26/26 (100%, no survivors/timeouts), distinct
+from a full-analyzer score. See the separate analyzer integration report/hashes.
+The independent IEEE-only packaged consumer probe passed with SSN1003/SSN1007.
+
+Survivor review reproduced an internal wide-interval Log convergence issue:
+Log([1,4]) at scale1000 exceeded the2-second bounded probe; only that owned probe
+was stopped. Monotone endpoint evaluation completed the green probe in311ms,
+including launch. Point normalization now uses its decimal-digit invariant rather
+than redundant correction loops. Near-one Log also avoids computing log(10) when
+its exact multiplier is0, supporting the tiny normal-boundary tests without an
+unused thousands-digit series. The factor4 log-tail comment accounts for outward
+rounding at tested scales>=1000 and production scales>=10^39. No global runtime
+bound is established.
+
+Power/Pi/Compound cleanups remove branches excluded by integrality, positive root
+upper-bound and validated-domain invariants. Checked bounds remain. Arithmetic and
+metadata/conversion carriers now share one trap-priority implementation. Four
+additional public-boundary facts challenge quiet payload kind, zero LogB poles,
+infinite adjacency, extrema magnitude/cohorts and binary conversion trap errors.
+Seventy-five independent function followups passed; nine exact campaign03 mutants
+compiled and each failed15 of60 focused cases, while control60/60 passed. These
+replays do not replace the final full-package mutation campaign.
+
+The frozen-source repeat passed all1,928 tests with unchanged coverage above;
+its raw outputs are `stable-solution.log`, `stable-coverage` and
+`stable-coverage-report/Summary.json`. Current Native AOT is `stable-aot`.
+The first closeout archive comparison detected a Decimal DLL mismatch; portable
+PDB document checksums identify a source update during the initial build
+(DecimalIntervalMath SHA25640F815... ->F0EA313...). The frozen-source repeat
+passed: all eight archives reproduced byte-for-byte across a rebuild; all five
+packages and the independent IEEE analyzer consumer controls passed. The first
+mismatched archives remain retained as a failed attempt.
+A parallel API-check attempt encountered constraint binaries temporarily removed
+by the package rebuild; the retry used the stable Core test binary and all17 API
+controls passed. These are recorded orchestration attempts, not hidden successes.
+
+The initial checkpoint full-package Mutation CI scored89.32%, exit2 below90;
+Core mutation passed. This historical run44352823343 is superseded by the final
+source/configuration verification below. The final local full-package campaign
+uses the unchanged repository config, all files/all1,487 tests, break90 and four
+workers:2,951 generated,65 compile errors,8 uncovered,161 default block-filter
+ignores,2,717 executing mutants. No mutate-filter or test-case-filter exclusions.
+Final score and exact result counts are pending.

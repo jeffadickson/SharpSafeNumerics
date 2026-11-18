@@ -4,12 +4,10 @@ namespace SharpSafeNumerics;
 public static partial class IeeeDecimal<T> where T : struct, IFloatingPointIeee754<T>
 {
     internal static bool Valid(IeeeDecimalContext context) => IeeeDecimalCodec<T>.Supported && (uint)context.Rounding <= 4 && (context.Traps & ~(IeeeDecimalFlags)31) == 0;
-    internal static IeeeDecimalResult<T> Finish(T value, IeeeDecimalFlags flags, IeeeDecimalContext context)
-    {
-        var trapped = flags & context.Traps;
-        var error = (trapped & IeeeDecimalFlags.Invalid) != 0 ? ArithmeticError.NonFinite : (trapped & IeeeDecimalFlags.DivisionByZero) != 0 ? ArithmeticError.DivideByZero : (trapped & IeeeDecimalFlags.Overflow) != 0 ? ArithmeticError.Overflow : (trapped & IeeeDecimalFlags.Underflow) != 0 ? ArithmeticError.Underflow : ArithmeticError.Inexact;
-        return trapped == 0 ? IeeeDecimalResult<T>.Ok(value, flags) : IeeeDecimalResult<T>.Fail(error, flags);
-    }
+    // All numeric and metadata result carriers use the same trap priority. Keeping
+    // this policy in one implementation prevents conversion/arithmetic divergence.
+    internal static IeeeDecimalResult<T> Finish(T value, IeeeDecimalFlags flags, IeeeDecimalContext context) =>
+        RepresentationResult(value, flags, context);
     private static BigInteger Pow(int n) => BigInteger.Pow(10, n);
     private static int Digits(BigInteger n) => n.ToString(System.Globalization.CultureInfo.InvariantCulture).Length;
     private static IeeeDecimalResult<T> Invalid(IeeeDecimalContext c) => Finish(IeeeDecimalCodec<T>.Encode(new(false, 0, 0, DecimalKind.QuietNaN)), IeeeDecimalFlags.Invalid, c);

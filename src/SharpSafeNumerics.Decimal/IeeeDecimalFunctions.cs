@@ -280,8 +280,9 @@ public static partial class IeeeDecimal<T> where T : struct, IFloatingPointIeee7
         }
         if (!integral)
         {
-            BigInteger numerator = b.Coefficient, denominator = 1;
-            if (b.Exponent >= 0) numerator *= BigInteger.Pow(10, b.Exponent); else denominator = BigInteger.Pow(10, -b.Exponent);
+            // A finite decimal C*10^q with q>=0 is integral, so the nonintegral
+            // branch necessarily has q<0. Build its exact rational directly.
+            BigInteger numerator = b.Coefficient, denominator = BigInteger.Pow(10, -b.Exponent);
             var gcd = BigInteger.GreatestCommonDivisor(numerator, denominator); numerator /= gcd; denominator /= gcd;
             if (denominator <= 10000 && numerator <= 100000)
             {
@@ -335,8 +336,10 @@ public static partial class IeeeDecimal<T> where T : struct, IFloatingPointIeee7
         if (value <= 1) return value;
         if (n >= value.GetBitLength()) return 1;
         BigInteger low = 1, high = BigInteger.One << checked((int)((value.GetBitLength() + n - 1) / n));
+        // Initially high^n>=2^bitLength(value)>value. Updates preserve
+        // low^n<=value<high^n; adjacent endpoints therefore identify low exactly.
         while (high - low > 1) { var middle = (high + low) >> 1; if (BigInteger.Pow(middle, n) <= value) low = middle; else high = middle; }
-        return BigInteger.Pow(high, n) <= value ? high : low;
+        return low;
     }
     private static int ClampPreferred(BigInteger exponent) => (int)BigInteger.Clamp(exponent, IeeeDecimalCodec<T>.MinExponent, IeeeDecimalCodec<T>.MaxExponent);
     private static int PowerPreferred(int exponent, DecimalParts power)

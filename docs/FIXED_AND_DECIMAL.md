@@ -69,7 +69,7 @@ They are outside the strict integer/fixed-point allocation contract. The optiona
 assembly keeps that cost separate. BCL decimal arithmetic remains Microsoft's
 implementation; this package owns admission, result contracts and qualification.
 
-This surface does not promise all IEEE754 operations/status flags, NaN payload
+The finite SafeDecimal surface does not promise all IEEE754 operations/status flags, NaN payload
 preservation, quantum/cohort identity, arbitrary directed decimal rounding,
 transcendentals or a general decimal source generator. Negative zero follows BCL
 value operations. Numerical exactness compares mathematical values, not encodings.

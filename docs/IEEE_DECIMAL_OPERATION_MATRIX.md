@@ -178,11 +178,11 @@ product operations, including the three scaled-product rows originally marked op
 IeeeDecimalEnvironment supplies immutable explicit mode/flag state operations.
 The host environment/version predicates are outside the binding's conformance claim.
 
-The integrated suite passed 1,405 Decimal tests. It includes 1,290 MPFR/analytic function
+The integrated suite passed 1,487 Decimal tests. It includes 1,290 MPFR/analytic function
 cases, exact-source conversion and all Half encodings, independent properties,
 malformed inputs and internal outward-interval invariants. MPFR4.2.1 directed
 bounds reproduced at 1024/2048 bits are retained with provenance. The Decimal
-assembly measured 990/999 lines (99.0%) and 1,751/1,823 branches (96.0%) in the integrated ReportGenerator
+assembly measured 991/996 lines (99.4%) and 1,749/1,801 branches (97.1%) in the integrated ReportGenerator
 scope; Windows Native AOT and the three Dafny models executed successfully.
 These are bounded executed results, not proof of whole-IEEE or host conformance.
 
@@ -192,5 +192,3 @@ GDA admission, all-format external encoding corpus and exhaustive/global element
 correct-rounding qualification remain unclosed. The conformance helper measured
 172/191 lines (90.05%) and 243/305 branches (79.67%) with Coverlet.Console; native
 reference glue, scripts and third-party libraries are outside that coverage scope.
-
-

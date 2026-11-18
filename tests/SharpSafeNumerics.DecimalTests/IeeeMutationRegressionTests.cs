@@ -319,14 +319,45 @@ public sealed class IeeeMutationRegressionTests
         var invalidDot=IeeeDecimal<T>.Dot([T.Zero,T.PositiveInfinity,T.NegativeInfinity],[T.PositiveInfinity,T.One,T.One]);Assert.True(T.IsNaN(invalidDot.Value));Assert.Equal(IeeeDecimalFlags.Invalid,invalidDot.Flags);
         Assert.Equal(2,IeeeDecimal<T>.Quantum(IeeeDecimal<T>.Sum([P("1E2")]).Value).Value);
         Assert.Equal(4,IeeeDecimal<T>.Quantum(IeeeDecimal<T>.Dot([P("1E2")],[P("1E2")]).Value).Value);
+    }    [Fact]
+    public void WideLogIntervalsUseMonotonicEndpointEnclosures()
+    {
+        // Directed MPFR log(10) endpoints from the same versioned 80-digit reference corpus above.
+        const string log10Lower="2.3025850929940456840179914546843642076011014886287729760333279009675726096773524";
+        const string log10Upper="2.3025850929940456840179914546843642076011014886287729760333279009675726096773525";
+        foreach(int digits in new[]{3,12,48}) {
+            var math=new DecimalIntervalMath(digits);
+            var broad=math.Log(new(math.Scale,10*math.Scale));Contains(broad,"0",log10Upper,digits,"log([1,10])");
+            var crossing=math.Log(new(99*math.Scale/100,101*math.Scale/100));Assert.True(crossing.Lower<0);Assert.True(crossing.Upper>0);
+            var exact=math.Log(math.One);Assert.Equal(math.Zero,exact);
+        }
+        var precise=new DecimalIntervalMath(12);
+        string upper=PeterO.Numbers.EDecimal.FromString(log10Upper).Multiply(10).ToString();
+        string lower=PeterO.Numbers.EDecimal.FromString(log10Upper).Multiply(-10).ToString();
+        Contains(precise.Log(new(precise.Scale/BigInteger.Pow(10,10),precise.Scale*BigInteger.Pow(10,10))),lower,upper,12,"log([1E-10,1E10])");
+        Assert.True(PeterO.Numbers.EDecimal.FromString(log10Lower).CompareTo(PeterO.Numbers.EDecimal.FromString(log10Upper))<0);
+    }
+
+    [Fact]
+    public void InternalIntervalBoundaryInputsPreserveDomainAndExactIdentities()
+    {
+        var math=new DecimalIntervalMath(3);
+        Assert.Equal(math.Integer(200),math.Decimal(new(false,2,2)));
+        Assert.Equal(math.One,math.Exp(math.Zero));Assert.Equal(math.Zero,math.Atan(math.Zero));
+        var trig=math.SinCos(math.Zero);Assert.Equal(math.Zero,trig.Sin);Assert.Equal(math.One,trig.Cos);
+        Assert.Throws<IntervalRefinementRequiredException>(()=>math.Divide(math.One,new DecimalIntervalMath.Interval(0,math.Scale)));
+        Assert.Throws<IntervalRefinementRequiredException>(()=>math.Divide(math.One,new DecimalIntervalMath.Interval(-math.Scale,0)));
+        Assert.Throws<ArgumentOutOfRangeException>(()=>math.Divide(math.One,BigInteger.Zero));
+        var range=math.Exp(new(0,math.Scale/8));Assert.True(range.Lower<=math.Scale);Assert.True(range.Upper>=1134);
+        foreach(var n in new[]{BigInteger.Pow(10,100)-1,BigInteger.Pow(10,100),BigInteger.Pow(10,100)+1}) {
+            var root=DecimalIntervalMath.IntegerSqrt(n);Assert.True(root*root<=n);Assert.True((root+1)*(root+1)>n);
+        }
+    }    [Fact]
+    public void NearOneLogAtLargePrecisionContainsAnIndependentAnalyticalBracket()
+    {
+        var math=new DecimalIntervalMath(6209);var offset=BigInteger.Pow(10,66);
+        var result=math.Log(new(math.Scale+offset,math.Scale+offset));
+        // x/(1+x) <= log(1+x) <= x for x>0. Cross products keep this reference exact at x=10^-6143.
+        Assert.True(result.Lower*(math.Scale+offset)<=math.Scale*offset);
+        Assert.True(result.Upper>=offset);
     }}
-
-
-
-
-
-
-
-
-
-
