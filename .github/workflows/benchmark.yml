@@ -2,13 +2,17 @@ name: Benchmarks
 on:
   workflow_dispatch:
     inputs:
+      sweep:
+        type: boolean
+        default: false
+        description: Repeat the AVX-512 crossover sweep
       avx512:
         type: boolean
         default: false
         description: Compare scalar, SIMD256 and AVX-512
 jobs:
   benchmark:
-    if: ${{ !inputs.avx512 }}
+    if: ${{ !inputs.avx512 && !inputs.sweep }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +27,7 @@ jobs:
           path: BenchmarkDotNet.Artifacts
 
   avx512:
-    if: inputs.avx512
+    if: inputs.avx512 && !inputs.sweep
     strategy:
       fail-fast: false
       matrix:
@@ -49,3 +53,41 @@ jobs:
         with:
           name: avx512-${{ matrix.os }}
           path: BenchmarkDotNet.Artifacts
+
+  avx512-sweep:
+    if: inputs.sweep
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host: [1, 2, 3, 4, 5, 6]
+    env:
+      DOTNET_TieredCompilation: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+      - shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path artifacts/simd-sweep | Out-Null
+          lscpu > artifacts/simd-sweep/cpu.txt
+          $project = 'benchmarks/SharpSafeNumerics.Benchmarks'
+          dotnet build $project -c Release
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          for ($repeat = 1; $repeat -le 2; $repeat++) {
+            dotnet run --project $project -c Release --no-build -- --avx512-sweep > "artifacts/simd-sweep/repeat-$repeat.csv"
+            if ($LASTEXITCODE -eq 3) {
+              Write-Host 'Runner lacks AVX-512. Retaining CPU evidence only.'
+              exit 0
+            }
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            if (@(Get-Content -LiteralPath "artifacts/simd-sweep/repeat-$repeat.csv").Count -ne 119) {
+              throw 'Incomplete paired timing sweep'
+            }
+          }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: simd-sweep-${{ matrix.host }}
+          path: artifacts/simd-sweep
