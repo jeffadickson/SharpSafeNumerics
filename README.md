@@ -25,6 +25,17 @@ The project is organized as M1–M5; see [milestones](docs/MILESTONES.md). Numer
 - CsCheck, Hedgehog, xUnit, Stryker.NET, Dafny and BenchmarkDotNet verification infrastructure.
 - Detailed requirements, original software description, architecture, exception policy and verification plan.
 
+## SIMD batch addition
+
+`SafeInteger.AddBatch` returns the widest SIMD loop actually executed in
+`VectorWidthUsed`. Int32 batches of 256 lanes or more can use AVX-512 when the
+runtime enables it. Smaller batches and remaining lanes use available SIMD256,
+SIMD128 and scalar loops. All paths produce the same per-lane value and status.
+Repeated large-batch measurements favored SIMD256 on the tested Intel hosts
+and AVX-512 on the tested AMD host. Dispatch has no large-batch cutoff.
+Try the [SIMD lab](docs/interactive-deep-dive.html#simd) and see the
+[benchmark evidence](docs/SIMD_ASSESSMENT.md).
+
 ## Quick start
 
 Explore the [interactive HTML deep dive](docs/interactive-deep-dive.html) for comparisons
