@@ -38,6 +38,7 @@ public sealed class DecimalContractTests
     [Theory]
     [InlineData("SharpSafeNumerics.Core", "NumericResult")]
     [InlineData("SharpSafeNumerics.Decimal", "DecimalResult")]
+    [InlineData("SharpSafeNumerics.Decimal", "IeeeDecimalResult")]
     public async Task Library_source_compilations_resolve_their_own_result_contract(string assemblyName, string result)
     {
         // An analyzer also runs while building its contract assembly. These minimal source
@@ -155,6 +156,115 @@ public sealed class DecimalContractTests
             """, additional: reference));
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Ieee_results_include_nullable_out_and_alias_only_discards(bool aliasOnly)
+    {
+        // Losing any of these results loses IEEE flags and possible trap/API errors.
+        var diagnostics = await Analyze("""
+            class Consumer
+            {
+                static IeeeDecimalResult<Decimal32> Result() => default;
+                static IeeeDecimalResult<Decimal32>? OptionalResult() => default;
+                static void Write(out IeeeDecimalResult<Decimal32> value) { value = default; }
+                static void Run() { Result(); _ = Result(); _ = OptionalResult(); Write(out _); }
+                static IeeeDecimalResult<Decimal32> Observed() => Result();
+            }
+            """, aliasOnly);
+        Assert.Equal(Enumerable.Repeat("SSN1003", 4), diagnostics.Select(d => d.Id));
+    }
+
+    [Fact]
+    public async Task Ieee_result_without_core_reference_still_registers_discard_analysis()
+    {
+        var references = FrameworkReferences().Append(MetadataReference.CreateFromFile(typeof(SafeDecimal).Assembly.Location));
+        var compilation = CreateCompilation("""
+            class Consumer
+            {
+                static SharpSafeNumerics.IeeeDecimalResult<int> Result() => default;
+                static void Run() { Result(); }
+            }
+            """, "IeeeOnlyConsumer", references);
+        Assert.Equal("SSN1003", Assert.Single(await AnalyzeCompilation(compilation)).Id);
+    }
+
+    [Theory]
+    [InlineData("Add(value, value)")]
+    [InlineData("Negate(value)")]
+    [InlineData("Abs(value)")]
+    [InlineData("CopySign(value, value)")]
+    [InlineData("FromInteger(123)")]
+    [InlineData("ToBinary<double>(value)")]
+    [InlineData("IsFinite(value)")]
+    [InlineData("EncodeBinary(value)")]
+    [InlineData("Sin(value)")]
+    [InlineData("Parse(\"1.25\")")]
+    public async Task Ieee_allocating_operations_warn_at_authentic_generic_helper_calls(string operation)
+    {
+        string call = "IeeeDecimal<Decimal32>." + operation;
+        var diagnostics = await Analyze($$"""
+            class Consumer
+            {
+                [StrictNumeric] static void Strict(Decimal32 value) { var result = {{call}}; }
+                static void Loose(Decimal32 value) { var result = {{call}}; }
+            }
+            """);
+        var diagnostic = Assert.Single(diagnostics);
+        Assert.Equal("SSN1007", diagnostic.Id);
+        Assert.Equal(call, diagnostic.Location.SourceTree!.GetText().ToString(diagnostic.Location.SourceSpan));
+    }
+
+    [Theory]
+    [InlineData("Copy(value)")]
+    [InlineData("IsSignMinus(value)")]
+    [InlineData("Radix()")]
+    public async Task Proven_nonallocating_ieee_helpers_do_not_warn(string operation)
+    {
+        Assert.Empty(await Analyze($$"""
+            class Consumer
+            {
+                [StrictNumeric] static void Run(Decimal32 value) { var result = IeeeDecimal<Decimal32>.{{operation}}; }
+            }
+            """));
+    }
+
+    [Fact]
+    public async Task Ieee_alias_only_calls_preserve_both_diagnostics()
+    {
+        var diagnostics = await Analyze("""
+            [StrictNumeric] class Consumer
+            {
+                static void Run(Decimal32 value) { Optional.IeeeDecimal<Decimal32>.Add(value, value); }
+            }
+            """, aliasOnly: true);
+        Assert.Equal(new[] { "SSN1003", "SSN1007" }, diagnostics.Select(d => d.Id).Order());
+    }
+
+    [Fact]
+    public async Task Unrelated_ieee_lookalikes_do_not_match_authentic_optional_contracts()
+    {
+        var fake = CreateCompilation("""
+            namespace SharpSafeNumerics
+            {
+                public struct IeeeDecimalResult<T>;
+                public static class IeeeDecimal<T>
+                {
+                    public static IeeeDecimalResult<T> Add(T a, T b) => default;
+                }
+            }
+            """, "Unrelated.IeeeDecimal", References());
+        using var stream = new MemoryStream();
+        Assert.True(fake.Emit(stream).Success);
+        var reference = MetadataReference.CreateFromImage(stream.ToArray()).WithAliases(["fake"]);
+        Assert.Empty(await Analyze("""
+            [StrictNumeric] class Consumer
+            {
+                static void Run(int value) { fake::SharpSafeNumerics.IeeeDecimal<int>.Add(value, value); }
+            }
+            """, additional: reference));
+    }
+
     private static MetadataReference[] References() =>
         ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")!).Split(Path.PathSeparator)
         .Append(typeof(SafeInteger).Assembly.Location)
@@ -181,7 +291,7 @@ public sealed class DecimalContractTests
             preamble = "extern alias optional; using System; using System.Numerics; using SharpSafeNumerics; " +
                 "using Optional = optional::SharpSafeNumerics;\n";
         }
-        if (aliasOnly) source = source.Replace("DecimalResult<", "Optional.DecimalResult<", StringComparison.Ordinal);
+        if (aliasOnly) source = System.Text.RegularExpressions.Regex.Replace(source, @"\b(?:IeeeDecimalResult|DecimalResult)<", "Optional.$0");
         var references = References().Append(decimalReference);
         if (additional is not null) references = references.Append(additional);
         var compilation = CreateCompilation(preamble + source, "DecimalConsumer", references);

@@ -28,6 +28,8 @@ internal sealed class NumericSymbols
     private readonly INamedTypeSymbol? iFormattable;
     private readonly INamedTypeSymbol? decimalResult;
     private readonly INamedTypeSymbol? safeDecimal;
+    private readonly INamedTypeSymbol? ieeeDecimalResult;
+    private readonly INamedTypeSymbol? ieeeDecimal;
     private readonly object? throwValue;
     private readonly object? zeroValidValue;
 
@@ -44,6 +46,8 @@ internal sealed class NumericSymbols
             compilation.SourceModule.ReferencedAssemblySymbols.FirstOrDefault(assembly => assembly.Name == DecimalAssemblyName);
         decimalResult = decimals?.GetTypeByMetadataName("SharpSafeNumerics.DecimalResult`1");
         safeDecimal = decimals?.GetTypeByMetadataName("SharpSafeNumerics.SafeDecimal");
+        ieeeDecimalResult = decimals?.GetTypeByMetadataName("SharpSafeNumerics.IeeeDecimalResult`1");
+        ieeeDecimal = decimals?.GetTypeByMetadataName("SharpSafeNumerics.IeeeDecimal`1");
         bounded = core?.GetTypeByMetadataName("SharpSafeNumerics.BoundedIntegerAttribute");
         policy = core?.GetTypeByMetadataName("SharpSafeNumerics.ArithmeticPolicy");
         defaultPolicy = core?.GetTypeByMetadataName("SharpSafeNumerics.DefaultValuePolicy");
@@ -76,17 +80,23 @@ internal sealed class NumericSymbols
         return false;
     }
 
-    internal bool HasNumericResult => Result is not null || decimalResult is not null;
+    internal bool HasNumericResult => Result is not null || decimalResult is not null || ieeeDecimalResult is not null;
 
     internal bool IsNumericResult(ITypeSymbol? type) =>
         Matches(Result, UnwrapNullable(type)?.OriginalDefinition) ||
-        Matches(decimalResult, UnwrapNullable(type)?.OriginalDefinition);
+        Matches(decimalResult, UnwrapNullable(type)?.OriginalDefinition) ||
+        Matches(ieeeDecimalResult, UnwrapNullable(type)?.OriginalDefinition);
 
     internal bool IsAllocatingDecimalHelper(IMethodSymbol method) =>
-        // Exactness checks format values and construct BigInteger rationals. Negation has
-        // neither path, so it deliberately remains outside this bounded known-API warning.
-        Matches(safeDecimal, method.ContainingType) && method.IsStatic &&
-        method.Name is "TryAdd" or "TrySubtract" or "TryMultiply" or "TryDivide" or "TryConvert";
+        method.IsStatic && (
+            // SafeDecimal negation does not execute its allocating exactness checks.
+            Matches(safeDecimal, method.ContainingType) &&
+            method.Name is "TryAdd" or "TrySubtract" or "TryMultiply" or "TryDivide" or "TryConvert" ||
+            // IEEE operations generally decode BigInteger representations or refine intervals.
+            // Only Copy, IsSignMinus and Radix avoid those paths. In particular IEEE sign
+            // changes use the allocating interchange codec, unlike SafeDecimal.TryNegate.
+            Matches(ieeeDecimal, method.ContainingType.OriginalDefinition) &&
+            method.Name is not ("Copy" or "IsSignMinus" or "Radix"));
 
     internal bool IsThrowConstant(IOperation operation)
     {

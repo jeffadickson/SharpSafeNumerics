@@ -61,6 +61,24 @@ try {
         throw "Packaged analyzer did not reject the deliberate Strict violation: $output"
     }
     Write-Output 'Packaged analyzer rejected deliberate Strict/decimal violations with SSN1003, SSN1004 and SSN1007.'
+    # Use a separate IEEE-only compilation: legacy SafeDecimal diagnostics must not
+    # accidentally satisfy this expansion's package-loading regression check.
+    [IO.File]::WriteAllText($probe, @'
+using System.Numerics;
+using SharpSafeNumerics;
+[StrictNumeric]
+static class InvalidIeeeProbe
+{
+    static void Discard(IeeeDecimalResult<Decimal64> result) { _ = result; }
+    static IeeeDecimalResult<Decimal64> Allocate() => IeeeDecimal<Decimal64>.Add(Decimal64.One, Decimal64.One);
+}
+'@)
+    $output = dotnet build $projectPath -c Release --no-restore 2>&1 | Out-String
+    $exitCode = $LASTEXITCODE
+    if ($exitCode -eq 0 -or $output -notmatch 'SSN1003' -or $output -notmatch 'SSN1007') {
+        throw "Packaged analyzer did not reject the deliberate IEEE result/allocation violations: $output"
+    }
+    Write-Output 'Packaged analyzer rejected independent IEEE result/allocation violations with SSN1003 and SSN1007.'
 } finally {
     if (Test-Path -LiteralPath $probe -PathType Leaf) { Remove-Item -LiteralPath $probe }
 }

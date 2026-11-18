@@ -28,7 +28,7 @@ public sealed class StrictNumericAnalyzer : DiagnosticAnalyzer
 
     private static readonly DiagnosticDescriptor IgnoredResultRule = new(
         "SSN1003", "Numeric result is ignored",
-        "NumericResult<T> value is discarded; inspect or propagate it",
+        "Numeric result value is discarded; inspect or propagate its status and value",
         Category, DiagnosticSeverity.Warning, true);
 
     private static readonly DiagnosticDescriptor ThrowPolicyRule = new(
@@ -239,7 +239,7 @@ public sealed class StrictNumericAnalyzer : DiagnosticAnalyzer
     {
         var method = invocation.TargetMethod;
         if (contracts.IsAllocatingDecimalHelper(method))
-            Report(context, AllocationRule, invocation, "decimal exactness checks and conversion may allocate");
+            Report(context, AllocationRule, invocation, "decimal exactness checks, representation, conversion or interval refinement may allocate");
         if (contracts.IsRawNumericConversion(method))
             Report(context, RawPolicyConversionRule, invocation, method.Name);
         if (contracts.IsBoundedReinterpretation(method))
