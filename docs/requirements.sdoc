@@ -524,3 +524,70 @@ This is not a refinement proof of the handwritten CLR implementation or a
 global proof of elementary-function correctness. Raw artifacts stay outside Git;
 bounded reports, fixtures/provenance, helper source and reproduction steps stay in Git.
 <<<
+
+[REQUIREMENT]
+UID: SN-020-WEEK-QUALIFICATION
+TITLE: Unattended evolving-source IEEE decimal qualification
+STATEMENT: >>>
+The nonshipping qualification tooling shall support a configurable duration,
+default168 hours, with bounded reproducible chunks exercising IEEE decimal32,
+decimal64 and decimal128 in all five rounding directions against independent
+references. Counterexamples shall retain seed, operands, operation, mode and
+source identity. Inconclusive oracle comparisons shall be recorded separately
+and shall not produce a fully passing campaign verdict.
+<<<
+COMMENT: >>>
+User-requested2026-11-18. Reuse existing CsCheck/PeterO test-only dependencies
+and workstation process/tool/Git helpers. Production dependencies remain BCL-only.
+Implementation: tests/SharpSafeNumerics.IeeeSoak and eng/Invoke-WeekQualification.ps1.
+Verification: dedicated harness tests, short executed campaigns, Pester control
+flow/negative tests and native preprocessor schema/property tests. A short smoke
+cannot establish week-long endurance; actual future reports provide that evidence.
+<<<
+
+[REQUIREMENT]
+UID: SN-020-DAILY-REFRESH
+TITLE: Daily source updates and immutable per-revision evidence
+STATEMENT: >>>
+At configurable reporting boundaries, default24 hours, the runner shall fetch
+the configured source branch, resolve an exact commit and validate a fresh
+isolated snapshot before activation. A chunk's source shall remain immutable.
+Evidence shall remain separated by source revision. A failed update shall be
+reported explicitly; continued use of the last working snapshot shall not hide
+the failure or produce a fully passing overall verdict. Pinned mode shall remain
+available and the orchestration runner's own version shall be recorded.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-020-WEEK-QUALIFICATION
+
+[REQUIREMENT]
+UID: SN-020-DAILY-REPORTS
+TITLE: Daily automatic results publication and recoverable execution
+STATEMENT: >>>
+The runner shall publish bounded daily, failure and final reports to one unique
+issue-associated results branch without routine interaction. Reports shall retain
+source/runner provenance, counts, seeds, failures, timings and artifact references.
+Logs and checkpoints shall support diagnosis and resumption without silently
+repeating seeds, overwriting existing evidence or extending the original deadline.
+Failed uploads shall retain local data for retry and shall not be called submitted.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-020-WEEK-QUALIFICATION
+
+[REQUIREMENT]
+UID: SN-020-VERIFIED-CLEANUP
+TITLE: Delete only owned results verified as uploaded
+STATEMENT: >>>
+After verifying remote commit identity and exact uploaded file contents, the
+runner shall delete corresponding explicitly owned local result copies by
+default. Unsubmitted data shall remain available for retry. Cleanup shall reject
+out-of-root paths, reparse traversal, changed contents and foreign ownership.
+It shall preserve source, checkouts, tools and unrelated files. References or
+hashes alone shall not qualify unuploaded raw logs for deletion. KeepResults
+shall allow retaining submitted local copies.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-020-WEEK-QUALIFICATION
