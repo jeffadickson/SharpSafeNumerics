@@ -1,8 +1,12 @@
 //! Normalization deliberately retains each evidence record independently.
 use serde_json::{Value, json};
+mod campaigns;
 
 /// Normalize a supported JSON schema. Missing evidence remains Unknown.
 pub fn normalize(v: Value) -> Value {
+    if let Some(campaign) = campaigns::normalize(&v) {
+        return campaign;
+    }
     let mut issues = Vec::new();
     let mut identity = json!({});
     for key in [
@@ -117,7 +121,7 @@ pub fn normalize(v: Value) -> Value {
                 m
             },
         )
-    } else if v.get("Passed").is_some() {
+    } else if v.get("Passed").is_some() && v.get("Kind").is_none() {
         let verdict = match v["Passed"].as_bool() {
             Some(true) => "Passed",
             Some(false) => "Failed",
@@ -230,6 +234,14 @@ fn nonempty(v: &Value) -> bool {
 pub fn compact(full: &Value, max_bytes: usize, max_findings: usize) -> Result<Vec<u8>, String> {
     let mut v = full.clone();
     for run in v["runs"].as_array_mut().ok_or("Missing runs")? {
+        for (details, omitted) in [
+            ("chunkDetails", "omittedChunkDetails"),
+            ("sourceUpdateDetails", "omittedSourceUpdateDetails"),
+        ] {
+            if let Some(records) = run.as_object_mut().unwrap().remove(details) {
+                run[omitted] = json!(records.as_array().map(Vec::len));
+            }
+        }
         if let Some(checks) = run.as_object_mut().unwrap().remove("checkDetails") {
             run["omittedCheckDetails"] = json!(checks.as_array().map(Vec::len));
         }

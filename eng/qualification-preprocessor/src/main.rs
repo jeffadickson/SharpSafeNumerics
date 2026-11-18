@@ -365,13 +365,20 @@ fn discoverable(p: &Path) -> bool {
     matches!(
         name.as_str(),
         "summary.json"
+            | "checkpoint.json"
+            | "ieee-soak-summary.json"
+            | "ieee-decimal-soak-summary.json"
             | "mutation-summary.json"
             | "mutation-report.json"
             | "coverage-summary.json"
             | "soak-auto.stdout.tail.txt"
             | "soak-128.stdout.tail.txt"
             | "soak-scalar.stdout.tail.txt"
-    ) || (name.ends_with(".json")
-        && name.contains("numeric")
-        && (name.contains("summary") || name.contains("soak")))
+    ) || name
+        .strip_prefix("report-")
+        .and_then(|s| s.strip_suffix(".json"))
+        .is_some_and(|s| !s.is_empty() && s.bytes().all(|b| b.is_ascii_digit()))
+        || (name.ends_with(".json")
+            && name.contains("numeric")
+            && (name.contains("summary") || name.contains("soak")))
 }

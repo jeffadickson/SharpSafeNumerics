@@ -250,3 +250,38 @@ fn windows_unicode_case_alias_rejected_before_write() {
     assert_eq!(o.status.code(), Some(2));
     assert!(!c.0.join("outÁ.json").exists());
 }
+#[test]
+fn weekly_directory_names_are_discovered_without_raw_recursive_scan() {
+    let c = Case::new();
+    c.file(
+        "report-0001.json",
+        br#"{"Kind":"weekQualification","SchemaVersion":1,"Status":"Running","Chunks":[]}"#,
+    );
+    c.file(
+        "checkpoint.json",
+        br#"{"Kind":"weekQualification","SchemaVersion":1,"Status":"Incomplete","Chunks":[]}"#,
+    );
+    c.file("report-not-a-number.json", b"{");
+    let o = c.run(&["."]);
+    assert!(o.status.success());
+    let value = report(&o);
+    let runs = value["runs"].as_array().unwrap();
+    assert_eq!(runs.len(), 2);
+    assert!(
+        runs.iter()
+            .all(|run| run["kind"] == "weekQualification" && run["verdict"] != "Passed")
+    );
+}
+
+#[test]
+fn actual_ieee_envelope_and_unfinished_reservation_never_infer_pass() {
+    let c = Case::new();
+    c.file("ieee-soak-summary.json",br#"{"Kind":"ieeeDecimalSoak","SchemaVersion":1,"Status":"Inconclusive","SourceRevision":null,"Seed":7542032,"Samples":10,"Assertions":30,"PassedChecks":9,"FailedChecks":0,"InconclusiveChecks":1,"Failure":null}"#);
+    let output = c.run(&["."]);
+    assert!(output.status.success());
+    assert_eq!(report(&output)["runs"][0]["verdict"], "Incomplete");
+    c.file("reserved.json", b"");
+    let output = c.run(&["reserved.json"]);
+    assert_eq!(output.status.code(), Some(2));
+    assert_eq!(report(&output)["diagnostics"][0]["code"], "InvalidArtifact");
+}

@@ -101,9 +101,9 @@ and managed x86 results require current remote CI evidence below; local Windows
 execution does not stand in for them. Local WSL has SDK10.0.402, not the pinned11,
 so no current local Linux product build is claimed.
 
-The running older 18-hour integer soak remains pinned to its original source and
-cannot qualify this new surface. Use the committed native `qualcompact` preprocessor
-first when those results arrive; retain raw data according to the results policy.
+The older 18-hour-budget integer soak completed on source `2e24288` and cannot
+qualify this new surface. Its scalar/SIMD128/SIMD256 records passed. The native
+`qualcompact` preprocessor was used first; see [the separate soak report](2026-11-18-workstation-18h.md) for exact provenance, counts and timing limits.
 
 ## Reproduction
 
@@ -183,4 +183,4 @@ source/configuration verification below. The final local full-package campaign
 uses the unchanged repository config, all files/all1,487 tests, break90 and four
 workers:2,951 generated,65 compile errors,8 uncovered,161 default block-filter
 ignores,2,717 executing mutants. No mutate-filter or test-case-filter exclusions.
-Final score and exact result counts are pending.
+Final local score: **92.66%**, exit 0, elapsed 43m35.942s. GitHub Mutation run 44359066853 scored **92.26%** for Decimal and **93.30%** for Core. Both passed the unchanged 90% gate on 4aa4a60. Core CI and Platform Qualification also passed on that commit. The week runner was published at 9eea7ed; its Core CI passed. Week-long results are pending.

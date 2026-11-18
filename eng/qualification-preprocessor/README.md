@@ -57,6 +57,34 @@ metric/identity skeletons require a larger budget, rather than silent data loss.
 
 ## Build and verification
 
+### Week and IEEE decimal campaign evidence
+
+The explicit `Kind`/`SchemaVersion:1` envelopes `ieeeDecimalSoak` and
+`weekQualification` are recognized before legacy shape-based reports. Unknown
+explicit kinds and unsupported versions never borrow a legacy `Passed:true`.
+IEEE `Inconclusive` maps to `Incomplete`; week `Running` maps to `Unknown`.
+An explicit failure, failed check/chunk counter, or failing child exit dominates
+a contradictory declared pass. Child exit3 is inconclusive, not a numerical failure.
+Missing/malformed soak counters and inconsistent week chunk counts prevent a pass.
+Inconclusive preflight gates also prevent a pass. An Interrupted chunk's recovery
+reason is retained as incomplete evidence; it is not invented as a numerical failure.
+
+Exact numeric fields, seeds, provenance, null/missing revisions, and original
+per-revision summaries are retained. The latest top-level week SourceRevision is
+never assigned to older chunks: `metrics.chunkScopes` keeps separate revision/status
+record counts, explicitly marking unknown child revisions. Numerical sample or
+assertion totals are never recomputed across source revisions. Failed daily source
+refreshes remain incomplete and retain the requested/continued revision evidence.
+
+Full details retain every `chunkDetails` and `sourceUpdateDetails` record. Compact
+reports replace these arrays with exact `omittedChunkDetails` and
+`omittedSourceUpdateDetails` counts, keep bounded issue excerpts, and retain the
+hashed raw report reference. Top-level `checkpoint.json`, `report-<digits>.json`,
+`ieee-soak-summary.json` and `ieee-decimal-soak-summary.json` are discoverable.
+Nested chunk directories and `.events.jsonl` journals are not recursively read;
+checkpoint journal events are not completed qualification evidence. An empty
+reserved summary is invalid JSON and cannot pass.
+
 Rust 2024, rustc/cargo 1.99.1 on the original workstation. Dependencies are exact
 pins in Cargo.toml and transitive resolutions in Cargo.lock. `cargo build
 --release --locked` enables opt-level 3, thin LTO and portable CPU defaults; no

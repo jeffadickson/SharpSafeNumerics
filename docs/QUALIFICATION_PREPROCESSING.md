@@ -39,3 +39,9 @@ explicit input set. Directory scanning covers only top-level report files.
 Rust is optional for normal .NET builds. Windows and Linux have a separate native
 tool workflow. The current pinned workstation job needs no change: preprocess
 its published reports after they arrive.
+
+The pinned18-hour-budget workstation campaign has now completed. Its published
+scalar/SIMD128/SIMD256 reports were processed with the native tool before review;
+see [the results](verification/2026-11-18-workstation-18h.md). Keep each mode's
+verdict, source, seed and elapsed record separate. Any sum of executed workload
+counts is not distinct-input coverage or one combined qualification duration.
