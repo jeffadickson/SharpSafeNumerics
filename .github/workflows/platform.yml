@@ -35,6 +35,30 @@ jobs:
       - run: dotnet publish tests/SharpSafeNumerics.AotSmoke -c Release -r ${{ matrix.rid }} -o artifacts/aot
       - name: Run native smoke
         run: ${{ matrix.exe }}
+  avx512-dispatch:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - width: 512
+            avx512: 1
+          - width: 256
+            avx512: 0
+    env:
+      DOTNET_EnableAVX512F: ${{ matrix.avx512 }}
+      SSN_REQUIRED_BATCH_WIDTH: ${{ matrix.width }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+      - run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release --filter FullyQualifiedName~BatchArithmeticTests --collect:"XPlat Code Coverage" --results-directory artifacts/batch-coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: batch-dispatch-${{ matrix.width }}
+          path: artifacts/batch-coverage
   windows-x86-managed:
     runs-on: windows-latest
     steps:

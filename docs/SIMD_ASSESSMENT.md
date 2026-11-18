@@ -28,3 +28,27 @@ Primary documentation:
 
 SIMD support here covers Int32 batch addition. Scalar APIs retain their semantics;
 Int128/UInt128, division and other policies have no vector implementation claim.
+
+## AVX-512 comparison (2026-11-18)
+
+GitHub Actions run 44392125979 tested commit 956f927 on Ubuntu x64, AMD
+EPYC 9V74, .NET 11.0.0 and BenchmarkDotNet 0.15.8. ShortRun used three
+warmups and three measurement iterations. Both methods validate the buffer
+contract and write byte-sized lane statuses, with deterministic seed 731923.
+Setup checked every lane against a widened integer oracle and asserted
+each method's executed width. The AVX-512 prototype delegates its tail to
+the validated public batch entry point.
+
+| Lanes | SIMD256 mean | AVX-512 mean |
+| ---: | ---: | ---: |
+| 17 | 7.839 ns | 11.142 ns |
+| 257 | 83.164 ns | 31.743 ns |
+| 4099 | 766.519 ns | 555.860 ns |
+| 262147 | 57741.757 ns | 55407.580 ns |
+
+No managed allocation was measured. The large-batch difference is small
+relative to measurement uncertainty. The Windows hosted EPYC 7763 lacked
+the necessary acceleration and produced no timing. The local i5-10505
+supports AVX2. These measurements do not establish benefits across CPUs
+or a universal optimal threshold. Production uses 256 lanes as an initial
+conservative threshold and reports the widest loop actually executed.

@@ -72,6 +72,15 @@ RELATIONS:
   VALUE: SN-010
 
 [REQUIREMENT]
+UID: SN-010-SIMD-512
+TITLE: Runtime guarded AVX-512 batch addition
+STATEMENT: Int32 batch addition shall use a hardware accelerated AVX-512F path for valid batches of at least 256 lanes when the runtime supports it. Below the threshold or without AVX-512F acceleration, it shall retain the existing SIMD256, SIMD128 and scalar dispatch. Result and status semantics, contract failures, and untouched suffixes shall be independent of executed width.
+COMMENT: Verification: BatchArithmeticTests checks threshold neighbors, mixed overflows, tails and output sentinels. The platform CI AVX-512 jobs assert actual reported width with AVX-512 enabled and disabled on x64. BenchmarkDotNet comparison 44392125979 informs the initial threshold; see SIMD_ASSESSMENT.md.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-010-SIMD
+
+[REQUIREMENT]
 UID: SN-004
 TITLE: Supported integer domains
 STATEMENT: Signed/unsigned 8-128 bits plus nint/nuint shall be supported.

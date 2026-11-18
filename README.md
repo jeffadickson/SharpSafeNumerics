@@ -17,7 +17,7 @@ The project is organized as M1–M5; see [milestones](docs/MILESTONES.md). Numer
 - Dependency-free console conformance tests, Native AOT smoke project, GitHub Actions CI.
 - Declarative bounded-number attributes, generated arithmetic/default policies, exact conversions, span text and fixed-width endian codecs for all 12 built-in integer types.
 - Strict-scope diagnostics SSN1001–SSN1008 with documented static-analysis limits.
-- Int32 batch addition with detected SIMD256/SIMD128, scalar fallback, per-lane errors and validation before writes.
+- Int32 batch addition with detected AVX-512 for batches of at least 256 lanes, SIMD256/SIMD128, scalar fallback, per-lane errors and validation before writes.
 - Owned Q32.32 fixed-point arithmetic with explicit rounding, Int128 intermediates and typed failures.
 - Optional safe Decimal32/64/128 APIs over .NET 11 built-ins: exact by default, explicit nearest-even acceptance and reported precision loss. Decimal exactness checks may allocate. See [contracts and examples](docs/FIXED_AND_DECIMAL.md).
 - Explicit IEEE decimal operations in the optional Decimal package: five rounding modes, flags/traps, raw encodings, conversions, elementary functions and exact reductions. See the [operation matrix](docs/IEEE_DECIMAL_OPERATION_MATRIX.md) and [bounded qualification](docs/verification/2026-11-18-ieee-decimal.md); full host-environment conformance is not claimed.

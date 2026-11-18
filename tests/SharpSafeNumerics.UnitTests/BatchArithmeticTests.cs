@@ -1,6 +1,7 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.X86;
 using Xunit;
 
 namespace SharpSafeNumerics.UnitTests;
@@ -11,7 +12,7 @@ public sealed class BatchArithmeticTests
     [Theory]
     [InlineData(0)] [InlineData(1)] [InlineData(3)] [InlineData(4)] [InlineData(5)]
     [InlineData(7)] [InlineData(8)] [InlineData(9)] [InlineData(15)] [InlineData(16)]
-    [InlineData(17)] [InlineData(257)] [InlineData(4099)]
+    [InlineData(17)] [InlineData(255)] [InlineData(256)] [InlineData(257)] [InlineData(264)] [InlineData(4099)]
     public void All_dispatch_widths_match_exact_lane_oracle_and_preserve_suffixes(int count)
     {
         int[] left = new int[count], right = new int[count], values = new int[count + 3];
@@ -23,7 +24,7 @@ public sealed class BatchArithmeticTests
             left[i] = i < 25 ? extremes[i % 5] : (int)random.NextInt64(int.MinValue, (long)int.MaxValue + 1);
             right[i] = i < 25 ? extremes[(i / 5) % 5] : (int)random.NextInt64(int.MinValue, (long)int.MaxValue + 1);
         }
-        foreach (int width in new[] { 0, 128, 256 })
+        foreach (int width in new[] { 0, 128, 256, 512 })
         {
             Array.Fill(values, 0x13579BDF); Array.Fill(errors, (ArithmeticError)255);
             Assert.Equal(BatchArithmeticError.None, SafeInteger.TryAddBatchCore(left, right, values, errors, width, out int used));
@@ -35,7 +36,7 @@ public sealed class BatchArithmeticTests
         Array.Fill(values, 0x13579BDF); Array.Fill(errors, (ArithmeticError)255);
         var detailed = SafeInteger.AddBatch(left, right, values, errors);
         Assert.Equal(BatchArithmeticError.None, detailed.Error); Assert.True(detailed.IsSuccess);
-        Assert.Equal(ExpectedWidth(count, 256), detailed.VectorWidthUsed);
+        Assert.Equal(ExpectedWidth(count, 512), detailed.VectorWidthUsed);
         Verify(left, right, values, errors);
     }
 
@@ -105,7 +106,7 @@ public sealed class BatchArithmeticTests
         int[] left = [int.MaxValue, int.MinValue, 1, 0, -1, 2, -2, 3, 4];
         int[] right = [1, -1, 1, 0, 1, 2, -2, 3, 4];
         int[] values = new int[9]; var errors = new ArithmeticError[9];
-        foreach (int width in new[] { 0, 128, 256 })
+        foreach (int width in new[] { 0, 128, 256, 512 })
         {
             for (int i = 0; i < 1000; i++) _ = SafeInteger.TryAddBatchCore(left, right, values, errors, width, out _);
             long before = GC.GetAllocatedBytesForCurrentThread(); int checksum = 0;
@@ -118,7 +119,7 @@ public sealed class BatchArithmeticTests
             Assert.Equal(100_000 * ((int)BatchArithmeticError.None + 8 + (int)ArithmeticError.Overflow + (int)BatchArithmeticError.LengthMismatch), checksum);
             Assert.Equal(0, bytes);
         }
-        Assert.Equal(ExpectedWidth(8, 256), SafeInteger.BatchAddVectorWidth);
+        Assert.Equal(ExpectedWidth(256, 512), SafeInteger.BatchAddVectorWidth);
     }
 
     [Fact]
@@ -135,7 +136,27 @@ public sealed class BatchArithmeticTests
         Assert.False(default(BatchArithmeticResult).IsSuccess);
     }
 
+    [Fact]
+    public void Required_hardware_width_actually_executes()
+    {
+        // CI runs this in fresh processes with AVX-512 enabled and disabled.
+        string? required = Environment.GetEnvironmentVariable("SSN_REQUIRED_BATCH_WIDTH");
+        if (required is null) return;
+        int[] left = new int[271], right = new int[left.Length], values = new int[left.Length];
+        var errors = new ArithmeticError[left.Length];
+        for (int i = 0; i < left.Length; i++)
+        {
+            left[i] = (i % 3) switch { 0 => int.MaxValue, 1 => int.MinValue, _ => i };
+            right[i] = i % 3 == 1 ? -1 : 1;
+        }
+        var result = SafeInteger.AddBatch(left, right, values, errors);
+        Assert.True(result.IsSuccess);
+        Assert.Equal(required, result.VectorWidthUsed.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        Verify(left, right, values, errors);
+    }
+
     private static int ExpectedWidth(int count, int ceiling) =>
+        count >= 256 && ceiling >= 512 && Avx512F.IsSupported && Vector512.IsHardwareAccelerated ? 512 :
         count >= 8 && ceiling >= 256 && Vector256.IsHardwareAccelerated ? 256 :
         count >= 4 && ceiling >= 128 && Vector128.IsHardwareAccelerated ? 128 : 0;
 

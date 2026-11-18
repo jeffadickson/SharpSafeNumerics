@@ -47,7 +47,7 @@ Gen.Select(Gen.UInt128, Gen.UInt128).Sample(pair =>
     Array.Fill(values, 0x13579BDF); Array.Fill(errors, (ArithmeticError)255);
     var batch = SafeInteger.AddBatch(left.AsSpan(0, count), right.AsSpan(0, count), values, errors);
     Require(batch.IsSuccess, "batch-contract");
-    int expected = count >= 8 && SafeInteger.BatchAddVectorWidth == 256 ? 256 : count >= 4 && SafeInteger.BatchAddVectorWidth >= 128 ? 128 : 0;
+    int expected = count >= 256 && SafeInteger.BatchAddVectorWidth == 512 ? 512 : count >= 8 && SafeInteger.BatchAddVectorWidth >= 256 ? 256 : count >= 4 && SafeInteger.BatchAddVectorWidth >= 128 ? 128 : 0;
     Require(batch.VectorWidthUsed == expected, "batch-dispatch");
     for (int i = 0; i < count; i++)
     {

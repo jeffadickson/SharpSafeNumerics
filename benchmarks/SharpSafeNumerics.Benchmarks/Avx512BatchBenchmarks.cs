@@ -35,7 +35,7 @@ public class Avx512Comparison
             };
         }
 
-        Verify(SafeInteger.AddBatch(left, right, values, errors).VectorWidthUsed, 256);
+        Verify(Add256(), 256);
         Array.Fill(values, int.MinValue);
         Array.Fill(errors, (ArithmeticError)255);
         Verify(Add512(), 512);
@@ -55,7 +55,11 @@ public class Avx512Comparison
     }
 
     [Benchmark(Baseline = true)]
-    public int Add256() => SafeInteger.AddBatch(left, right, values, errors).VectorWidthUsed;
+    public int Add256()
+    {
+        _ = SafeInteger.TryAddBatchCore(left, right, values, errors, 256, out int width);
+        return width;
+    }
 
     [Benchmark]
     public int Add512() => Add512Core(left, right, values, errors);
