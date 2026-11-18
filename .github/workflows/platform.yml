@@ -40,25 +40,51 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - width: 512
-            avx512: 1
-          - width: 256
-            avx512: 0
-    env:
-      DOTNET_EnableAVX512: ${{ matrix.avx512 }}
-      SSN_REQUIRED_BATCH_WIDTH: ${{ matrix.width }}
+        probe: [1, 2, 3]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '11.0.x'
-      - run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release --filter FullyQualifiedName~BatchArithmeticTests --collect:"XPlat Code Coverage" --results-directory artifacts/batch-coverage
+      - name: Check dispatch and fallback on the same runner
+        shell: pwsh
+        run: |
+          $project = 'tests/SharpSafeNumerics.UnitTests'
+          $coverage = 'artifacts/batch-coverage'
+          $flags = (Get-Content -LiteralPath /proc/cpuinfo | Select-String '^flags\s*:' | Select-Object -First 1).Line
+          Write-Host $flags
+          if ($flags -match '\bavx512f\b') {
+            $env:DOTNET_EnableAVX512 = '1'
+            $env:SSN_REQUIRED_BATCH_WIDTH = '512'
+            dotnet test $project -c Release --filter FullyQualifiedName~BatchArithmeticTests --collect:"XPlat Code Coverage" --results-directory $coverage
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            New-Item -ItemType Directory -Path artifacts/hardware-proof | Out-Null
+            Set-Content -LiteralPath artifacts/hardware-proof/verified-512.txt -Value 'Actual SIMD512 and lane oracle verified'
+          }
+          $env:DOTNET_EnableAVX512 = '0'
+          $env:SSN_REQUIRED_BATCH_WIDTH = '256'
+          dotnet test $project -c Release --filter FullyQualifiedName~BatchArithmeticTests --collect:"XPlat Code Coverage" --results-directory $coverage
+          exit $LASTEXITCODE
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: batch-dispatch-${{ matrix.width }}
+          name: batch-dispatch-${{ matrix.probe }}
           path: artifacts/batch-coverage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hardware-proof-${{ matrix.probe }}
+          path: artifacts/hardware-proof/verified-512.txt
+          if-no-files-found: ignore
+  avx512-proof:
+    needs: avx512-dispatch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hardware-proof-*
+          path: hardware-proof
+      - name: Require actual AVX-512 execution on at least one runner
+        run: test -d hardware-proof && find hardware-proof -name verified-512.txt -print -quit | grep -q .
   windows-x86-managed:
     runs-on: windows-latest
     steps:
