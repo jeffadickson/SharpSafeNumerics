@@ -226,6 +226,28 @@ compatibility layer, not replaced by these source lists.
 <<<
 
 [REQUIREMENT]
+UID: SN-QUAL-COMPACT
+TITLE: Native compact qualification evidence
+STATEMENT: >>>
+A reusable native preprocessor shall produce deterministic bounded qualification
+triage reports from real workstation, numeric soak, mutation, coverage and soak
+tail evidence. It shall retain exact counts, source identities, seeds, failures,
+missing/corrupt evidence and explicit omission counts with raw SHA256 references.
+It shall distinguish preprocessing success from qualification success, reject
+contradictory success claims, preserve unknown values and independent source
+scopes, and never infer success from upload or an empty input. Inputs and existing
+outputs shall be preserved. Large logs shall be streamed; default directory
+discovery shall avoid recursive source/build scans. Full normalized details
+shall be available separately from the bounded report.
+<<<
+COMMENT: >>>
+Implementation target: eng/qualification-preprocessor and PowerShell wrapper.
+Verification: Rust directed/property/negative tests, actual-schema fixtures,
+native release execution, coverage, mutation and real report comparison.
+Evidence requires actual execution; configured tooling alone is not closure.
+<<<
+
+[REQUIREMENT]
 UID: SN-QUAL-X86
 TITLE: Actual managed Windows x86 qualification
 STATEMENT: >>>

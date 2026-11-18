@@ -1,0 +1,19 @@
+[package]
+name = "qualcompact"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+clap = { version = "=4.6.8", features = ["derive"] }
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = { version = "=1.0.154", features = ["arbitrary_precision"] }
+sha2 = "=0.11.1"
+
+[dev-dependencies]
+proptest = "=1.12.0"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
