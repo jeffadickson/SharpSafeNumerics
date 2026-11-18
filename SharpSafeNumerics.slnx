@@ -7,6 +7,7 @@
     <Project Path="src/SharpSafeNumerics.Analyzers/SharpSafeNumerics.Analyzers.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/SharpSafeNumerics.NumericSoak/SharpSafeNumerics.NumericSoak.csproj" />
     <Project Path="tests/SharpSafeNumerics.UnitTests/SharpSafeNumerics.UnitTests.csproj" />
     <Project Path="tests/SharpSafeNumerics.DecimalTests/SharpSafeNumerics.DecimalTests.csproj" />
     <Project Path="tests/SharpSafeNumerics.GeneratorTests/SharpSafeNumerics.GeneratorTests.csproj" />
@@ -24,5 +25,8 @@
   </Folder>
   <Folder Name="/benchmarks/">
     <Project Path="benchmarks/SharpSafeNumerics.Benchmarks/SharpSafeNumerics.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/eng/">
+    <Project Path="eng/NativeWidthProbe/NativeWidthProbe.csproj" />
   </Folder>
 </Solution>

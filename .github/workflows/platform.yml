@@ -35,6 +35,26 @@ jobs:
       - run: dotnet publish tests/SharpSafeNumerics.AotSmoke -c Release -r ${{ matrix.rid }} -o artifacts/aot
       - name: Run native smoke
         run: ${{ matrix.exe }}
+  windows-x86-managed:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+      - name: Qualify actual managed x86 host
+        shell: pwsh
+        run: ./eng/Invoke-X86Qualification.ps1 -ArtifactDirectory (Join-Path $env:RUNNER_TEMP 'SharpSafeNumerics-x86')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-x86-managed-evidence
+          path: |
+            ${{ runner.temp }}/SharpSafeNumerics-x86/summary.json
+            ${{ runner.temp }}/SharpSafeNumerics-x86/source-sha256.json
+            ${{ runner.temp }}/SharpSafeNumerics-x86/*.log
+            ${{ runner.temp }}/SharpSafeNumerics-x86/*-results/*.trx
+          if-no-files-found: ignore
   mac-once:
     if: github.event_name == 'workflow_dispatch' && inputs.includeMac && vars.ENABLE_MAC_QUALIFICATION == 'true'
     runs-on: macos-15

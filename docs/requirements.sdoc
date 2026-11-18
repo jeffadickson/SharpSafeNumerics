@@ -226,6 +226,73 @@ compatibility layer, not replaced by these source lists.
 <<<
 
 [REQUIREMENT]
+UID: SN-QUAL-X86
+TITLE: Actual managed Windows x86 qualification
+STATEMENT: >>>
+Repeatable qualification shall build with the repository-selected x64 SDK and
+execute required managed regression suites under an explicitly verified isolated
+NET11 x86 runtime. Native-width probes shall confirm actual32-bit process behavior
+before and after the suites. Test-host diagnostics shall verify the selected x86
+host; successful x64 controller execution alone shall not establish x86 coverage.
+Provisioned runtime archives shall match official SHA512 metadata. Supplied
+runtime/cache inputs and caller environment shall be preserved. Reports shall
+retain source/binary provenance, per-suite pass/fail/skip counts and explicit
+failure verdicts. Managed x86 evidence shall not imply Native AOT x86 support.
+<<<
+COMMENT: >>>
+Implementation: eng/Invoke-X86Qualification.ps1 and eng/NativeWidthProbe.
+Verification: X86Qualification.Tests.ps1, NativeWidthProbe.Tests.ps1, actual
+437-case execution, native-width oracle and host diagnostics. Scope/source
+evidence: verification/2026-11-17-x86.md. Windows CI runs the same helper.
+<<<
+
+[REQUIREMENT]
+UID: SN-QUAL-EXPANDED
+TITLE: Reproducible expanded numeric campaigns
+STATEMENT: >>>
+A nonshipping campaign shall accept a bounded positive duration and seed,
+validate malformed or duplicate CLI options, preserve existing output files,
+and retain explicit pass/fail verdicts and reproducible failure diagnostics.
+Fixed arithmetic shall be checked against independent BigInteger relations;
+all three safe decimal formats shall be checked against independent PeterO
+arithmetic and precision-loss expectations. Generator choices shall be stable
+functions of shrinkable inputs and avoid sign/exponent parity correlation.
+Reports shall distinguish executed callbacks, assertions, API calls and unique
+inputs; counts alone shall not establish unvisited branch coverage. Long-run
+source/binary provenance and any external deadline shall be recorded separately
+from shorter campaigns or changed report-serialization implementations.
+<<<
+COMMENT: >>>
+Implementation: tests/SharpSafeNumerics.NumericSoak. Verification:
+NumericSoakRunner.Tests.ps1, deterministic distribution checks, disposable
+oracle-fault shrinking control, scoped coverage and managed/native short runs.
+Evidence: verification/2026-11-17-numeric-soak-harness.md and the final bounded
+qualification report. Actual long-run success remains pending until observed.
+<<<
+
+[REQUIREMENT]
+UID: SN-017
+TITLE: Referenced SharpUnits integration example
+STATEMENT: >>>
+A reproducible example shall compile against real immutable SharpUnits source
+and bridge initialized whole-volt bounded values into coherent SI voltage
+quantities. Its contiguous integer domain shall be restricted to minus through
+plus two to the power 53, preserving every admitted magnitude exactly through
+the upstream double interface. Invalid default/domain values shall reject with
+cleared output. Verification shall check actual electrical dimensions and
+boundary rejection. Unit display metadata alone shall not count as integration.
+Core shall not acquire a SharpUnits runtime dependency. General exact unit
+arithmetic and compatibility with an unpublished NuGet release are not implied.
+<<<
+COMMENT: >>>
+Stable product requirement SN-017, previously recorded in PRODUCT_REQUIREMENTS.md.
+Implementation: examples/SharpUnitsInterop and eng/VerifySharpUnitsIntegration.ps1.
+Upstream pin: 7ebdbcda9958e4eb4cee623065ecdd37395dac89. Verification: source
+integration assertions seed731931, script negative controls and recorded
+managed/native execution. Evidence: verification/2026-11-17-sharpunits.md.
+<<<
+
+[REQUIREMENT]
 UID: SN-018
 TITLE: Fixed-point semantics
 STATEMENT: >>>

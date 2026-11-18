@@ -11,6 +11,7 @@
 | C#15 union convenience adapter | Implemented in separate project | Generated value-type unions box |
 | Safe IEEE decimal support | Implemented; expanded RC1 qualification | Optional BCL Decimal32/64/128 finite wrapper; exact/default or explicit nearest-even with inexactness; may allocate |
 | Signed Q32.32 fixed point | Implemented; expanded RC1 qualification | Owned Int128 intermediate arithmetic, six rounding modes, BigInteger references |
+| SharpUnits integration SN-017 | Referenced source example implemented | Exact whole-volt ingress through ±2^53, real dimensional checks; pinned development source, not general exact unit arithmetic |
 | Static range-constrained bounded value type | Implemented | default invalid; CI tests added |
 | Bounded type source generator | RC-1 supported contract implemented | Policies/defaults/text/codecs/conversion/operators; explicit unsupported-shape diagnostics; see GENERATOR_RC1.md |
 | Strict-scope Roslyn analyzers | SSN1001–SSN1008 implemented | Proper Roslyn unit tests, actual generated/cross-assembly metadata; static limits in ANALYZERS_RC1.md |
@@ -30,7 +31,8 @@ Exact scope, limitations and dated results: [conversion pass](verification/2026-
 
 RC-1 integration/platform/package evidence: [RC report](verification/2026-11-17-rc1.md).
 
-SharpUnits integration SN-017 remains open. SN-018/SN-019 were included in RC1
+SharpUnits SN-017 now has a real pinned-source example; see its scoped evidence.
+SN-018/SN-019 were included in RC1
 by the user's later scope decision; their bounded implementation contracts are
 SN-018-FIXED and SN-019-DECIMAL, not general fixed-point or full IEEE754 coverage.
 See [fixed and decimal contracts](FIXED_AND_DECIMAL.md).

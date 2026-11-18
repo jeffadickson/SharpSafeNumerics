@@ -13,9 +13,9 @@ and all eight strict diagnostics.
 | P1 | Release reproducibility and public API baselines | Same-checkout rebuild reproducibility is measured separately for each package set. Shipping source signatures and targeted generic metadata are guarded; general binary/released-package compatibility and cross-path/platform identity remain open |
 | P1 | Production SIMD performance | Matched production-layout local timings are recorded; target-specific budgets and lower-variance campaigns remain open |
 | P1 | Application integration | Actual RISCue/VeloSim/SharpUnits consumers, beyond repository examples |
-| P1 | Additional architecture coverage | 32-bit runtime execution and native-width contracts |
+| P1 | Additional architecture coverage | Windows x86 managed437-case execution and9,858 native-width oracle pairs now passed; other32-bit OS/ISAs and Native AOT x86 are not qualified |
 | P1 | Expanded RC1 longer campaigns | Local properties, fuzz, coverage, mutation, formal model and Windows/Linux AOT CI passed on e141b6b; broader/longer new-domain campaigns remain separate from the pinned integer soak, which predates these APIs |
-| P1 | SharpUnits integration SN-017 | Real referenced integration sample and compilation; Unit display metadata is insufficient |
+| P1 | SharpUnits integration breadth | SN-017's referenced whole-volt source example passed4,030 assertions, x86 and Windows Native AOT; general adapters and released-package compatibility remain separate |
 
 Analyzer static detection has documented dataflow and indirect-allocation limits.
 Dafny models do not prove C# implementation equivalence. Coverage and finite

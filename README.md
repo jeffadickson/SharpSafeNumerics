@@ -20,6 +20,7 @@ The project is organized as M1–M5; see [milestones](docs/MILESTONES.md). Numer
 - Int32 batch addition with detected SIMD256/SIMD128, scalar fallback, per-lane errors and validation before writes.
 - Owned Q32.32 fixed-point arithmetic with explicit rounding, Int128 intermediates and typed failures.
 - Optional safe Decimal32/64/128 APIs over .NET 11 built-ins: exact by default, explicit nearest-even acceptance and reported precision loss. Decimal exactness checks may allocate. See [contracts and examples](docs/FIXED_AND_DECIMAL.md).
+- Referenced SharpUnits [integration example](docs/verification/2026-11-17-sharpunits.md): exact whole-volt admission and real dimensional checks, with no SharpUnits dependency in Core.
 - CsCheck, Hedgehog, xUnit, Stryker.NET, Dafny and BenchmarkDotNet verification infrastructure.
 - Detailed requirements, original software description, architecture, exception policy and verification plan.
 

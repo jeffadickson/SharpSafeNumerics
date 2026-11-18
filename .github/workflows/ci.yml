@@ -38,6 +38,13 @@ jobs:
             artifacts/api-contract/summary.json
       - name: CsCheck and Hedgehog
         run: dotnet run --project tests/SharpSafeNumerics.PropertyTests -c Release
+      - name: Short expanded numeric oracle campaign
+        run: dotnet run --project tests/SharpSafeNumerics.NumericSoak -c Release -- --seconds 5 --seed 731930 --summary artifacts/numeric-soak-summary.json
+      - name: Actual native-width oracle
+        run: dotnet run --project eng/NativeWidthProbe -c Release -- --expected-bits 64
+      - name: Pinned SharpUnits integration sample
+        shell: pwsh
+        run: ./eng/VerifySharpUnitsIntegration.ps1 -ArtifactDirectory artifacts/sharpunits-integration
       - name: Generated annotated domain
         run: dotnet run --project examples/GeneratedQueueDepth -c Release
       - name: Static range-policy example
