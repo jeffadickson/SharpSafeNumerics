@@ -1,0 +1,319 @@
+{
+  "baseRevision": "2afb48e60e1cd6865c146d0dc73bf2acb0a042fd",
+  "qualificationCheckpoint": "6dc5fb40a2fc206a1eff9a644d90c82c6f53d6e6",
+  "scope": "Frozen integrated IEEE/analyzer source and verification inputs; excludes this manifest and raw artifacts",
+  "files": [
+    {
+      "path": ".config/dotnet-tools.json",
+      "sha256": "755357a34806ea6b1e32f017815328ab37e99868284d78827088b1bbe88f3f1b"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "20d7f716d8401fe89a79c8416ecdf63d58a7a8d41fa43acdcc2ba7656be3965a"
+    },
+    {
+      "path": ".github/workflows/mutation.yml",
+      "sha256": "82edcb5feba9e241e5a9660c36daff36d2fa15ff3e20bc099ada5038e44ad170"
+    },
+    {
+      "path": ".github/workflows/platform.yml",
+      "sha256": "dcc1a3045c89ba6f99a558968d675a03a80445e30c5d0e41884bcb3f42481730"
+    },
+    {
+      "path": "Directory.Build.props",
+      "sha256": "ad7500f0d3a076a31a6d760a526cf0137eef645c6c19894a2ee245968f4d4fcb"
+    },
+    {
+      "path": "Directory.Packages.props",
+      "sha256": "f10d761d07ea89e751aff0ca277ffcaeba1422bfb859b7adfceaa088052427e4"
+    },
+    {
+      "path": "eng/DecimalConformance/Build-NativeReference.ps1",
+      "sha256": "54432a135589692ea32f1b1f0137b71758793acd27b3e99634975d02cce28b01"
+    },
+    {
+      "path": "eng/DecimalConformance/DecimalConformance.csproj",
+      "sha256": "454a53866157241128ff81485a8defca4197af9cae2abe0fba2528e2a62cb4e7"
+    },
+    {
+      "path": "eng/DecimalConformance/EVIDENCE.md",
+      "sha256": "f446dd0e45af97fe88341ec7e57c9e6f8331a182374b60bfa4a4d817203bd742"
+    },
+    {
+      "path": "eng/DecimalConformance/FUNCTION_MUTANT_COUNTEREXAMPLES.md",
+      "sha256": "fed663a88363c3c0d9cdd26d10a2556f05ad66a70ffe6186a82550958c162de1"
+    },
+    {
+      "path": "eng/DecimalConformance/FUNCTION_REFINEMENT_20261118.md",
+      "sha256": "5450f9a84a401edab343310297bbf4c4d9af315db1051b8342b6e7c0d505818c"
+    },
+    {
+      "path": "eng/DecimalConformance/Generate-MpfrFunctions.ps1",
+      "sha256": "e45c564e4c497fc62621bb62f2c2198d024e97dad33dd49ab7732b63cd95f9ad"
+    },
+    {
+      "path": "eng/DecimalConformance/Get-Corpus.ps1",
+      "sha256": "ce1ba6e47319fd5e011859065434799b04c1cdd7f54a8145d5bf36fcdaedb09b"
+    },
+    {
+      "path": "eng/DecimalConformance/malformed.decTest",
+      "sha256": "e36b70a6614467a1dfb8e0d09cda977bd5edceaa1f463c9251d2ce3b0ed13709"
+    },
+    {
+      "path": "eng/DecimalConformance/MPFR_FUNCTION_REFERENCES.md",
+      "sha256": "66263b0398fb99425de94c50676190484ec10a4f7b5435746e4ee6a915842ef3"
+    },
+    {
+      "path": "eng/DecimalConformance/mpfr-functions-4.2.1.json",
+      "sha256": "ede1289bc758c81a8f16c576e86cff318ceb8449095be8bc24b2359be1dbbd99"
+    },
+    {
+      "path": "eng/DecimalConformance/MpfrFunctionReference.c",
+      "sha256": "51aaa65b523d140b0d09ec444d749e09d43132edf7367a2823b7d02d45151ab2"
+    },
+    {
+      "path": "eng/DecimalConformance/NativeReference.c",
+      "sha256": "ee6a71dd25b969499be2fa93129d8e378e3654daf4a89b18a9b7a3e9befaf13d"
+    },
+    {
+      "path": "eng/DecimalConformance/Program.cs",
+      "sha256": "93d24deba6a7322e8715f6bcc2e31d09588e74aad8cc87f3a9a68be05808c754"
+    },
+    {
+      "path": "eng/DecimalConformance/provenance.json",
+      "sha256": "d48b12f179016a0c41cc2a6dfe7b25a6422f2cb1120ebcf23e04cb33a2b6f8d4"
+    },
+    {
+      "path": "eng/DecimalConformance/README.md",
+      "sha256": "dc0df573e5197401b1e0067768333b42aeaa9f66c939e7bba4b7f8fec0c73780"
+    },
+    {
+      "path": "eng/DecimalConformance/Replay-FunctionMutants.ps1",
+      "sha256": "1bd106a2f32c077f7428630b93a16daf4ad6c3e7810784bdf89ffe5924967732"
+    },
+    {
+      "path": "eng/DecimalConformance/smoke.decTest",
+      "sha256": "b9d975f931242d67d8acfffd71e3c6879a8897e77174e285b328e8b568075b24"
+    },
+    {
+      "path": "eng/DecimalConformance/tested-harness-hashes.json",
+      "sha256": "054540758747af3bda379f1ec49d780c5b86572da07453aefe5971a40c30a898"
+    },
+    {
+      "path": "eng/DecimalConformance/tested-source-hashes.json",
+      "sha256": "aa8c4398631c59e81ee292c3a31166207340d389f5371e1fa94d04d6a94a786d"
+    },
+    {
+      "path": "eng/VerifyDecimalRoundingModel.ps1",
+      "sha256": "5c3b998ffe1f7f92139ef120c08b527c8611580cf71569be937eab567c50e5eb"
+    },
+    {
+      "path": "eng/VerifyPackages.ps1",
+      "sha256": "4e9721d47ff98cac131f321db8e2f3d80eb1b348e079d31aa0611b6b054c0656"
+    },
+    {
+      "path": "formal/DecimalRounding.dfy",
+      "sha256": "0ab2a1f33fb4e5253be2e8b93cb6d2e41bff06fdf5a264b17c10914568d19061"
+    },
+    {
+      "path": "global.json",
+      "sha256": "4707675f48a6919ca37a2dd59a8db76ee0ac2d7b22f49ad4d7a33a104ef04109"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Analyzers/AnalyzerReleases.Unshipped.md",
+      "sha256": "14662ca92229c500ecf8809c61c4a6802df3d50371da65476e10c9732e07a1b8"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Analyzers/NumericSymbols.cs",
+      "sha256": "b7adcb06a9fca8b1705289468325734c2b04479618485b4f089938055ded8e09"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Analyzers/PublicAPI.Shipped.txt",
+      "sha256": "0570cf88ef7ba0638a95f61e904c349c0c00bd34f76241b5ea968ce31482606a"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Analyzers/PublicAPI.Unshipped.txt",
+      "sha256": "795ac34778e25a4c9ea6b99f3f6fec108f132b075c3af9ddad6ff6e87c8b692d"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Analyzers/SharpSafeNumerics.Analyzers.csproj",
+      "sha256": "50e5716c394477a74ea64a05fa991d32e0f78582c7fa3a05bd3e972b9854dfd8"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Analyzers/StrictNumericAnalyzer.cs",
+      "sha256": "d9ca5178f22c3918130b8838d51f26bad2388b20c9b2090360eea3a650a82767"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/AssemblyInfo.cs",
+      "sha256": "d5ce032c8049c13535ec614d991d01ef180eef63cdda8f28fdd1ece97297cc22"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/DecimalIntervalMath.cs",
+      "sha256": "f0ea31305e61103d910d0083ae73d1acb655918a58892603444062a34e31468f"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/IeeeDecimalArithmetic.cs",
+      "sha256": "1f2127b51b9d02b540404875effef7e9559f581f3d32fd82afe5c9f4f4f6076c"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/IeeeDecimalCodec.cs",
+      "sha256": "3d84d3dec5d3218a81aa54ef9430a0e9a9de3c0a36e2d83a17579ad412e1176c"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/IeeeDecimalContracts.cs",
+      "sha256": "678817783dd7347e2becb6b49ff5ae09ba9aed0173ceb1d0bbfa4406320fd9c0"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/IeeeDecimalConversions.cs",
+      "sha256": "ff09bbe506a88778be96533608f02a4170613acc5e31ab72452e5ab031916c53"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/IeeeDecimalEnvironment.cs",
+      "sha256": "95672de1b56d2716f7070caa3a7b049a2a2952de6e223629f783fb5503fe1f1c"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/IeeeDecimalFunctions.cs",
+      "sha256": "b430614a12a16d30e69a63769c1a3a21ad9b138b31d44cc0a852c0f0485c66ba"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/IeeeDecimalPiFunctions.cs",
+      "sha256": "839f0d0232fdb48325f9bf487b866d7b953ee15035202feaaa78fc6af8cf06a9"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/IeeeDecimalPredicates.cs",
+      "sha256": "b7846bc0e5b0efc8be4882a8f78af8b5877971fbdec188008b00b42118cf3ca3"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/IeeeDecimalReductions.cs",
+      "sha256": "c01fb27d891f2e36d3e0eee9772e0fc055b4fea3c76a357a40d78398c0cf651e"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/IeeeDecimalRepresentation.cs",
+      "sha256": "6505406bdbd1837be4e332dda15910b4a6a140149def68e6b9875a678a2ca9bc"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/PublicAPI.Shipped.txt",
+      "sha256": "0570cf88ef7ba0638a95f61e904c349c0c00bd34f76241b5ea968ce31482606a"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/PublicAPI.Unshipped.txt",
+      "sha256": "c61e4a274150a992a36eb5b0f1696cbc6d05e22b83d488ef18df326d0b8caaef"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/SafeDecimal.cs",
+      "sha256": "39d0a5b34e1ff32fcec1ebe2842dc55c4c33f3414faa8af0bf99ebb9f95b3b04"
+    },
+    {
+      "path": "src/SharpSafeNumerics.Decimal/SharpSafeNumerics.Decimal.csproj",
+      "sha256": "6d33cf10ae2c91ed8869429de2574ecab21953e186bb9fa5ccbfe7d3353e7af0"
+    },
+    {
+      "path": "stryker-decimal-config.json",
+      "sha256": "4d3e5300fe6c840e66b22bd89f6209f1d0583b43ee81a6e62decaded57452d87"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.AnalyzerUnitTests/DecimalContractTests.cs",
+      "sha256": "4302b0908a3bef1cd0680f8a7cab36860ff9393bbc9181ccd1077ba0dd046470"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.AnalyzerUnitTests/SharpSafeNumerics.AnalyzerUnitTests.csproj",
+      "sha256": "631e47ceaea8d6cde69a356534086d5843b8710f29b73542a769ae660b8dfb66"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.AnalyzerUnitTests/StrictNumericAnalyzerTests.cs",
+      "sha256": "cfdd0081f524bf409638cb9364edf58dfd910c16818e4d1181d6b38e4c35f6b9"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.AotSmoke/Program.cs",
+      "sha256": "bd10d18204a0abdaaaa895bfc22b0180e55775b806daac97eacdf30c9763295c"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/DecimalApiContractTests.cs",
+      "sha256": "fdee822e02240ce91be91547ce87a991cf2c0d01b6c1112a20eca0981850f5fd"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/DecimalBoundaryTests.cs",
+      "sha256": "8661e39c70665e621e5532f3007a5961c468cbeccd81a2a5eab7770eaee422e8"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/DecimalConversionMatrixTests.cs",
+      "sha256": "5501371f2dabd08e9d56a8f52939805c170ecf4adc020f45bd932ea01cbd59f3"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/DecimalEncodingFuzzTests.cs",
+      "sha256": "e3b418d50efd0f4ded773a3e38ec3d01cc8c2a027c2022bab5edd7d834f8c31e"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/DecimalExponentOracleTests.cs",
+      "sha256": "41ced0dfee5be54659ee6830208f6712086229da069f6ccc69c08aa9e9b8d123"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/DecimalMutationRegressionTests.cs",
+      "sha256": "c4e38b08564fd9485310405e5e1b871097112816cc6a6309d2854252c7821104"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/DecimalTests.cs",
+      "sha256": "f066b68eb473d52ea70afd6a837e089c5a86c41d9b0f5567f1555c16815c4993"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeeArithmeticTests.cs",
+      "sha256": "85a7f63599a3ba4b1063fad47ea76ea264846fb8a1c29a90cabbfbbbe0c3e3ce"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeeConversionTests.cs",
+      "sha256": "22ccff441927b43804d3b0eb85794fc9e8122bab3c01da97e7c391258660284d"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeeEnvironmentTests.cs",
+      "sha256": "e1f62f9d945c028685f69e63432c7acb8a9f637ab518e2bf38e184e6dab71b72"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeeFunctionFollowupTests.cs",
+      "sha256": "455c6b7f1ca347fbb52a3726b03fd8037f718df001ac278da937900d322f2ceb"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeeFunctionMatrixTests.cs",
+      "sha256": "3d2d12d54f3cd32096d9a82541cd126f834777a8d45e5962ebc1f83296a9d084"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeeFunctionTests.cs",
+      "sha256": "219b6bd924f46861287c925677f8da2679bf6c00942cf8172ec0d0a66411b1a2"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeeMutationRegressionTests.cs",
+      "sha256": "fc18c7cda228e278827bb982d9d286d0fa2631ff1278875f5c5feb5718ac63aa"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeePayloadAndParseTests.cs",
+      "sha256": "ac7b8830b468fe59741c1752e3c357de8f83c02133c40be9f3022569e418a2b8"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeePredicateTests.cs",
+      "sha256": "0fa0e0dafb14979aac87030f060e58547ba15220d01541cfb7cd90d4d1868823"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeePropertyTests.cs",
+      "sha256": "a9ff90cad4448861e908e9b55bad8de4f681b4385ac5fdc461f087d40a8a26ac"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeeReductionTests.cs",
+      "sha256": "9337d3df689a192152ffcf414e8f1c26f1ff3cd0fddeda2b3053ee5b9af45498"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeeRepresentationEdgeTests.cs",
+      "sha256": "6e7d70e53ef5526bbf8005f3013cbf3664f367c2d9d9a4bcd536d872084071ab"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/IeeeRepresentationTests.cs",
+      "sha256": "2111d07d0018cebc88848d24e17631095a89a4f64bad61292c75161b6f7cb277"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/SharpSafeNumerics.DecimalTests.csproj",
+      "sha256": "fcde45dd4bff5717a47bb74d48872a6d40a9f5ccf1be403ed79f1f1f0da80d1b"
+    },
+    {
+      "path": "tests/SharpSafeNumerics.DecimalTests/VERIFICATION.md",
+      "sha256": "a5bf5386c0afa07be75baf61de50b62b4b985fdf6490016564696f4b30ae9207"
+    }
+  ]
+}

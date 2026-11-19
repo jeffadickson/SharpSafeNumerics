@@ -1,0 +1,42 @@
+{
+  "baseRevision": "9eea7ed823d09cace81328786aafa6e7d709f168",
+  "dirtySources": true,
+  "files": [
+    {
+      "path": "Cargo.toml",
+      "sha256": "25FC5682EC00C9D5769637ABA2CF13FBCF55511C1DD47710A7104F68A7A27130"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "F2695DEDEDF272A10C44D031F52627E0E91E6E71A7726D381F668D6F820EFCF5"
+    },
+    {
+      "path": "src/lib.rs",
+      "sha256": "22A1905E366B5B47C6549225FEC929957C5942F9421ED07B6401393D4E62633C"
+    },
+    {
+      "path": "src/main.rs",
+      "sha256": "D678129CDC7FB707C1BA6CCDD9EB6DCED837AE11666ECF9131AFC81E6350BD71"
+    },
+    {
+      "path": "src/campaigns.rs",
+      "sha256": "E0C6103E7E08C91297009DA32A35C9204251F229DF7B1568A181CD78CBFA84C1"
+    },
+    {
+      "path": "tests/campaigns.rs",
+      "sha256": "84AD2AF74CD821CE3D197AA6F874AA0DA6B59F3072D338CAA75C83C0630EA9BD"
+    },
+    {
+      "path": "tests/cli.rs",
+      "sha256": "21EEB7F42B5FAE88CD75C4F07670E284419B0E6F9E890573CA3176481D8697C4"
+    },
+    {
+      "path": "tests/normalization.rs",
+      "sha256": "AED1AF13B57A75820CCA5D14CEAF14ADD9C387061B3F249F261ED4701C29BFC7"
+    },
+    {
+      "path": "tests/campaigns.proptest-regressions",
+      "sha256": "C7F540C5BE05478D10D5E9254980B6B7404A6E7C4973D7925B9220F25B0C720D"
+    }
+  ]
+}

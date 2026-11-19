@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 using System.Numerics;
 
 namespace SharpSafeNumerics;
@@ -6,7 +9,7 @@ namespace SharpSafeNumerics;
 /// Bounded integer arithmetic. The supported no-exception arithmetic domain is built-in fixed-width integral types.
 /// Custom implementations of generic math interfaces require separate qualification.
 /// </summary>
-public static class SafeInteger
+public static partial class SafeInteger
 {
     /// <summary>Add with explicit overflow or underflow status and deterministic output.</summary>
     public static ArithmeticError TryAdd<T>(T left, T right, out T value)
@@ -111,6 +114,7 @@ public static class SafeInteger
     public static NumericResult<T> Add<T>(T left, T right, ArithmeticPolicy policy = ArithmeticPolicy.Reject)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
+        ValidatePolicy(policy);
         var error = TryAdd(left, right, out T value);
         if (error == ArithmeticError.None) return NumericResult<T>.Ok(value);
         return Resolve(left, right, error, policy, static (a, b) => unchecked(a + b));
@@ -120,6 +124,7 @@ public static class SafeInteger
     public static NumericResult<T> Subtract<T>(T left, T right, ArithmeticPolicy policy = ArithmeticPolicy.Reject)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
+        ValidatePolicy(policy);
         var error = TrySubtract(left, right, out T value);
         if (error == ArithmeticError.None) return NumericResult<T>.Ok(value);
         return Resolve(left, right, error, policy, static (a, b) => unchecked(a - b));
@@ -129,9 +134,18 @@ public static class SafeInteger
     public static NumericResult<T> Multiply<T>(T left, T right, ArithmeticPolicy policy = ArithmeticPolicy.Reject)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
+        ValidatePolicy(policy);
         var error = TryMultiply(left, right, out T value);
         if (error == ArithmeticError.None) return NumericResult<T>.Ok(value);
         return Resolve(left, right, error, policy, static (a, b) => unchecked(a * b));
+    }
+
+    // Policies are byte-backed and contiguous from Reject through Throw. Validate
+    // before the fast success return so caller contract errors are operand-independent.
+    private static void ValidatePolicy(ArithmeticPolicy policy)
+    {
+        if ((byte)policy > (byte)ArithmeticPolicy.Throw)
+            throw new ArgumentOutOfRangeException(nameof(policy));
     }
 
     private static NumericResult<T> Resolve<T>(T left, T right, ArithmeticError error,
@@ -142,7 +156,7 @@ public static class SafeInteger
             ArithmeticPolicy.Reject => NumericResult<T>.Fail(error),
             ArithmeticPolicy.Saturate => NumericResult<T>.Ok(error == ArithmeticError.Overflow ? T.MaxValue : T.MinValue),
             ArithmeticPolicy.Wrap => NumericResult<T>.Ok(wrap(left, right)),
-            ArithmeticPolicy.Throw => throw new OverflowException(error.ToString()),
-            _ => throw new ArgumentOutOfRangeException(nameof(policy))
+            // All public callers validated policy; the sole remaining case is Throw.
+            _ => throw new OverflowException(error.ToString())
         };
 }

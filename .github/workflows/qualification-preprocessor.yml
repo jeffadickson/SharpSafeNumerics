@@ -1,0 +1,27 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
+name: Qualification preprocessor
+on:
+  push:
+    paths: ['eng/qualification-preprocessor/**', 'eng/Invoke-QualificationPreprocessor.ps1', '.github/workflows/qualification-preprocessor.yml']
+  pull_request:
+    paths: ['eng/qualification-preprocessor/**', 'eng/Invoke-QualificationPreprocessor.ps1', '.github/workflows/qualification-preprocessor.yml']
+jobs:
+  native:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: eng/qualification-preprocessor
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - run: cargo fmt --check
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - run: cargo test --locked
+      - run: cargo build --release --locked

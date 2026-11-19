@@ -1,10 +1,34 @@
+<!-- Copyright (c) 2026 Jeff Dickson.
+     SPDX-License-Identifier: MIT -->
 <Project>
   <PropertyGroup>
     <TargetFramework>net11.0</TargetFramework>
     <LangVersion>15.0</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Relocated artifact builds must also exclude outputs left by ordinary builds. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/bin/**;**/obj/**</DefaultItemExcludes>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Deterministic>true</Deterministic>
+    <!-- Use the ZIP epoch (1980-01-01 UTC, Unix seconds) for reproducible package
+         metadata. Explicit caller timestamps can override this packaging default;
+         repository revision metadata still records the actual source identity. -->
+    <DeterministicTimestamp Condition="'$(DeterministicTimestamp)' == ''">315532800</DeterministicTimestamp>
+    <Version>0.1.0-rc.1</Version>
+    <Authors>Jeff Dickson</Authors>
+    <RepositoryUrl>https://github.com/jeffadickson/SharpSafeNumerics</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/jeffadickson/SharpSafeNumerics</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Deterministic integer safety contracts and tooling for .NET 11.</Description>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+    <IsPackable>false</IsPackable>
+    <IsPackable Condition="'$(MSBuildProjectName)' == 'SharpSafeNumerics.Core' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Decimal' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Unions' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Generator' or '$(MSBuildProjectName)' == 'SharpSafeNumerics.Analyzers'">true</IsPackable>
+    <!-- Shipped assemblies must document every public API. With warnings treated as
+         errors, CS1591 makes missing XML documentation a build failure. -->
+    <GenerateDocumentationFile Condition="'$(IsPackable)' == 'true'">true</GenerateDocumentationFile>
   </PropertyGroup>
 </Project>

@@ -11,8 +11,16 @@ Signed multiplication uses sign cases and quotient-based bounds. Division detect
 ## Policy
 Reject returns failure; Saturate returns Min/Max; Wrap executes explicit unchecked arithmetic; Throw creates an OverflowException. Policies are per operation, never ambient global state. Invalid policy throws programmer-contract exception.
 
+## Batch arithmetic
+Int32 AddBatch/TryAddBatch validate buffers before writing, detect Vector256 then
+Vector128, and retain scalar tails/fallback. Per-lane failure clears its value.
+BatchArithmeticResult returns execution metadata by value with an invalid default,
+avoiding aliasable diagnostic out storage. Numeric enum values remain stable.
+Generic and generated bounded arithmetic snapshot the receiver before publishing
+an out result so callers may update a bounded value in place.
+
 ## Limitations
-The current policy API handles addition, subtraction and multiplication, not policy-driven division or negation. Initial bounded-domain generation and SSN1002/1003/1004 enforcement exist; richer domain contracts and the remaining analyzer rules are open. Dafny verifies mathematical models, including conversion admission, without proving equivalence to C#. Decimal support remains planned. All generic math providers outside built-in integral primitives require explicit qualification.
+The current policy API handles addition, subtraction and multiplication, not policy-driven division or negation. RC-1 generated domains consume arithmetic/default/text/codec contracts, and SSN1001–SSN1008 have operation-based enforcement within the documented static detection limits. See GENERATOR_RC1.md and ANALYZERS_RC1.md. Dafny verifies mathematical models, including conversion admission, without proving equivalence to C#. Expanded RC1 adds owned Q32.32 arithmetic and optional safe BCL IEEE decimal APIs; see FIXED_AND_DECIMAL.md for their distinct rounding, precision and allocation contracts. All generic math providers outside built-in integral primitives require explicit qualification.
 
 ## Sources
 https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/union

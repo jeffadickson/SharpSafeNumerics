@@ -1,0 +1,41 @@
+{
+  "Passed": true,
+  "Seed": 731930,
+  "CsCheckSeed": "00000002OIt1",
+  "StartUtc": "2026-11-18T01:18:04.0860068Z",
+  "EndUtc": "2026-11-18T02:33:04.175572Z",
+  "ElapsedSeconds": 4500.0208206,
+  "Samples": 28110701,
+  "Assertions": 989049067,
+  "FixedOperations": 168664206,
+  "DecimalOperations": 192261005,
+  "Conversions": 84332103,
+  "RawCases": 28110701,
+  "Decimal32Cases": 18839597,
+  "Decimal64Cases": 4707716,
+  "Decimal128Cases": 4563388,
+  "FixedCaseCounts": [
+    16076831,
+    2463069,
+    2318458,
+    2761187,
+    2243306,
+    2247850
+  ],
+  "DecimalCaseCounts": [
+    14589469,
+    4429255,
+    4324985,
+    4766992
+  ],
+  "Runtime": ".NET 11.0.0",
+  "Architecture": "X64",
+  "PointerBits": 64,
+  "ServerGC": false,
+  "AllocatedBytes": 539873850520,
+  "LiveHeapBytes": 5925168,
+  "GC0": 86060,
+  "GC1": 5023,
+  "GC2": 45,
+  "Failure": null
+}

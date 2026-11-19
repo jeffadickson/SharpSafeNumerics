@@ -1,0 +1,17 @@
+<!-- Copyright (c) 2026 Jeff Dickson.
+     SPDX-License-Identifier: MIT -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Local opt-in avoids propagating PublishAot to the netstandard Roslyn generator. -->
+    <PublishAot Condition="'$(SharpUnitsInteropAot)' == 'true'">true</PublishAot>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
+    <ProjectReference Include="../../src/SharpSafeNumerics.Generator/SharpSafeNumerics.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(SharpUnitsProjectPath)" Condition="Exists('$(SharpUnitsProjectPath)')" />
+  </ItemGroup>
+  <Target Name="RequirePinnedSharpUnits" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(SharpUnitsProjectPath)')" Text="Use eng/VerifySharpUnitsIntegration.ps1 or provide a verified SharpUnitsProjectPath." />
+  </Target>
+</Project>

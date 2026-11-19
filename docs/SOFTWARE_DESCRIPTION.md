@@ -37,7 +37,7 @@ A numeric operation has two tracks: `Success(value)` or `Failure(error)`. This i
 - **Important corrected limitation:** the C# 15 compiler-generated union stores case values in `object` and boxes value types. Therefore the strict zero-allocation core uses `NumericResult<T>`, and union support is a separate convenience assembly.
 - Closed hierarchies may express rich policy/error families, but do not belong in the fixed-size core by default.
 - Native AOT compatibility, static code generation and no runtime reflection are goals.
-- Decimal floating-point types are optional future support, not a reason to delay fixed-width integer correctness.
+- The later user-approved RC1 expansion implements optional safe NET11 IEEE decimal wrappers and owned Q32.32 fixed point; see FIXED_AND_DECIMAL.md. Decimal exactness checks may allocate and remain separate from strict integer arithmetic.
 - C# 15 memory safety is preview; the strict core must not depend on it.
 
 ## The proposed public APIs
@@ -45,7 +45,7 @@ A numeric operation has two tracks: `Success(value)` or `Failure(error)`. This i
 ArithmeticError error = SafeInteger.TryAdd(int.MaxValue, 1, out int result);
 NumericResult<byte> bounded = SafeInteger.Add((byte)250, (byte)10, ArithmeticPolicy.Saturate);
 ```
-The original design also proposed generated `QueueDepth.From(42)`, a `TryAdd` returning a range-aware domain type and pattern matching over `Success`/`Overflow`/`OutOfRange` union cases. Generated `TryCreate`/`TryAdd`/`TrySubtract` now provide an initial range-aware implementation; the richer convenience surface remains planned.
+The original design also proposed generated `QueueDepth.From(42)`, a `TryAdd` returning a range-aware domain type and pattern matching over `Success`/`Overflow`/`OutOfRange` union cases. RC-1 implements `TryCreate`/`TryAdd`/`TrySubtract`, policy-aware Add/Subtract, span text, endian codecs, exact conversions and comparisons. The original From/union-domain convenience proposal is distinct from this implemented status-based surface; see GENERATOR_RC1.md.
 
 ## Requirement catalog from initial design
 | ID | Priority | Requirement |

@@ -1,0 +1,5 @@
+#nullable enable
+override SharpSafeNumerics.Analyzers.StrictNumericAnalyzer.Initialize(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext! context) -> void
+override SharpSafeNumerics.Analyzers.StrictNumericAnalyzer.SupportedDiagnostics.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.DiagnosticDescriptor!>
+SharpSafeNumerics.Analyzers.StrictNumericAnalyzer
+SharpSafeNumerics.Analyzers.StrictNumericAnalyzer.StrictNumericAnalyzer() -> void

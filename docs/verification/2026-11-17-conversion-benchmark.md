@@ -1,3 +1,5 @@
+# Conversion benchmark measurements — 2026-11-17
+
 ```
 
 BenchmarkDotNet v0.15.8, Windows 11 (10.0.26300.9974)

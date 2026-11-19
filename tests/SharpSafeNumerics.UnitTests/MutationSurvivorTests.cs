@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 using SharpSafeNumerics;
 using Xunit;
 
@@ -6,6 +9,15 @@ namespace SharpSafeNumerics.UnitTests;
 /// <summary>Behavioral regressions selected from the first conversion-pass mutation report.</summary>
 public sealed class MutationSurvivorTests
 {
+    [Fact]
+    public void Invalid_value_access_supplies_a_diagnostic_message()
+    {
+        var bounded = Assert.Throws<InvalidOperationException>(() => default(Bounded<int, SmallRange>).Value);
+        var result = Assert.Throws<InvalidOperationException>(() => default(NumericResult<int>).Value);
+        Assert.False(string.IsNullOrWhiteSpace(bounded.Message));
+        Assert.False(string.IsNullOrWhiteSpace(result.Message));
+    }
+
     [Theory]
     [InlineData(2, 2, 4)]
     [InlineData(2, -1, -2)]

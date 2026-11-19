@@ -1,4 +1,11 @@
+<!-- Copyright (c) 2026 Jeff Dickson.
+     SPDX-License-Identifier: MIT -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><PublishAot>true</PublishAot></PropertyGroup>
-  <ItemGroup><ProjectReference Include="../../src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" /></ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/SharpSafeNumerics.Core/SharpSafeNumerics.Core.csproj" />
+    <ProjectReference Include="../../src/SharpSafeNumerics.Decimal/SharpSafeNumerics.Decimal.csproj" />
+    <ProjectReference Include="../../src/SharpSafeNumerics.Generator/SharpSafeNumerics.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <Compile Include="../Shared/WideIntegerOracle.cs" Link="Verification/WideIntegerOracle.cs" />
+  </ItemGroup>
 </Project>

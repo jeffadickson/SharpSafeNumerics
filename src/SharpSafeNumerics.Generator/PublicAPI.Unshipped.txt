@@ -1,0 +1,4 @@
+#nullable enable
+SharpSafeNumerics.Generator.BoundedIntegerGenerator
+SharpSafeNumerics.Generator.BoundedIntegerGenerator.BoundedIntegerGenerator() -> void
+SharpSafeNumerics.Generator.BoundedIntegerGenerator.Initialize(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext context) -> void

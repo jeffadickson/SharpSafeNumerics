@@ -1,0 +1,74 @@
+[DOCUMENT]
+TITLE: Strict numeric analyzer requirements
+
+[REQUIREMENT]
+UID: SN-013-NARROWING
+TITLE: SSN1001 unsafe built-in integer narrowing
+STATEMENT: In strict scope, the analyzer shall report an explicit built-in integer conversion, including a tuple element conversion, when its source range or exact source constant is outside its target range at either supported native width. A lifted conversion of known null shall be allowed.
+COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeConversion and NumericSymbols.IsNarrowing. Verification: Narrowing_requires_a_representable_source_range_or_a_status_boundary, All_built_in_integer_pairs_match_exact_range_containment, and Seeded_literal_casts_and_malformed_operands_use_compiler_binding in tests/SharpSafeNumerics.AnalyzerUnitTests/StrictNumericAnalyzerTests.cs.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-013
+
+[REQUIREMENT]
+UID: SN-013-UNCHECKED
+TITLE: SSN1002 unchecked integer arithmetic
+STATEMENT: In strict scope, the analyzer shall report explicit unchecked contexts and nonconstant integer addition, subtraction, multiplication, negation, increment and decrement that bind to an unchecked built-in integer operation.
+COMMENT: Implementation: StrictNumericAnalyzer.Initialize and AnalyzeArithmetic. Verification: Unchecked_operations_and_explicit_overrides_follow_the_compiler_context, Strict_scope_follows_lexical_symbols_including_nested_and_async_bodies, and Alias_only_core_references_resolve_the_real_contracts.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-013
+
+[REQUIREMENT]
+UID: SN-013-RESULT
+TITLE: SSN1003 discarded numeric results
+STATEMENT: The analyzer shall warn for detectable expression-statement and explicit discards of NumericResult and optional DecimalResult and IeeeDecimalResult values, including nullable results, deconstruction and out discards, independent of strict scope. Optional decimal contracts shall be recognized by exact assembly/type symbols, including alias-only references and result-only compilations without Core; unrelated lookalikes shall not match.
+COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeIgnoredResult and NumericSymbols.IsNumericResult. Verification: Discarded_results_are_warnings_in_all_scopes, Unrelated_annotations_and_generic_result_types_do_not_match, and DecimalContractTests IEEE result/alias/optional-reference cases.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-013
+
+[REQUIREMENT]
+UID: SN-013-THROW
+TITLE: SSN1004 statically known Throw policy
+STATEMENT: In strict scope, the analyzer shall report compile-time ArithmeticPolicy.Throw values, including aliases and omitted nullable or nonnullable arguments with that default, and calls to generated arithmetic that declares Throw.
+COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeStrict and AnalyzeInvocation, NumericSymbols.IsThrowConstant and HasThrowOverflowPolicy. Verification: Throw_policy_is_detected_when_the_bound_value_is_known and Generated_contracts_survive_assembly_boundaries.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-013
+
+[REQUIREMENT]
+UID: SN-013-POLICY-CONVERSION
+TITLE: SSN1005 raw saturating and truncating numeric conversion
+STATEMENT: In strict scope, the analyzer shall report direct invocations of the generic math CreateSaturating and CreateTruncating contracts.
+COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeInvocation and NumericSymbols.IsRawNumericConversion. Verification: Raw_generic_math_policy_conversion_requires_a_named_numeric_boundary and Generic_math_rule_ignores_a_same_named_contract_from_an_unrelated_interface.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-013
+
+[REQUIREMENT]
+UID: SN-013-BOUNDED-ACCESS
+TITLE: SSN1006 detectable bounded domain bypasses
+STATEMENT: In strict scope, the analyzer shall report raw generated constructors and storage access, generated conversions or accessors that bypass a status-based admission or read, and known raw reinterpretation operations involving an annotated bounded domain, including nullable payloads. Name-only references shall be allowed.
+COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeStrict, AnalyzeConversion and AnalyzeInvocation, NumericSymbols.IsBoundedGeneratedMember and IsBoundedReinterpretation. Verification: Generated_domain_can_be_bypassed_only_at_the_diagnosed_use_site, Raw_reinterpretation_matches_bound_intrinsics_and_a_bounded_payload, and Generated_contracts_survive_assembly_boundaries.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-013
+
+[REQUIREMENT]
+UID: SN-013-ALLOCATION
+TITLE: SSN1007 evident managed allocation sites
+STATEMENT: In strict scope, the analyzer shall warn at documented detectable managed allocation sites, including reference and array creation, boxing, materialized interpolated strings and capturing lambdas. Captures through statically resolved local functions shall be included. Known SafeDecimal arithmetic and conversion helpers shall warn because exactness checking may allocate; TryNegate shall be excluded from that known-helper rule because it does not execute those paths. Authentic IeeeDecimal generic helper calls shall warn except Copy, IsSignMinus and Radix, whose implementations avoid allocating codecs and interval arithmetic. IEEE Negate, Abs and CopySign shall warn because they use the allocating representation codec. Optional-assembly alias references shall retain these diagnostics; unrelated lookalike types shall not match.
+COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeStrict, AnalyzeConversion, IsHandlerContent and CapturesState, NumericSymbols.IsBoxing and IsAllocatingDecimalHelper. Verification: Evident_allocations_are_warnings_without_flagging_value_construction and DecimalContractTests IEEE allocation/exemption/authentic-identity cases.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-013
+
+[REQUIREMENT]
+UID: SN-013-DEFAULT
+TITLE: SSN1008 invalid bounded defaults
+STATEMENT: In strict scope, the analyzer shall reject explicit default construction of bounded domains configured invalid and permit default construction of bounded domains configured ZeroValid.
+COMMENT: Implementation: StrictNumericAnalyzer.AnalyzeDefault and NumericSymbols.IsZeroValid. Verification: Invalid_defaults_and_zero_valid_defaults_follow_the_domain_contract and Generated_contracts_survive_assembly_boundaries.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-013

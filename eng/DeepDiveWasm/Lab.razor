@@ -1,0 +1,58 @@
+@* Copyright (c) 2026 Jeff Dickson.
+   SPDX-License-Identifier: MIT *@
+
+@namespace DeepDiveWasm
+@using System.Numerics
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using SharpSafeNumerics
+@inject IJSRuntime JS
+
+<h1>IEEE decimal C# lab</h1>
+<p>Edit the operands and rounding mode, then run Decimal64 division in .NET WebAssembly.</p>
+<div id="case-editor" aria-label="Decimal inputs"></div>
+<label for="case-input">Inputs</label>
+<textarea id="case-input" @bind="input" @bind:event="oninput"></textarea>
+<button @onclick="Run">Run C#</button>
+<pre role="status">@result</pre>
+<details><summary>C# executed by the lab</summary><pre><code>var division = IeeeDecimal&lt;Decimal64&gt;.Divide(a, b, new(rounding));</code></pre></details>
+
+@code {
+    private string input = "1\n3\nTowardPositive";
+    private string result = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try { await JS.InvokeVoidAsync("decimalLab.setup", input); }
+        catch (JSException) { /* The native input remains available if the editor fails. */ }
+    }
+
+    private async Task Run()
+    {
+        string source;
+        try { source = await JS.InvokeAsync<string>("decimalLab.read"); }
+        catch (JSException) { source = input; }
+        var lines = source.Replace("\r", "").Split('\n');
+        if (lines.Length != 3 || !Enum.TryParse<IeeeDecimalRounding>(lines[2], out var rounding) ||
+            !Enum.IsDefined(rounding) || lines[0].Length > 128 || lines[1].Length > 128)
+        {
+            result = "Enter two decimal operands followed by a rounding mode.";
+            return;
+        }
+
+        var left = IeeeDecimal<Decimal64>.Parse(lines[0]);
+        var right = IeeeDecimal<Decimal64>.Parse(lines[1]);
+        if (!left.TryGetValue(out var a) || !right.TryGetValue(out var b))
+        {
+            result = "Invalid decimal operand.";
+            return;
+        }
+
+        var division = IeeeDecimal<Decimal64>.Divide(a, b, new(rounding));
+        result = division.TryGetValue(out var quotient)
+            ? $"{quotient} | division flags: {division.Flags} | input flags: {left.Flags | right.Flags}"
+            : $"Division failed: {division.Error}";
+    }
+}

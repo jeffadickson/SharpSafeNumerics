@@ -1,0 +1,18 @@
+[
+  {
+    "path": "src/SharpSafeNumerics.Analyzers/NumericSymbols.cs",
+    "sha256": "B7ADCB06A9FCA8B1705289468325734C2B04479618485B4F089938055DED8E09"
+  },
+  {
+    "path": "src/SharpSafeNumerics.Analyzers/StrictNumericAnalyzer.cs",
+    "sha256": "D9CA5178F22C3918130B8838D51F26BAD2388B20C9B2090360EEA3A650A82767"
+  },
+  {
+    "path": "tests/SharpSafeNumerics.AnalyzerUnitTests/DecimalContractTests.cs",
+    "sha256": "4302B0908A3BEF1CD0680F8A7CAB36860FF9393BBC9181CCD1077BA0DD046470"
+  },
+  {
+    "path": "eng/VerifyPackages.ps1",
+    "sha256": "4E9721D47FF98CAC131F321DB8E2F3D80EB1B348E079D31AA0611B6B054C0656"
+  }
+]

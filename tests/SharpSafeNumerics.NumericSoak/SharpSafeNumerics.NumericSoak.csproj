@@ -1,0 +1,10 @@
+<!-- Copyright (c) 2026 Jeff Dickson.
+     SPDX-License-Identifier: MIT -->
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><OutputType>Exe</OutputType><IsPackable>false</IsPackable></PropertyGroup>
+ <ItemGroup>
+  <PackageReference Include="CsCheck" />
+  <PackageReference Include="PeterO.Numbers" />
+  <ProjectReference Include="../../src/SharpSafeNumerics.Decimal/SharpSafeNumerics.Decimal.csproj" />
+ </ItemGroup>
+</Project>

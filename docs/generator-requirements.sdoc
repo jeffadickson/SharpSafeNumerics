@@ -1,0 +1,132 @@
+[DOCUMENT]
+TITLE: Generated bounded integer requirements
+
+[REQUIREMENT]
+UID: SN-011-GEN-DECLARE
+TITLE: Validate generated domain declarations
+STATEMENT: >>>
+The generator shall emit a bounded domain only for a supported top-level partial struct,
+a built-in integer storage type, an ordered decimal interval representable in that storage,
+and valid annotation options. Invalid declarations and generated member name collisions
+shall produce source diagnostics. Native bounds shall fit every architecture permitted
+by the compilation platform and native storage identity shall survive application aliases.
+<<<
+COMMENT: >>>
+Implementation: src/SharpSafeNumerics.Generator/BoundedIntegerGenerator.cs, CreateModel,
+GetStorage, Literal and HintName. Verification: GeneratorCompilationTests diagnostics,
+platform-specific extrema, XML documentation and namespace isolation.
+Evidence: docs/GENERATOR_RC1.md.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-011
+
+[REQUIREMENT]
+UID: SN-011-GEN-VALUE
+TITLE: Domain validity and value semantics
+STATEMENT: >>>
+Generated domains shall distinguish an invalid default from admitted values unless ZeroValid
+is declared with an interval containing zero. Instances shall expose safe extraction,
+typed equality, hashing and total ordering, with invalid defaults ordered before valid
+values. Generated declarations and public members shall include XML documentation and
+the resulting type shall have a debugger display.
+Extraction shall read receiver validity and value before publishing the output.
+<<<
+COMMENT: >>>
+Implementation: NumericAnnotations.cs and BoundedIntegerGenerator.Rendering.cs, Render.
+Verification: GeneratedDomainTests invalid and zero-valid defaults, equality and comparisons,
+GeneratedContractTests cross-fixture checks and GeneratorCompilationTests generated documentation
+and debugger display metadata.
+The tests also verify that admission preserves unrelated user static fields.
+Evidence: docs/GENERATOR_RC1.md.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-011
+
+[REQUIREMENT]
+UID: SN-011-GEN-ARITH
+TITLE: Generated arithmetic policies and rejecting Try paths
+STATEMENT: >>>
+Generated TryAdd and TrySubtract shall report invalid operands, primitive overflow
+or underflow and out-of-domain results with a status and default output.
+They shall produce the same status and output when the receiver and out argument
+refer to the same variable.
+Generated Add and Subtract shall consume the annotated policy. Reject shall preserve
+failure statuses, Saturate shall clamp to the inclusive domain, Wrap shall apply
+primitive modulo arithmetic and then require domain membership, and Throw shall raise
+OverflowException when the primitive result overflows or falls outside the domain.
+An invalid instance shall yield Uninitialized for every policy.
+<<<
+COMMENT: >>>
+Implementation: BoundedIntegerGenerator.Rendering.cs, Render and RenderArithmeticAdmission.
+Verification: GeneratedDomainTests arithmetic tests for all policies and invalid instances,
+and GeneratedContractTests independent arithmetic oracle for primitive and domain boundaries.
+Evidence: docs/GENERATOR_RC1.md.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-011
+
+[REQUIREMENT]
+UID: SN-011-GEN-CONVERT
+TITLE: Exact generated conversions
+STATEMENT: >>>
+Generated conversion methods shall preserve exactly representable built-in integer values,
+enforce domain admission on entry, and clear outputs on rejection. A cast between the
+domain and its storage shall be explicit and enforce admission or instance validity.
+Conversion shall read the receiver before publishing the output.
+<<<
+COMMENT: >>>
+Implementation: BoundedIntegerGenerator.Rendering.cs, Render, delegating to SafeInteger.TryConvert.
+Verification: GeneratedDomainTests exact conversion, sign, storage and domain range, and cast tests.
+Evidence: docs/GENERATOR_RC1.md.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-011
+
+[REQUIREMENT]
+UID: SN-011-GEN-TEXT
+TITLE: Invariant span text and unit metadata
+STATEMENT: >>>
+Generated span text methods shall use the configured invariant decimal or hexadecimal
+convention, reject malformed and out-of-domain input, and report no characters written
+on insufficient capacity or invalid value. The formatting destination and output count
+shall occupy distinct storage. A parser shall consume input before assigning its output
+value, supporting overlapping storage. Optional unit metadata shall be available
+without runtime reflection and shall leave values, parsing and formatting unchanged.
+<<<
+COMMENT: >>>
+Implementation: NumericAnnotations.cs and BoundedIntegerGenerator.Rendering.cs, Render.
+Verification: GeneratedDomainTests culture, unit metadata, hexadecimal exhaustive test,
+malformed-input cases, seeded suffix fuzzing and invariant round trips.
+Evidence: docs/GENERATOR_RC1.md.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-011
+
+[REQUIREMENT]
+UID: SN-011-GEN-BINARY
+TITLE: Fixed-width binary codecs
+STATEMENT: >>>
+Generated span codecs shall read an exact-width little- or big-endian integer and require
+domain membership before admission. A read shall consume input before assigning its
+output value, supporting overlapping storage. A write shall preserve the configured
+signedness and width and touch only the prefix it reports written. The write destination
+and count shall occupy distinct storage. With that precondition, invalid values or
+insufficient write capacity shall fail without changing the destination. A binary width
+that cannot represent the complete interval shall be diagnosed at compilation.
+<<<
+COMMENT: >>>
+Implementation: BoundedIntegerGenerator.cs, CreateModel and Fits, and
+BoundedIntegerGenerator.Rendering.cs, RenderBinaryCodec.
+Verification: GeneratorCompilationTests invalid widths and GeneratedDomainTests independent
+BigInteger byte oracles, signed and unsigned extrema, and fixed-width failure cases in
+GeneratedContractTests.
+Evidence: docs/GENERATOR_RC1.md.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-011

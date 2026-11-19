@@ -1,7 +1,11 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using SharpSafeNumerics;
 
+if (args is ["--avx512-sweep"]) { Environment.ExitCode = Avx512Sweep.Run(); return; }
 BenchmarkSwitcher.FromAssembly(typeof(AddBenchmarks).Assembly).Run(args);
 
 [MemoryDiagnoser]

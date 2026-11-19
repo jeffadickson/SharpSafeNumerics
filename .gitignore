@@ -4,3 +4,5 @@ obj/
 TestResults/
 artifacts/
 *.user
+eng/qualification-preprocessor/target/
+eng/qualification-preprocessor/mutants.out/

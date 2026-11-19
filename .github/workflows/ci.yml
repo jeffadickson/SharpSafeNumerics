@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jeff Dickson.
+# SPDX-License-Identifier: MIT
+
 name: Core CI
 on:
   push:
@@ -12,18 +15,81 @@ jobs:
           dotnet-version: '11.0.x'
       - name: Exhaustive deterministic harness
         run: dotnet run --project tests/SharpSafeNumerics.Tests -c Release
+      - name: Verify interactive guide package fixtures
+        run: dotnet run --project eng/DeepDiveEvidence -c Release -- --verify docs/interactive-deep-dive.html
       - name: Unit tests
         run: dotnet test tests/SharpSafeNumerics.UnitTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/coverage
+      - name: Generator contract tests
+        run: dotnet test tests/SharpSafeNumerics.GeneratorTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/generator-coverage
+      - name: Analyzer contract tests
+        run: dotnet test tests/SharpSafeNumerics.AnalyzerUnitTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/analyzer-coverage
+      - name: Safe decimal contracts and independent oracle
+        run: dotnet test tests/SharpSafeNumerics.DecimalTests -c Release --collect:"XPlat Code Coverage" --results-directory artifacts/decimal-coverage
+      - name: Replay pinned independent decimal corpus
+        shell: pwsh
+        run: |
+          $run = Join-Path $env:RUNNER_TEMP 'decimal-corpus'
+          ./eng/DecimalConformance/Get-Corpus.ps1 -ArtifactDirectory $run
+          dotnet build eng/DecimalConformance -c Release --artifacts-path artifacts/decimal-conformance-build
+          if ($LASTEXITCODE -ne 0) { throw 'Conformance helper build failed' }
+          $helper = Join-Path $PWD 'artifacts/decimal-conformance-build/bin/DecimalConformance/release/DecimalConformance.dll'
+          dotnet $helper eng/DecimalConformance/malformed.decTest > (Join-Path $run 'negative-control.jsonl') 2> (Join-Path $run 'negative-control-summary.json')
+          if ($LASTEXITCODE -ne 2) { throw 'Malformed conformance inputs were not rejected' }
+          $negative = Get-Content -LiteralPath (Join-Path $run 'negative-control-summary.json') -Raw | ConvertFrom-Json
+          if ($negative.passed -ne 0 -or $negative.malformed -ne 4) { throw 'Malformed input became passing evidence' }
+          dotnet $helper --encoding (Join-Path $run 'corpus') > (Join-Path $run 'dpd-encoding.log')
+          if ($LASTEXITCODE -ne 0) { throw 'DPD encoding corpus replay failed' }
+          foreach ($entry in @(@('dd','decimal64'), @('dq','decimal128'))) {
+            $inputs = @('Add','Subtract','Multiply','Divide','FMA','Quantize') | ForEach-Object { Join-Path $run "corpus/$($entry[0])$_.decTest" }
+            foreach ($inputFile in $inputs) { if (-not (Test-Path -LiteralPath $inputFile -PathType Leaf)) { throw "Corpus input missing: $inputFile" } }
+            dotnet $helper --production $entry[1] @inputs > (Join-Path $run "$($entry[1]).jsonl") 2> (Join-Path $run "$($entry[1])-summary.json")
+            if ($LASTEXITCODE -ne 0) { throw "Decimal corpus replay failed: $($entry[1])" }
+          }
       - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: decimal-corpus-evidence
+          path: |
+            ${{ runner.temp }}/decimal-corpus/*.json
+            ${{ runner.temp }}/decimal-corpus/*.jsonl
+            ${{ runner.temp }}/decimal-corpus/dpd-encoding.log
+      - name: Verify public API drift controls
+        shell: pwsh
+        run: ./eng/VerifyPublicApi.ps1 -ArtifactDirectory artifacts/api-contract -ConstraintTestAssembly tests/SharpSafeNumerics.UnitTests/bin/Release/net11.0/SharpSafeNumerics.UnitTests.dll
+      - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: core-coverage
-          path: artifacts/coverage
+          path: |
+            artifacts/coverage
+            artifacts/generator-coverage
+            artifacts/analyzer-coverage
+            artifacts/decimal-coverage
+            artifacts/api-contract/*.log
+            artifacts/api-contract/summary.json
       - name: CsCheck and Hedgehog
         run: dotnet run --project tests/SharpSafeNumerics.PropertyTests -c Release
+      - name: Short expanded numeric oracle campaign
+        run: dotnet run --project tests/SharpSafeNumerics.NumericSoak -c Release -- --seconds 5 --seed 731930 --summary artifacts/numeric-soak-summary.json
+      - name: Actual native-width oracle
+        run: dotnet run --project eng/NativeWidthProbe -c Release -- --expected-bits 64
+      - name: Pinned SharpUnits integration sample
+        shell: pwsh
+        run: ./eng/VerifySharpUnitsIntegration.ps1 -ArtifactDirectory (Join-Path $env:RUNNER_TEMP 'SharpSafeNumerics-SharpUnits')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sharpunits-integration-evidence
+          path: |
+            ${{ runner.temp }}/SharpSafeNumerics-SharpUnits/*.log
+            ${{ runner.temp }}/SharpSafeNumerics-SharpUnits/summary.json
+          if-no-files-found: ignore
       - name: Generated annotated domain
         run: dotnet run --project examples/GeneratedQueueDepth -c Release
       - name: Static range-policy example
         run: dotnet run --project examples/RiscueQueueDepth -c Release
+      - name: Fixed-point and safe decimal example
+        run: dotnet run --project examples/FixedAndDecimal -c Release
       - name: Analyzer self-test
         run: dotnet run --project tests/SharpSafeNumerics.AnalyzerTests -c Release
       - name: Compile C# 15 union adapter
@@ -32,6 +98,18 @@ jobs:
         run: |
           dotnet publish tests/SharpSafeNumerics.AotSmoke -c Release -r linux-x64 -o artifacts/aot
           ./artifacts/aot/SharpSafeNumerics.AotSmoke
+      - name: Pack RC libraries and compiler extensions
+        run: dotnet pack -c Release -o artifacts/packages
+      - name: Verify reproducible package archives
+        shell: pwsh
+        run: ./eng/VerifyPackageReproducibility.ps1 -ArtifactDirectory artifacts/reproducibility -RebuildBetweenPasses
+      - name: Verify package consumer and packaged analyzer
+        shell: pwsh
+        run: ./eng/VerifyPackages.ps1 -PackageDirectory (Join-Path $PWD 'artifacts/packages') -WorkDirectory (Join-Path $PWD 'artifacts/package-consumer')
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rc-packages
+          path: artifacts/packages
 
   formal:
     runs-on: ubuntu-latest
@@ -47,10 +125,30 @@ jobs:
           sudo apt-get install -y z3
       - name: Verify Dafny arithmetic model
         run: dotnet tool run dafny -- verify formal/SafeInteger.dfy --solver-path $(which z3)
+      - name: Verify fixed-point rounding model
+        run: dotnet tool run dafny -- verify formal/FixedPoint.dfy --solver-path $(which z3)
+      - name: Verify and execute decimal coefficient model
+        shell: pwsh
+        run: ./eng/VerifyDecimalRoundingModel.ps1 -ArtifactDirectory (Join-Path $env:RUNNER_TEMP 'decimal-rounding-model') -SolverPath (Get-Command z3).Source
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
       - name: Validate StrictDoc requirements
         run: |
           python -m pip install --no-compile strictdoc==0.30.4
-          strictdoc export docs/requirements.sdoc --output-dir artifacts/requirements
+          strictdoc export docs/requirements.sdoc docs/generator-requirements.sdoc docs/analyzer-requirements.sdoc --output-dir artifacts/requirements
+
+  browser-lab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+      - run: dotnet workload restore eng/DeepDiveWasm/DeepDiveWasm.csproj
+      - run: dotnet publish eng/DeepDiveWasm -c Release -o artifacts/browser-lab
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deep-dive-browser-lab
+          path: artifacts/browser-lab/wwwroot
+          if-no-files-found: error

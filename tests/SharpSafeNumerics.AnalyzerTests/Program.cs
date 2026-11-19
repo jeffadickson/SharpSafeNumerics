@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Jeff Dickson.
+// SPDX-License-Identifier: MIT
+
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,7 +14,7 @@ class Demo
     [StrictNumeric]
     static void Strict()
     {
-        int x = unchecked(int.MaxValue + 1);
+        _ = unchecked(int.MaxValue + 1);
         _ = SafeInteger.Add(1, 2, ArithmeticPolicy.Throw);
         SafeInteger.Add(1, 2);
     }
@@ -26,6 +29,11 @@ var refs = ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")!)
 var tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.CSharp15));
 var compilation = CSharpCompilation.Create("AnalyzerProbe", [tree], refs,
     new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+var compilerIssues = compilation.GetDiagnostics().Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
+if (compilerIssues.Length != 0)
+    throw new InvalidOperationException("Analyzer probe does not compile:" + Environment.NewLine +
+        string.Join(Environment.NewLine, compilerIssues.Select(d => d.ToString())));
 
 var diagnostics = await compilation
     .WithAnalyzers(ImmutableArray.Create<DiagnosticAnalyzer>(new StrictNumericAnalyzer()))

@@ -1,0 +1,31 @@
+<!-- Copyright (c) 2026 Jeff Dickson.
+     SPDX-License-Identifier: MIT -->
+<Project>
+  <!-- Runtime libraries retain portable symbols; compiler extensions carry embedded
+       symbols and are loaded by Roslyn rather than exposed as runtime libraries. -->
+  <PropertyGroup Condition="'$(IsPackable)' == 'true' and '$(IsRoslynComponent)' != 'true'">
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EnablePackageValidation>true</EnablePackageValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsRoslynComponent)' == 'true'">
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <DebugType>embedded</DebugType>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <!-- Packing with NoBuild consumes an existing compiler extension just like the
+         runtime packages; invoking Build in that mode is rejected by the SDK. -->
+    <CompilerExtensionPackageBuildTarget Condition="'$(NoBuild)' != 'true'">Build</CompilerExtensionPackageBuildTarget>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <!-- Signature tracking is development-only and must not flow to consumers. -->
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/" />
+    <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="/" />
+  </ItemGroup>
+  <Target Name="IncludeCompilerExtensionInPackage" BeforeTargets="_GetPackageFiles"
+          DependsOnTargets="$(CompilerExtensionPackageBuildTarget)" Condition="'$(IsRoslynComponent)' == 'true'">
+    <ItemGroup>
+      <None Include="$(TargetPath)" Pack="true" PackagePath="analyzers/dotnet/cs/" />
+    </ItemGroup>
+  </Target>
+</Project>

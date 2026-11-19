@@ -1,0 +1,30 @@
+[DOCUMENT]
+TITLE: Week qualification orchestration
+
+[REQUIREMENT]
+UID: WQ-001
+TITLE: Immutable daily source execution
+STATEMENT: >>>
+The runner shall pin each child to an exact source revision, refresh only between chunks, gate a new daily checkout before activation, and retain/report the last valid revision when refresh fails.
+<<<
+
+[REQUIREMENT]
+UID: WQ-002
+TITLE: Honest outcomes and deadline recovery
+STATEMENT: >>>
+The runner shall retain inconclusive and interrupted work, fail on counterexamples or invalid contracts, checkpoint the original deadline and next seed, and never label daily Running reports as final Passed.
+<<<
+
+[REQUIREMENT]
+UID: WQ-003
+TITLE: Results-only verified submission
+STATEMENT: >>>
+The runner shall commit only bounded results on a unique qualification branch, verify remote commit and content hashes, and retain failed or unsubmitted uploads for retry. Numerical counters shall not be combined across source revisions.
+<<<
+
+[REQUIREMENT]
+UID: WQ-004
+TITLE: Owned post-submission cleanup
+STATEMENT: >>>
+Unless KeepResults is selected, cleanup shall remove only run-owned files included byte-for-byte in a verified submission. Cleanup shall reject outside, foreign, changed, directory and reparse paths and shall preserve unsubmitted bulk logs and source checkouts.
+<<<

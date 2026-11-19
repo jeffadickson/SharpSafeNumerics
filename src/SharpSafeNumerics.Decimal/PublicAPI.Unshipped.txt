@@ -1,0 +1,247 @@
+#nullable enable
+~override SharpSafeNumerics.IeeeDecimalContext.Equals(object obj) -> bool
+~override SharpSafeNumerics.IeeeDecimalContext.ToString() -> string
+~override SharpSafeNumerics.IeeeDecimalModes.Equals(object obj) -> bool
+~override SharpSafeNumerics.IeeeDecimalModes.ToString() -> string
+~override SharpSafeNumerics.IeeeDecimalState.Equals(object obj) -> bool
+~override SharpSafeNumerics.IeeeDecimalState.ToString() -> string
+~override SharpSafeNumerics.ScaledDecimal<T>.Equals(object obj) -> bool
+~override SharpSafeNumerics.ScaledDecimal<T>.ToString() -> string
+override SharpSafeNumerics.IeeeDecimalContext.GetHashCode() -> int
+override SharpSafeNumerics.IeeeDecimalModes.GetHashCode() -> int
+override SharpSafeNumerics.IeeeDecimalState.GetHashCode() -> int
+override SharpSafeNumerics.ScaledDecimal<T>.GetHashCode() -> int
+SharpSafeNumerics.DecimalResult<T>
+SharpSafeNumerics.DecimalResult<T>.DecimalResult() -> void
+SharpSafeNumerics.DecimalResult<T>.Error.get -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.DecimalResult<T>.IsInexact.get -> bool
+SharpSafeNumerics.DecimalResult<T>.IsSuccess.get -> bool
+SharpSafeNumerics.DecimalResult<T>.TryGetValue(out T value) -> bool
+SharpSafeNumerics.DecimalResult<T>.Value.get -> T
+SharpSafeNumerics.DecimalRounding
+SharpSafeNumerics.DecimalRounding.Exact = 0 -> SharpSafeNumerics.DecimalRounding
+SharpSafeNumerics.DecimalRounding.ToEven = 1 -> SharpSafeNumerics.DecimalRounding
+SharpSafeNumerics.IeeeDecimal<T>
+SharpSafeNumerics.IeeeDecimalContext
+SharpSafeNumerics.IeeeDecimalContext.Deconstruct(out SharpSafeNumerics.IeeeDecimalRounding Rounding, out SharpSafeNumerics.IeeeDecimalFlags Traps) -> void
+SharpSafeNumerics.IeeeDecimalContext.Equals(SharpSafeNumerics.IeeeDecimalContext other) -> bool
+SharpSafeNumerics.IeeeDecimalContext.IeeeDecimalContext() -> void
+SharpSafeNumerics.IeeeDecimalContext.IeeeDecimalContext(SharpSafeNumerics.IeeeDecimalRounding Rounding = SharpSafeNumerics.IeeeDecimalRounding.ToNearestEven, SharpSafeNumerics.IeeeDecimalFlags Traps = SharpSafeNumerics.IeeeDecimalFlags.None) -> void
+SharpSafeNumerics.IeeeDecimalContext.Rounding.get -> SharpSafeNumerics.IeeeDecimalRounding
+SharpSafeNumerics.IeeeDecimalContext.Rounding.init -> void
+SharpSafeNumerics.IeeeDecimalContext.Traps.get -> SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalContext.Traps.init -> void
+SharpSafeNumerics.IeeeDecimalEnvironment
+SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalFlags.DivisionByZero = 2 -> SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalFlags.Inexact = 16 -> SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalFlags.Invalid = 1 -> SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalFlags.None = 0 -> SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalFlags.Overflow = 4 -> SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalFlags.Underflow = 8 -> SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalModes
+SharpSafeNumerics.IeeeDecimalModes.BinaryRounding.get -> SharpSafeNumerics.IeeeDecimalRounding
+SharpSafeNumerics.IeeeDecimalModes.BinaryRounding.init -> void
+SharpSafeNumerics.IeeeDecimalModes.DecimalRounding.get -> SharpSafeNumerics.IeeeDecimalRounding
+SharpSafeNumerics.IeeeDecimalModes.DecimalRounding.init -> void
+SharpSafeNumerics.IeeeDecimalModes.Deconstruct(out SharpSafeNumerics.IeeeDecimalRounding DecimalRounding, out SharpSafeNumerics.IeeeDecimalRounding BinaryRounding, out SharpSafeNumerics.IeeeDecimalFlags Traps) -> void
+SharpSafeNumerics.IeeeDecimalModes.Equals(SharpSafeNumerics.IeeeDecimalModes other) -> bool
+SharpSafeNumerics.IeeeDecimalModes.IeeeDecimalModes() -> void
+SharpSafeNumerics.IeeeDecimalModes.IeeeDecimalModes(SharpSafeNumerics.IeeeDecimalRounding DecimalRounding = SharpSafeNumerics.IeeeDecimalRounding.ToNearestEven, SharpSafeNumerics.IeeeDecimalRounding BinaryRounding = SharpSafeNumerics.IeeeDecimalRounding.ToNearestEven, SharpSafeNumerics.IeeeDecimalFlags Traps = SharpSafeNumerics.IeeeDecimalFlags.None) -> void
+SharpSafeNumerics.IeeeDecimalModes.Traps.get -> SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalModes.Traps.init -> void
+SharpSafeNumerics.IeeeDecimalResult<T>
+SharpSafeNumerics.IeeeDecimalResult<T>.Error.get -> SharpSafeNumerics.ArithmeticError
+SharpSafeNumerics.IeeeDecimalResult<T>.Flags.get -> SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalResult<T>.IeeeDecimalResult() -> void
+SharpSafeNumerics.IeeeDecimalResult<T>.IsSuccess.get -> bool
+SharpSafeNumerics.IeeeDecimalResult<T>.TryGetValue(out T value) -> bool
+SharpSafeNumerics.IeeeDecimalResult<T>.Value.get -> T
+SharpSafeNumerics.IeeeDecimalRounding
+SharpSafeNumerics.IeeeDecimalRounding.ToNearestAway = 1 -> SharpSafeNumerics.IeeeDecimalRounding
+SharpSafeNumerics.IeeeDecimalRounding.ToNearestEven = 0 -> SharpSafeNumerics.IeeeDecimalRounding
+SharpSafeNumerics.IeeeDecimalRounding.TowardNegative = 3 -> SharpSafeNumerics.IeeeDecimalRounding
+SharpSafeNumerics.IeeeDecimalRounding.TowardPositive = 4 -> SharpSafeNumerics.IeeeDecimalRounding
+SharpSafeNumerics.IeeeDecimalRounding.TowardZero = 2 -> SharpSafeNumerics.IeeeDecimalRounding
+SharpSafeNumerics.IeeeDecimalState
+SharpSafeNumerics.IeeeDecimalState.BinaryContext.get -> SharpSafeNumerics.IeeeDecimalContext
+SharpSafeNumerics.IeeeDecimalState.DecimalContext.get -> SharpSafeNumerics.IeeeDecimalContext
+SharpSafeNumerics.IeeeDecimalState.Deconstruct(out SharpSafeNumerics.IeeeDecimalModes Modes, out SharpSafeNumerics.IeeeDecimalFlags Flags) -> void
+SharpSafeNumerics.IeeeDecimalState.Equals(SharpSafeNumerics.IeeeDecimalState other) -> bool
+SharpSafeNumerics.IeeeDecimalState.Flags.get -> SharpSafeNumerics.IeeeDecimalFlags
+SharpSafeNumerics.IeeeDecimalState.Flags.init -> void
+SharpSafeNumerics.IeeeDecimalState.IeeeDecimalState() -> void
+SharpSafeNumerics.IeeeDecimalState.IeeeDecimalState(SharpSafeNumerics.IeeeDecimalModes Modes = default(SharpSafeNumerics.IeeeDecimalModes), SharpSafeNumerics.IeeeDecimalFlags Flags = SharpSafeNumerics.IeeeDecimalFlags.None) -> void
+SharpSafeNumerics.IeeeDecimalState.Modes.get -> SharpSafeNumerics.IeeeDecimalModes
+SharpSafeNumerics.IeeeDecimalState.Modes.init -> void
+SharpSafeNumerics.SafeDecimal
+SharpSafeNumerics.ScaledDecimal<T>
+SharpSafeNumerics.ScaledDecimal<T>.Deconstruct(out T Fraction, out System.Numerics.BigInteger Scale) -> void
+SharpSafeNumerics.ScaledDecimal<T>.Equals(SharpSafeNumerics.ScaledDecimal<T> other) -> bool
+SharpSafeNumerics.ScaledDecimal<T>.Fraction.get -> T
+SharpSafeNumerics.ScaledDecimal<T>.Fraction.init -> void
+SharpSafeNumerics.ScaledDecimal<T>.Scale.get -> System.Numerics.BigInteger
+SharpSafeNumerics.ScaledDecimal<T>.Scale.init -> void
+SharpSafeNumerics.ScaledDecimal<T>.ScaledDecimal() -> void
+SharpSafeNumerics.ScaledDecimal<T>.ScaledDecimal(T Fraction, System.Numerics.BigInteger Scale) -> void
+static SharpSafeNumerics.IeeeDecimal<T>.Abs(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.AbsSum(System.ReadOnlySpan<T> values, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Acos(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Acosh(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.AcosPi(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Add(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Asin(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Asinh(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.AsinPi(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Atan(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Atan2(T y, T x, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Atan2Pi(T y, T x, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Atanh(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.AtanPi(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Cbrt(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Class(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<int>
+static SharpSafeNumerics.IeeeDecimal<T>.CompareQuiet(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<int>
+static SharpSafeNumerics.IeeeDecimal<T>.CompareSignaling(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<int>
+static SharpSafeNumerics.IeeeDecimal<T>.Compound(T value, int n, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Convert<TSource>(TSource value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Copy(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.CopySign(T value, T sign, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Cos(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Cosh(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.CosPi(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.CreateNaN(System.Numerics.BigInteger payload, bool signaling = false, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.DecodeBinary(System.Numerics.BigInteger encoding, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.DecodeDecimal(System.Numerics.BigInteger encoding, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Divide(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Dot(System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.EncodeBinary(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<System.Numerics.BigInteger>
+static SharpSafeNumerics.IeeeDecimal<T>.EncodeDecimal(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<System.Numerics.BigInteger>
+static SharpSafeNumerics.IeeeDecimal<T>.Exp(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Exp10(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Exp10M1(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Exp2(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Exp2M1(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.ExpM1(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Format(T value, System.Span<char> destination, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<int>
+static SharpSafeNumerics.IeeeDecimal<T>.FromBinary<TBinary>(TBinary value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.FromInteger<TInteger>(TInteger value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.FusedMultiplyAdd(T left, T right, T addend, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.GetPayload(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<System.Numerics.BigInteger>
+static SharpSafeNumerics.IeeeDecimal<T>.GetQuantum(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Hypot(T x, T y, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.IsCanonical(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.IsFinite(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.IsInfinite(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.IsNaN(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.IsNormal(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.IsSignaling(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.IsSignMinus(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.IsSubnormal(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.IsZero(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.Log(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Log10(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Log10P1(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Log2(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Log2P1(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.LogB(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.LogP1(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Maximum(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.MaximumMagnitude(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.MaximumMagnitudeNumber(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.MaximumNumber(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Minimum(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.MinimumMagnitude(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.MinimumMagnitudeNumber(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.MinimumNumber(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Multiply(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Negate(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.NextDown(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.NextUp(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Parse(System.ReadOnlySpan<char> text, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Pow(T value, T power, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.PowN(T value, int n, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.PowR(T value, T power, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Quantize(T value, T quantum, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Quantum(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<int>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietEqual(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietGreater(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietGreaterEqual(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietGreaterUnordered(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietLess(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietLessEqual(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietLessUnordered(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietNotEqual(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietNotGreater(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietNotLess(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietOrdered(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.QuietUnordered(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.Radix(SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<int>
+static SharpSafeNumerics.IeeeDecimal<T>.ReciprocalSqrt(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Remainder(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.RootN(T value, int n, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.RoundToIntegral(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.RoundToIntegralExact(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SameQuantum(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.ScaleB(T value, int scale, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.ScaledProd(System.ReadOnlySpan<T> values, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.ScaledDecimal<T>>
+static SharpSafeNumerics.IeeeDecimal<T>.ScaledProdDiff(System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.ScaledDecimal<T>>
+static SharpSafeNumerics.IeeeDecimal<T>.ScaledProdSum(System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.ScaledDecimal<T>>
+static SharpSafeNumerics.IeeeDecimal<T>.SetPayload(T payload, SharpSafeNumerics.IeeeDecimalContext context) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SetPayload(T payload) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SetPayload<TInteger>(TInteger payload, SharpSafeNumerics.IeeeDecimalContext context) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SetPayload<TInteger>(TInteger payload) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SetPayloadSignaling(T payload, SharpSafeNumerics.IeeeDecimalContext context) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SetPayloadSignaling(T payload) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SetPayloadSignaling<TInteger>(TInteger payload, SharpSafeNumerics.IeeeDecimalContext context) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SetPayloadSignaling<TInteger>(TInteger payload) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SignalingEqual(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.SignalingGreater(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.SignalingGreaterEqual(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.SignalingGreaterUnordered(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.SignalingLess(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.SignalingLessEqual(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.SignalingLessUnordered(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.SignalingNotEqual(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.SignalingNotGreater(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.SignalingNotLess(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.Sin(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Sinh(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SinPi(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Sqrt(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Subtract(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Sum(System.ReadOnlySpan<T> values, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.SumSquare(System.ReadOnlySpan<T> values, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Tan(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.Tanh(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.TanPi(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<T>
+static SharpSafeNumerics.IeeeDecimal<T>.ToBinary<TBinary>(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<TBinary>
+static SharpSafeNumerics.IeeeDecimal<T>.ToInteger<TInteger>(T value, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext), bool exact = true) -> SharpSafeNumerics.IeeeDecimalResult<TInteger>
+static SharpSafeNumerics.IeeeDecimal<T>.TotalOrder(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimal<T>.TotalOrderMag(T left, T right, SharpSafeNumerics.IeeeDecimalContext context = default(SharpSafeNumerics.IeeeDecimalContext)) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimalContext.operator !=(SharpSafeNumerics.IeeeDecimalContext left, SharpSafeNumerics.IeeeDecimalContext right) -> bool
+static SharpSafeNumerics.IeeeDecimalContext.operator ==(SharpSafeNumerics.IeeeDecimalContext left, SharpSafeNumerics.IeeeDecimalContext right) -> bool
+static SharpSafeNumerics.IeeeDecimalEnvironment.DefaultModes(SharpSafeNumerics.IeeeDecimalState state) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalState>
+static SharpSafeNumerics.IeeeDecimalEnvironment.GetBinaryRoundingDirection(SharpSafeNumerics.IeeeDecimalState state) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalRounding>
+static SharpSafeNumerics.IeeeDecimalEnvironment.GetDecimalRoundingDirection(SharpSafeNumerics.IeeeDecimalState state) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalRounding>
+static SharpSafeNumerics.IeeeDecimalEnvironment.LowerFlags(SharpSafeNumerics.IeeeDecimalState state, SharpSafeNumerics.IeeeDecimalFlags flags) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalState>
+static SharpSafeNumerics.IeeeDecimalEnvironment.RaiseFlags(SharpSafeNumerics.IeeeDecimalState state, SharpSafeNumerics.IeeeDecimalFlags flags) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalState>
+static SharpSafeNumerics.IeeeDecimalEnvironment.RestoreFlags(SharpSafeNumerics.IeeeDecimalState state, SharpSafeNumerics.IeeeDecimalFlags saved) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalState>
+static SharpSafeNumerics.IeeeDecimalEnvironment.RestoreModes(SharpSafeNumerics.IeeeDecimalState state, SharpSafeNumerics.IeeeDecimalModes saved) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalState>
+static SharpSafeNumerics.IeeeDecimalEnvironment.SaveFlags(SharpSafeNumerics.IeeeDecimalState state) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalFlags>
+static SharpSafeNumerics.IeeeDecimalEnvironment.SaveModes(SharpSafeNumerics.IeeeDecimalState state) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalModes>
+static SharpSafeNumerics.IeeeDecimalEnvironment.SetBinaryRoundingDirection(SharpSafeNumerics.IeeeDecimalState state, SharpSafeNumerics.IeeeDecimalRounding rounding) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalState>
+static SharpSafeNumerics.IeeeDecimalEnvironment.SetDecimalRoundingDirection(SharpSafeNumerics.IeeeDecimalState state, SharpSafeNumerics.IeeeDecimalRounding rounding) -> SharpSafeNumerics.IeeeDecimalResult<SharpSafeNumerics.IeeeDecimalState>
+static SharpSafeNumerics.IeeeDecimalEnvironment.TestFlags(SharpSafeNumerics.IeeeDecimalState state, SharpSafeNumerics.IeeeDecimalFlags flags) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimalEnvironment.TestSavedFlags(SharpSafeNumerics.IeeeDecimalFlags saved, SharpSafeNumerics.IeeeDecimalFlags flags) -> SharpSafeNumerics.IeeeDecimalResult<bool>
+static SharpSafeNumerics.IeeeDecimalModes.operator !=(SharpSafeNumerics.IeeeDecimalModes left, SharpSafeNumerics.IeeeDecimalModes right) -> bool
+static SharpSafeNumerics.IeeeDecimalModes.operator ==(SharpSafeNumerics.IeeeDecimalModes left, SharpSafeNumerics.IeeeDecimalModes right) -> bool
+static SharpSafeNumerics.IeeeDecimalState.operator !=(SharpSafeNumerics.IeeeDecimalState left, SharpSafeNumerics.IeeeDecimalState right) -> bool
+static SharpSafeNumerics.IeeeDecimalState.operator ==(SharpSafeNumerics.IeeeDecimalState left, SharpSafeNumerics.IeeeDecimalState right) -> bool
+static SharpSafeNumerics.SafeDecimal.TryAdd<T>(T left, T right, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<T>
+static SharpSafeNumerics.SafeDecimal.TryConvert<TSource, TDestination>(TSource value, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<TDestination>
+static SharpSafeNumerics.SafeDecimal.TryDivide<T>(T left, T right, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<T>
+static SharpSafeNumerics.SafeDecimal.TryMultiply<T>(T left, T right, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<T>
+static SharpSafeNumerics.SafeDecimal.TryNegate<T>(T value, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<T>
+static SharpSafeNumerics.SafeDecimal.TrySubtract<T>(T left, T right, SharpSafeNumerics.DecimalRounding rounding = SharpSafeNumerics.DecimalRounding.Exact) -> SharpSafeNumerics.DecimalResult<T>
+static SharpSafeNumerics.ScaledDecimal<T>.operator !=(SharpSafeNumerics.ScaledDecimal<T> left, SharpSafeNumerics.ScaledDecimal<T> right) -> bool
+static SharpSafeNumerics.ScaledDecimal<T>.operator ==(SharpSafeNumerics.ScaledDecimal<T> left, SharpSafeNumerics.ScaledDecimal<T> right) -> bool

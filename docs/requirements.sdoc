@@ -1,11 +1,84 @@
 [DOCUMENT]
-TITLE: SharpSafeNumerics strict conversion requirements
+TITLE: SharpSafeNumerics requirements
 
 [REQUIREMENT]
 UID: SN-003
 TITLE: Expected arithmetic failures
 STATEMENT: Expected arithmetic failures return statuses, not exceptions.
 COMMENT: Parent baseline from PRODUCT_REQUIREMENTS.md; whole-library closure is not claimed.
+
+[REQUIREMENT]
+UID: SN-007
+TITLE: Explicit arithmetic policies
+STATEMENT: Reject, Saturate, Wrap and Throw shall be explicit arithmetic policies.
+
+[REQUIREMENT]
+UID: SN-007-VALIDATION
+TITLE: Undefined policy rejection
+STATEMENT: All undefined ArithmeticPolicy byte values shall throw ArgumentOutOfRangeException for policy before arithmetic, irrespective of whether operands overflow.
+COMMENT: Implementation SafeInteger.Add/Subtract/Multiply; verification PolicyValidationTests and wide arithmetic oracle campaigns.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-007
+
+[REQUIREMENT]
+UID: SN-010
+TITLE: Independent arithmetic oracles
+STATEMENT: Arithmetic shall have exhaustive small-domain and independent wide-integer oracle verification.
+
+[REQUIREMENT]
+UID: SN-010-WIDE
+TITLE: Wide arithmetic and policy campaign
+STATEMENT: Each supported built-in integer type shall be tested against exact BigInteger arithmetic for add/subtract/multiply/divide/negate and every Add/Subtract/Multiply policy, including failure outputs, endpoints, zero/sign transitions and seeded full-width values.
+COMMENT: >>>
+Verification: tests/Shared/WideIntegerOracle.cs, tests/SharpSafeNumerics.UnitTests/WideArithmeticTests.cs,
+tests/SharpSafeNumerics.PropertyTests/Program.cs and tests/SharpSafeNumerics.AotSmoke/Program.cs.
+Evidence: docs/verification/2026-11-17-rc1.md (qualification in progress).
+Finite deterministic and randomized campaigns are evidence, not a global correctness proof.
+Throw-path samples allocate intentionally.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-010
+
+[REQUIREMENT]
+UID: SN-011
+TITLE: Declarative bounded domains
+STATEMENT: Attributes and source generation shall provide strongly typed reflection-free bounded integer values.
+
+[REQUIREMENT]
+UID: SN-013
+TITLE: Strict numeric diagnostics
+STATEMENT: Roslyn diagnostics SSN1001 through SSN1008 shall enforce statically detectable numeric-safety contracts within their documented detection scope.
+
+[REQUIREMENT]
+UID: SN-010-SIMD
+TITLE: Detected SIMD batch addition
+STATEMENT: >>>
+Signed 32-bit batch addition shall use available 256-bit and 128-bit SIMD with
+scalar fallback and tails, preserving scalar exact results, error direction and
+zero failure outputs per lane. Length/capacity/overlap errors shall be returned as
+data before any destination write. Read-only inputs may alias; written prefixes
+shall be disjoint, and unused destination suffixes shall remain untouched.
+<<<
+COMMENT: >>>
+Implementation SafeInteger.Batch.cs; verification BatchArithmeticTests against
+BigInteger across width ceilings, byte-level aliases, malformed capacities and
+100000-call warmed allocation checks; Native AOT/platform smoke supplies detected
+dispatch evidence. Tests never force instructions absent on the executing CPU.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-010
+
+[REQUIREMENT]
+UID: SN-010-SIMD-512
+TITLE: Runtime guarded AVX-512 batch addition
+STATEMENT: Int32 batch addition shall use a hardware accelerated AVX-512F path for valid batches of at least 256 lanes when the runtime supports it. Below the threshold or without AVX-512F acceleration, it shall retain the existing SIMD256, SIMD128 and scalar dispatch. Result and status semantics, contract failures, and untouched suffixes shall be independent of executed width.
+COMMENT: Verification: BatchArithmeticTests checks threshold neighbors, mixed overflows, tails and output sentinels. The platform CI AVX-512 jobs assert actual reported width with AVX-512 enabled and disabled on x64. BenchmarkDotNet comparison 44392125979 informs the initial threshold; see SIMD_ASSESSMENT.md.
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-010-SIMD
 
 [REQUIREMENT]
 UID: SN-004
@@ -68,3 +141,464 @@ Allocation evidence is runtime/platform-specific; no WCET or custom-provider gua
 RELATIONS:
 - TYPE: Parent
   VALUE: SN-005
+
+[REQUIREMENT]
+UID: SN-011-ALIASED-OUTPUT
+TITLE: Bounded receiver and input preservation
+STATEMENT: >>>
+Generic and generated bounded arithmetic shall support the receiver as its own
+out destination. Generated parsers and decoders shall consume input before
+publishing an overlapping result. Write and format APIs shall document that
+destination and count output storage must be distinct. Batch execution metadata
+shall return by value, and a default BatchArithmeticResult shall be uninitialized.
+<<<
+COMMENT: >>>
+Implementation: Bounded.TryAdd/TrySubtract, BoundedIntegerGenerator.Rendering.cs,
+SafeInteger.AddBatch and BatchArithmeticResult.
+Verification: InPlaceBoundedTests, GeneratedContractTests, GeneratedDomainTests,
+and BatchArithmeticTests. Evidence: docs/verification/2026-11-17-rc1.md.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-011
+
+[REQUIREMENT]
+UID: SN-DOC-INTERACTIVE
+TITLE: Interactive CSharp capability comparison
+STATEMENT: >>>
+An offline HTML guide shall explain where SharpSafeNumerics adds contracts to
+built-in CSharp facilities, with interactive arithmetic policy, exact conversion,
+bounded domain and SIMD partition demonstrations. Browser semantic models shall
+be labeled and checked against fixtures from the real package. The guide shall
+preserve 128-bit integer precision and document evidence scope and limitations.
+<<<
+COMMENT: >>>
+Implementation: docs/interactive-deep-dive.html and eng/DeepDiveEvidence.
+Verification: eng/VerifyDeepDive.cjs, eng/VerifyDeepDiveMutations.ps1,
+CI fixture agreement, and docs/verification/2026-11-17-html-deep-dive.md.
+<<<
+
+[REQUIREMENT]
+UID: SN-PACK-REPRO
+TITLE: Reproducible candidate package archives
+STATEMENT: >>>
+With the pinned SDK, identical source/configuration, fixed package timestamp and
+same build paths, repeated packaging shall produce byte-identical five NuGet
+packages and three symbol archives. Verification shall compare whole-file SHA256
+values, reject stale output directories and retain the tested scope. Rebuild
+reproducibility shall be reported separately from repacking unchanged binaries.
+<<<
+COMMENT: >>>
+Implementation: Directory.Build.props DeterministicTimestamp and
+eng/VerifyPackageReproducibility.ps1. Verification: local negative/positive
+repacking campaign and Core CI rebuild-between-passes check; see
+verification/2026-11-17-rc1-closeout.md. Cross-path/platform rebuild identity is
+not established by a same-path comparison.
+<<<
+
+[REQUIREMENT]
+UID: SN-QUAL-LONG-RUN
+TITLE: Bounded long qualification and explicit verdict
+STATEMENT: >>>
+The workstation runner shall accept an eighteen-hour total budget and an
+immutable source reference, retain per-step logs, preserve a results-publication
+reserve and report qualification independently from successful upload. Failed,
+cancelled, timed-out or missing-prerequisite checks and unexpected source changes
+shall prevent a Passed verdict; budget-skipped work shall be Incomplete. Expected
+rejected tool probes shall not fail an otherwise successful qualification.
+<<<
+COMMENT: >>>
+Implementation: Invoke-WorkstationQualification.ps1 Get-QualificationStatus,
+source-integrity capture, deadline scheduler and package reproducibility step.
+Verification: WorkstationRunner.Tests.ps1 (18-hour plan/verdict cases), prior
+one-hour execution evidence, and rc1-closeout report. No eighteen-hour run is
+claimed until the independent workstation actually executes and returns evidence.
+<<<
+
+[REQUIREMENT]
+UID: SN-API-SOURCE-GUARD
+TITLE: Reviewed shipping API signature lists
+STATEMENT: >>>
+The shipping projects shall maintain source-controlled nullable-aware API
+lists and reject unlisted public additions or stale signatures through build
+errors. Verification shall challenge additions, member removal/rename, enum
+values, optional defaults and nullability. Unpublished candidate signatures shall
+remain labeled Unshipped. Scope limits including generic constraints and generated
+consumer APIs shall be explicit; signature agreement is not behavioral proof.
+<<<
+COMMENT: >>>
+Implementation: PublicAPI.*.txt in the shipping projects,
+Directory.Build.targets and Microsoft.CodeAnalysis.PublicApiAnalyzers 5.6.0.
+Verification: eng/VerifyPublicApi.ps1 and
+verification/2026-11-17-api-baseline.md. SDK package validation remains a separate
+compatibility layer, not replaced by these source lists.
+<<<
+
+[REQUIREMENT]
+UID: SN-QUAL-COMPACT
+TITLE: Native compact qualification evidence
+STATEMENT: >>>
+A reusable native preprocessor shall produce deterministic bounded qualification
+triage reports from real workstation, numeric soak, mutation, coverage and soak
+tail evidence. It shall retain exact counts, source identities, seeds, failures,
+missing/corrupt evidence and explicit omission counts with raw SHA256 references.
+It shall distinguish preprocessing success from qualification success, reject
+contradictory success claims, preserve unknown values and independent source
+scopes, and never infer success from upload or an empty input. Inputs and existing
+outputs shall be preserved. Large logs shall be streamed; default directory
+discovery shall avoid recursive source/build scans. Full normalized details
+shall be available separately from the bounded report.
+<<<
+COMMENT: >>>
+Implementation target: eng/qualification-preprocessor and PowerShell wrapper.
+Verification: Rust directed/property/negative tests, actual-schema fixtures,
+native release execution, coverage, mutation and real report comparison.
+Evidence requires actual execution; configured tooling alone is not closure.
+<<<
+
+[REQUIREMENT]
+UID: SN-QUAL-X86
+TITLE: Actual managed Windows x86 qualification
+STATEMENT: >>>
+Repeatable qualification shall build with the repository-selected x64 SDK and
+execute required managed regression suites under an explicitly verified isolated
+NET11 x86 runtime. Native-width probes shall confirm actual32-bit process behavior
+before and after the suites. Test-host diagnostics shall verify the selected x86
+host; successful x64 controller execution alone shall not establish x86 coverage.
+Provisioned runtime archives shall match official SHA512 metadata. Supplied
+runtime/cache inputs and caller environment shall be preserved. Reports shall
+retain source/binary provenance, per-suite pass/fail/skip counts and explicit
+failure verdicts. Managed x86 evidence shall not imply Native AOT x86 support.
+<<<
+COMMENT: >>>
+Implementation: eng/Invoke-X86Qualification.ps1 and eng/NativeWidthProbe.
+Verification: X86Qualification.Tests.ps1, NativeWidthProbe.Tests.ps1, actual
+437-case execution, native-width oracle and host diagnostics. Scope/source
+evidence: verification/2026-11-17-x86.md. Windows CI runs the same helper.
+<<<
+
+[REQUIREMENT]
+UID: SN-QUAL-EXPANDED
+TITLE: Reproducible expanded numeric campaigns
+STATEMENT: >>>
+A nonshipping campaign shall accept a bounded positive duration and seed,
+validate malformed or duplicate CLI options, preserve existing output files,
+and retain explicit pass/fail verdicts and reproducible failure diagnostics.
+Fixed arithmetic shall be checked against independent BigInteger relations;
+all three safe decimal formats shall be checked against independent PeterO
+arithmetic and precision-loss expectations. Generator choices shall be stable
+functions of shrinkable inputs and avoid sign/exponent parity correlation.
+Reports shall distinguish executed callbacks, assertions, API calls and unique
+inputs; counts alone shall not establish unvisited branch coverage. Long-run
+source/binary provenance and any external deadline shall be recorded separately
+from shorter campaigns or changed report-serialization implementations.
+<<<
+COMMENT: >>>
+Implementation: tests/SharpSafeNumerics.NumericSoak. Verification:
+NumericSoakRunner.Tests.ps1, deterministic distribution checks, disposable
+oracle-fault shrinking control, scoped coverage and managed/native short runs.
+Evidence: verification/2026-11-17-numeric-soak-harness.md and the final bounded
+qualification report. Actual long-run success remains pending until observed.
+<<<
+
+[REQUIREMENT]
+UID: SN-017
+TITLE: Referenced SharpUnits integration example
+STATEMENT: >>>
+A reproducible example shall compile against real immutable SharpUnits source
+and bridge initialized whole-volt bounded values into coherent SI voltage
+quantities. Its contiguous integer domain shall be restricted to minus through
+plus two to the power 53, preserving every admitted magnitude exactly through
+the upstream double interface. Invalid default/domain values shall reject with
+cleared output. Verification shall check actual electrical dimensions and
+boundary rejection. Unit display metadata alone shall not count as integration.
+Core shall not acquire a SharpUnits runtime dependency. General exact unit
+arithmetic and compatibility with an unpublished NuGet release are not implied.
+<<<
+COMMENT: >>>
+Stable product requirement SN-017, previously recorded in PRODUCT_REQUIREMENTS.md.
+Implementation: examples/SharpUnitsInterop and eng/VerifySharpUnitsIntegration.ps1.
+Upstream pin: 7ebdbcda9958e4eb4cee623065ecdd37395dac89. Verification: source
+integration assertions seed731931, script negative controls and recorded
+managed/native execution. Evidence: verification/2026-11-17-sharpunits.md.
+<<<
+
+[REQUIREMENT]
+UID: SN-018
+TITLE: Fixed-point semantics
+STATEMENT: >>>
+The package shall provide owned fixed-point arithmetic with documented scale,
+rounding, representability and expected-failure behavior. The RC1 implementation
+scope shall be the signed Q32.32 contract specified by SN-018-FIXED.
+<<<
+COMMENT: >>>
+Stable product ID imported from PRODUCT_REQUIREMENTS.md. The user included this
+feature in RC1 on 2026-11-17. Verification evidence and limits are recorded in
+verification/2026-11-17-fixed-decimal.md; arbitrary fixed-point formats are not
+implied by the scoped implementation.
+<<<
+
+[REQUIREMENT]
+UID: SN-018-FIXED
+TITLE: Owned signed Q32.32 arithmetic
+STATEMENT: >>>
+Fixed64 shall represent a signed Int64 raw value divided by two to the power 32.
+SafeFixed shall provide raw admission, integral and rational conversion, addition,
+subtraction, multiplication, division and negation without silent saturation or
+wrapping. Widened intermediates shall prevent premature overflow. Exact rounding
+shall reject discarded fractions; explicit nearest-even, toward-zero, floor,
+ceiling and away-from-zero modes shall define signed rounding. Undefined modes
+shall reject before operand-dependent success or failure. Expected failures shall
+return statuses and cleared result storage. Default Fixed64 is valid zero;
+default NumericResult is invalid. Strict integer and fixed arithmetic shall not
+use runtime reflection or BigInteger intermediates.
+Exact fractional rejection shall precede range validation; other rounding shall
+precede range validation and may admit a value rounded back to an endpoint.
+<<<
+COMMENT: >>>
+Parent product requirement: SN-018. User-authorized RC1 scope expansion on
+2026-11-17. Implementation: Core/Fixed64.cs (including SafeFixed),
+Fixed64Tests.cs, PropertyTests/Program.cs, formal/FixedPoint.dfy.
+Independent reference: test-only exact BigInteger rationals with retained seeds.
+The formal model is not a refinement proof of the handwritten CSharp code.
+<<<
+
+[REQUIREMENT]
+UID: SN-019
+TITLE: Safe Decimal32 Decimal64 and Decimal128 operations
+STATEMENT: >>>
+The package shall provide explicit safety contracts around NET11 built-in IEEE
+Decimal32, Decimal64 and Decimal128 finite arithmetic and conversion, including
+special-value admission and precision-loss handling, as specified by
+SN-019-DECIMAL. The optional implementation shall not widen the strict integer
+allocation contract to include decimal exactness checking.
+<<<
+COMMENT: >>>
+Stable product ID imported from PRODUCT_REQUIREMENTS.md. The user approved safe
+wrappers over the built-in decimal engine on 2026-11-17. This scoped requirement
+does not assert whole IEEE754 operation/status/encoding conformance.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-DECIMAL
+TITLE: Safe built-in IEEE decimal arithmetic
+STATEMENT: >>>
+The optional Decimal assembly shall wrap NET11 System.Numerics.Decimal32,
+Decimal64 and Decimal128 for finite addition, subtraction, multiplication,
+division, negation and cross-format conversion. Exact is the default rounding
+contract and rejects unrepresentable exact results. Explicit nearest-even may
+accept rounded finite results and shall report inexactness. Nonfinite operands,
+division by zero, nonfinite overflow results, unsupported numeric types and
+undefined rounding modes shall return typed failures with cleared output.
+Undefined modes shall reject before operand-dependent paths. Exactness shall be
+determined using exact rational relations, not rounded reverse-operation tests.
+Default result shall be invalid. Decimal exactness checking may allocate and is
+outside the allocation-free strict integer contract. No whole IEEE754 operation
+set, arbitrary rounding modes or transcendental conformance is implied.
+<<<
+COMMENT: >>>
+Parent product requirement: SN-019. User-authorized RC1 scope expansion on
+2026-11-17. Implementation: SharpSafeNumerics.Decimal. Independent
+verification: PeterO.Numbers 1.8.2 in tests only, rational references, malformed
+options, boundary/subnormal/conversion cases, coverage, mutation and Native AOT.
+Closure requires executed evidence; the existing pinned integer soak does not
+qualify these newly added operations.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-CONTEXT
+TITLE: Explicit IEEE decimal rounding and exception context
+STATEMENT: >>>
+The optional decimal package shall provide an IEEE operation API for Decimal32,
+Decimal64 and Decimal128 independently of the finite-only SafeDecimal contract.
+Each call shall take explicit nearest-even, nearest-away, toward-zero,
+toward-negative or toward-positive rounding and optional trap flags. Invalid,
+divisionByZero, overflow, underflow and inexact shall be independent flags.
+IEEE NaN and infinity results shall remain available unless trapped; invalid
+types/options shall fail before operand-dependent paths with cleared storage.
+Decimal tininess shall be detected before rounding. Default result is invalid;
+default context is nearest-even without traps. No ambient process state changes.
+<<<
+COMMENT: >>>
+User-authorized expansion 2026-11-18. Implementation: IeeeDecimalContracts.cs,
+IeeeDecimalArithmetic.cs. Existing SN-019-DECIMAL remains the compatible finite
+API contract. IEEE exceptions are not the directional SafeDecimal range errors.
+Evidence: independent arithmetic oracles and applicable GDA corpus; full closure
+requires the operation-specific matrix, not an API-presence assertion.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-REPRESENTATION
+TITLE: IEEE decimal representations and predicates
+STATEMENT: >>>
+The IEEE API shall preserve signed zeros, cohorts and NaN sign/signaling/payload
+where required by the selected operation. It shall provide BID/DPD interchange,
+classification, all required quiet/signaling Boolean comparison predicates,
+totalOrder, totalOrderMag, quantum, adjacent values, decimal scaling, integral
+rounding, invariant parsing/formatting and payload operations. Invalid syntax
+shall not produce a numeric value. Valid extreme decimal exponents shall round
+by value rather than fail solely because the exponent exceeds Int32.
+<<<
+COMMENT: >>>
+Implementation: IeeeDecimalCodec.cs, IeeeDecimalRepresentation.cs,
+IeeeDecimalPredicates.cs. Verification: raw-pattern tests, predicate truth/flag
+tables, cohort/sign cases, malformed input, payload and extreme exponent tests.
+NaN payload narrowing policies for mixed conversions are explicit library choices.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-CONVERSIONS
+TITLE: Exact-source mixed numeric conversion
+STATEMENT: >>>
+Integer and binary Half/Single/Double conversions shall use exact source values
+and one final destination rounding, with flags, trap behavior and unsupported
+carrier validation. Integer invalid conversion shall return the documented
+selected integer zero plus Invalid unless trapped. Binary tininess selection
+shall be documented separately from decimal tininess. Exact and non-exact
+integer conversion shall differ in their Inexact signaling contract.
+<<<
+COMMENT: >>>
+Implementation: IeeeDecimalConversions.cs. Independent verification includes
+all 65536 Half encodings, integer/binary boundaries, exact rational and PeterO
+references, flags, payloads and every rounding direction.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-FUNCTIONS
+TITLE: Recommended IEEE decimal elementary operations
+STATEMENT: >>>
+The decimal API shall provide the recommended elementary functions in the
+IEEE754-2019 operation matrix with explicit rounding, flags, special-value
+domains, exact identities and preferred exponents. Fused definitions shall not
+round an intermediate destination value. Approximate BCL forwarding or a fixed
+guard-digit count alone shall not establish correctly rounded behavior.
+<<<
+COMMENT: >>>
+Implementation: DecimalIntervalMath.cs, IeeeDecimalFunctions.cs,
+IeeeDecimalPiFunctions.cs. Outward interval refinement certifies unique final
+rounding for non-exact elementary results; exact identities are handled directly.
+Finite reference sweeps and source review are not a global formal proof.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-REDUCTIONS
+TITLE: IEEE extrema and exact decimal reductions
+STATEMENT: >>>
+All eight IEEE754-2019 extrema variants shall implement their distinct NaN,
+signed-zero and magnitude-tie rules. Sum, sumAbs, sumSquare and dot shall use
+exact accumulation and one final rounding. Scaled product, product-of-sums and
+product-of-differences shall return a normalized source-format fraction and an
+explicit integer scale without premature destination exponent overflow.
+<<<
+COMMENT: >>>
+Implementation: IeeeDecimalReductions.cs. Exact accumulation is this binding's
+documented accuracy choice. IEEE9.5 augmented arithmetic recommendations are
+binary-format operations and are not asserted as decimal mandates.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-ENVIRONMENT
+TITLE: Explicit immutable IEEE mode and status snapshots
+STATEMENT: >>>
+The library shall provide validated explicit state snapshots for decimal and
+binary destination rounding directions, traps and sticky flags, with save,
+restore, raise, lower and test operations. Defaulting/restoring modes shall
+preserve sticky flags. Failed validation shall not publish partial state.
+These bindings shall not change the host hardware, thread or process floating
+point environment or claim host-language IEEE conformance.
+<<<
+COMMENT: >>>
+Implementation: IeeeDecimalEnvironment.cs. Explicit state provides composable
+library behavior; IEEE host environment/version predicates remain outside the
+package's conformance claim, as recorded in IEEE_DECIMAL_OPERATION_MATRIX.md.
+<<<
+
+[REQUIREMENT]
+UID: SN-019-IEEE-QUALIFICATION
+TITLE: Reproducible independent IEEE decimal verification
+STATEMENT: >>>
+Qualification shall retain source/run provenance, applicable independent
+reference versions and licenses, actual pass/fail/skip counts, reproducible
+seeds, measured line/branch coverage, mutation outcomes and known exclusions.
+Malformed or unreadable corpus inputs shall not count as passing evidence.
+Required/recommended decimal operations, binary-only recommendations and
+host-environment claims shall remain distinguished. Verification tools and
+corpora shall not become runtime arithmetic dependencies.
+<<<
+COMMENT: >>>
+Implementation: eng/DecimalConformance, IEEE-specific tests, Native AOT smoke and
+CI. External DPD verification uses the pinned GDA dsEncode, ddEncode and dqEncode
+vectors, including diagnostic NaN payloads. Known BID/DPD words are checked in
+IeeeNaNInterchangeVectors. Formal model: formal/DecimalRounding.dfy proves coefficient rounding properties;
+eng/VerifyDecimalRoundingModel.ps1 verifies, emits CSharp and executes that model.
+This is not a refinement proof of the handwritten CLR implementation or a
+global proof of elementary-function correctness. Raw artifacts stay outside Git;
+bounded reports, fixtures/provenance, helper source and reproduction steps stay in Git.
+<<<
+
+[REQUIREMENT]
+UID: SN-020-WEEK-QUALIFICATION
+TITLE: Unattended evolving-source IEEE decimal qualification
+STATEMENT: >>>
+The nonshipping qualification tooling shall support a configurable duration,
+default168 hours, with bounded reproducible chunks exercising IEEE decimal32,
+decimal64 and decimal128 in all five rounding directions against independent
+references. Counterexamples shall retain seed, operands, operation, mode and
+source identity. Inconclusive oracle comparisons shall be recorded separately
+and shall not produce a fully passing campaign verdict.
+<<<
+COMMENT: >>>
+User-requested2026-11-18. Reuse existing CsCheck/PeterO test-only dependencies
+and workstation process/tool/Git helpers. Production dependencies remain BCL-only.
+Implementation: tests/SharpSafeNumerics.IeeeSoak and eng/Invoke-WeekQualification.ps1.
+Verification: dedicated harness tests, short executed campaigns, Pester control
+flow/negative tests and native preprocessor schema/property tests. A short smoke
+cannot establish week-long endurance; actual future reports provide that evidence.
+<<<
+
+[REQUIREMENT]
+UID: SN-020-DAILY-REFRESH
+TITLE: Daily source updates and immutable per-revision evidence
+STATEMENT: >>>
+At configurable reporting boundaries, default24 hours, the runner shall fetch
+the configured source branch, resolve an exact commit and validate a fresh
+isolated snapshot before activation. A chunk's source shall remain immutable.
+Evidence shall remain separated by source revision. A failed update shall be
+reported explicitly; continued use of the last working snapshot shall not hide
+the failure or produce a fully passing overall verdict. Pinned mode shall remain
+available and the orchestration runner's own version shall be recorded.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-020-WEEK-QUALIFICATION
+
+[REQUIREMENT]
+UID: SN-020-DAILY-REPORTS
+TITLE: Daily automatic results publication and recoverable execution
+STATEMENT: >>>
+The runner shall publish bounded daily, failure and final reports to one unique
+issue-associated results branch without routine interaction. Reports shall retain
+source/runner provenance, counts, seeds, failures, timings and artifact references.
+Logs and checkpoints shall support diagnosis and resumption without silently
+repeating seeds, overwriting existing evidence or extending the original deadline.
+Failed uploads shall retain local data for retry and shall not be called submitted.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-020-WEEK-QUALIFICATION
+
+[REQUIREMENT]
+UID: SN-020-VERIFIED-CLEANUP
+TITLE: Delete only owned results verified as uploaded
+STATEMENT: >>>
+After verifying remote commit identity and exact uploaded file contents, the
+runner shall delete corresponding explicitly owned local result copies by
+default. Unsubmitted data shall remain available for retry. Cleanup shall reject
+out-of-root paths, reparse traversal, changed contents and foreign ownership.
+It shall preserve source, checkouts, tools and unrelated files. References or
+hashes alone shall not qualify unuploaded raw logs for deletion. KeepResults
+shall allow retaining submitted local copies.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SN-020-WEEK-QUALIFICATION

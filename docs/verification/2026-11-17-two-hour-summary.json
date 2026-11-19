@@ -1,0 +1,123 @@
+{
+  "BaseRevision": "4df84e5b5394c98aa0fa1125ae12e744e152b61f",
+  "Artifacts": "E:\\Artifacts\\SharpSafeNumerics\\windows-x64\\two-hour-20261118T011044Z",
+  "Mutations": [
+    {
+      "Scope": "analyzer-full-136",
+      "Total": 548,
+      "Statuses": [
+        {
+          "Name": "CompileError",
+          "Count": 87
+        },
+        {
+          "Name": "Ignored",
+          "Count": 34
+        },
+        {
+          "Name": "Killed",
+          "Count": 398
+        },
+        {
+          "Name": "NoCoverage",
+          "Count": 3
+        },
+        {
+          "Name": "Survived",
+          "Count": 26
+        }
+      ]
+    },
+    {
+      "Scope": "generator-full-current",
+      "Total": 439,
+      "Statuses": [
+        {
+          "Name": "CompileError",
+          "Count": 59
+        },
+        {
+          "Name": "Ignored",
+          "Count": 14
+        },
+        {
+          "Name": "Killed",
+          "Count": 331
+        },
+        {
+          "Name": "NoCoverage",
+          "Count": 3
+        },
+        {
+          "Name": "Survived",
+          "Count": 32
+        }
+      ]
+    }
+  ],
+  "NativeSourceHash": "C367F1915D6B7B4414AE825DB096C29EF1AA44A9658863449904FABC3B03A9C5",
+  "NumericalCampaignHash": "F38A0038BC7483BDE94B3C8249DBB59B47709FC575FC140A765443463B5C4A5A",
+  "LongCampaign": {
+    "Passed": true,
+    "Seed": 731930,
+    "CsCheckSeed": "00000002OIt1",
+    "StartUtc": "2026-11-18T01:18:04.0860068Z",
+    "EndUtc": "2026-11-18T02:33:04.175572Z",
+    "ElapsedSeconds": 4500.0208206,
+    "Samples": 28110701,
+    "Assertions": 989049067,
+    "FixedOperations": 168664206,
+    "DecimalOperations": 192261005,
+    "Conversions": 84332103,
+    "RawCases": 28110701,
+    "Decimal32Cases": 18839597,
+    "Decimal64Cases": 4707716,
+    "Decimal128Cases": 4563388,
+    "FixedCaseCounts": [
+      16076831,
+      2463069,
+      2318458,
+      2761187,
+      2243306,
+      2247850
+    ],
+    "DecimalCaseCounts": [
+      14589469,
+      4429255,
+      4324985,
+      4766992
+    ],
+    "Runtime": ".NET 11.0.0",
+    "Architecture": "X64",
+    "PointerBits": 64,
+    "ServerGC": false,
+    "AllocatedBytes": 539873850520,
+    "LiveHeapBytes": 5925168,
+    "GC0": 86060,
+    "GC1": 5023,
+    "GC2": 45,
+    "Failure": null
+  },
+  "CI": [
+    {
+      "Run": 44220094226,
+      "Commit": "7abdf07fced05bec1542b2d1452fa89aaa8557b0",
+      "Workflow": "Platform Qualification",
+      "Conclusion": "success",
+      "Mac": "skipped"
+    },
+    {
+      "Run": 44220094229,
+      "Commit": "7abdf07fced05bec1542b2d1452fa89aaa8557b0",
+      "Workflow": "Core CI",
+      "Conclusion": "failure",
+      "Reason": "Upstream source inherited consumer build policy"
+    },
+    {
+      "Run": 44220874961,
+      "Commit": "a8bf8d8a990fee6a3d2dacb101ca9e3cad499ffd",
+      "Workflow": "Core CI",
+      "Conclusion": "success"
+    }
+  ]
+}

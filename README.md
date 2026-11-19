@@ -2,7 +2,7 @@
 
 A .NET 11 / C# 15 numeric-safety library for bounded integer arithmetic, explicit recoverable errors, and engineering software with deterministic requirements.
 
-**Status:** initial implementation / not yet qualified for embedded or safety-critical use.
+**Status:** RC-1 candidate under qualification; see [current evidence](docs/verification/2026-11-17-rc1.md). Embedded and safety-critical application qualification remains open.
 
 ## What is implemented
 
@@ -15,11 +15,58 @@ The project is organized as M1–M5; see [milestones](docs/MILESTONES.md). Numer
 - Explicit `NumericResult<T>` struct with a default *invalid* state.
 - Optional C# 15 `union` adapter for ergonomic handling **that boxes value-type cases**; do not use it on no-allocation paths.
 - Dependency-free console conformance tests, Native AOT smoke project, GitHub Actions CI.
-- Declarative bounded-number attributes + incremental source generator and strict-scope analyzer.
+- Declarative bounded-number attributes, generated arithmetic/default policies, exact conversions, span text and fixed-width endian codecs for all 12 built-in integer types.
+- Strict-scope diagnostics SSN1001–SSN1008 with documented static-analysis limits.
+- Int32 batch addition with detected AVX-512 for batches of at least 256 lanes, SIMD256/SIMD128, scalar fallback, per-lane errors and validation before writes.
+- Owned Q32.32 fixed-point arithmetic with explicit rounding, Int128 intermediates and typed failures.
+- Optional safe Decimal32/64/128 APIs over .NET 11 built-ins: exact by default, explicit nearest-even acceptance and reported precision loss. Decimal exactness checks may allocate. See [contracts and examples](docs/FIXED_AND_DECIMAL.md).
+- Explicit IEEE decimal operations in the optional Decimal package: five rounding modes, flags/traps, raw encodings, conversions, elementary functions and exact reductions. See the [operation matrix](docs/IEEE_DECIMAL_OPERATION_MATRIX.md) and [bounded qualification](docs/verification/2026-11-18-ieee-decimal.md); full host-environment conformance is not claimed.
+- Referenced SharpUnits [integration example](docs/verification/2026-11-17-sharpunits.md): exact whole-volt admission and real dimensional checks, with no SharpUnits dependency in Core.
 - CsCheck, Hedgehog, xUnit, Stryker.NET, Dafny and BenchmarkDotNet verification infrastructure.
 - Detailed requirements, original software description, architecture, exception policy and verification plan.
 
+## SIMD batch addition
+
+A lane is one pair of elements at the same position in two input arrays. Adding
+two arrays of 1,000 integers gives you 1,000 lanes. SIMD256 can add eight pairs
+at once, and AVX-512 can add sixteen.
+
+Call `SafeInteger.AddBatch` and let it choose automatically. It uses AVX-512 for
+batches of at least 256 lanes when the runtime supports it, then uses available
+SIMD256, SIMD128 and scalar loops for shorter batches and leftovers. Every path
+returns the same sums and overflow or underflow statuses.
+
+```csharp
+using SharpSafeNumerics;
+
+int[] left = [10, int.MaxValue];
+int[] right = [5, 1];
+int[] values = new int[left.Length];
+var errors = new ArithmeticError[left.Length];
+
+var result = SafeInteger.AddBatch(left, right, values, errors);
+if (result.IsSuccess)
+{
+    // values: [15, 0]; errors: [None, Overflow]
+    // Check errors[i] before using values[i].
+}
+```
+
+`IsSuccess` tells you the buffers were accepted. `VectorWidthUsed` is available
+for diagnostics if you want to see which width ran.
+
+Repeated large-batch measurements favored SIMD256 on the tested Intel hosts
+and AVX-512 on the tested AMD host. Dispatch has no large-batch cutoff.
+Try the [SIMD lab](docs/interactive-deep-dive.html#simd) and see the
+[benchmark evidence](docs/SIMD_ASSESSMENT.md).
+
 ## Quick start
+
+Explore the [interactive HTML deep dive](docs/interactive-deep-dive.html) for comparisons
+with built-in C#, editable arithmetic/conversion/domain examples, annotation
+walkthroughs and conceptual SIMD lane demos. Download the HTML and open it in a
+browser; GitHub's source viewer does not execute its scripts. It works offline.
+
 ```bash
 dotnet build -c Release
 dotnet test -c Release

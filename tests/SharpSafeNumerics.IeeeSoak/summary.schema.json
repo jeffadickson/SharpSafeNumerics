@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IEEE decimal soak final result, schema1",
+  "type": "object",
+  "required": ["Kind","SchemaVersion","Status","Seed","CsCheckSeed","StartUtc","EndUtc","Samples","Assertions","PassedChecks","FailedChecks","InconclusiveChecks","Failure","Provenance"],
+  "properties": {
+    "Kind": {"const":"ieeeDecimalSoak"},
+    "SchemaVersion": {"const":1},
+    "SourceRevision": {"type":["string","null"],"pattern":"^[0-9a-fA-F]{40}$"},
+    "Status": {"enum":["Passed","Failed","Inconclusive"]},
+    "Seed": {"type":"integer","minimum":1,"maximum":2147483647},
+    "CsCheckSeed": {"type":"string"},
+    "LastBatchSeed": {"type":"string"},
+    "StartUtc": {"type":"string","format":"date-time"},
+    "EndUtc": {"type":"string","format":"date-time"},
+    "RequestedSeconds": {"type":"integer","minimum":1,"maximum":7200},
+    "ElapsedSeconds": {"type":"number","minimum":0},
+    "DeadlineOverrunSeconds": {"type":"number","minimum":0},
+    "Workers": {"const":1},
+    "Samples": {"type":"integer","minimum":0},
+    "Assertions": {"type":"integer","minimum":0},
+    "PassedChecks": {"type":"integer","minimum":0},
+    "FailedChecks": {"type":"integer","minimum":0},
+    "InconclusiveChecks": {"type":"integer","minimum":0},
+    "ShrinkEvaluations": {"type":"integer","minimum":0},
+    "Batches": {"type":"integer","minimum":0},
+    "FormatModeChecks": {"type":"object","additionalProperties":{"type":"integer","minimum":0}},
+    "OperationChecks": {"type":"object","additionalProperties":{"type":"integer","minimum":0}},
+    "InconclusiveReasons": {"type":"object","additionalProperties":{"type":"integer","minimum":0}},
+    "Failure": {"type":["object","null"]},
+    "Provenance": {"type":"object"}
+  }
+}
