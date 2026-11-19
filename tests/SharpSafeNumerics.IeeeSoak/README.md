@@ -42,9 +42,9 @@ PeterO.Numbers1.8.2 is test-only and independent of the production BigInteger gl
   binary64↔decimal. Signaling NaNs are explicitly quieted through the reference
   precision operation at arithmetic conversion boundaries. NaN sign/payload
   propagation alternatives are not qualified; quieting and exception flags are.
-- Exp, Log, ExpM1 and LogP1 use independent160/224-digit calculations before
-  target rounding. Numerical/sign-zero disagreement is **Inconclusive**, not pass
-  or a presumed implementation defect. This consistency test is not a rigorous
+- Exp, Log, ExpM1 and LogP1 use independent adaptive calculations from160
+  through1,280 digits before target rounding. Two consecutive target-format
+  roundings must agree; failure to stabilize is **Inconclusive**. This is not a rigorous
   outward enclosure proof. Inputs are bounded: exponential magnitude<=20,
   logarithm arguments in[0.001,1000], log1p arguments in[-0.9,5.1], and selected
   cancellation inputs down to10^-80. Elementary cohorts are not compared.

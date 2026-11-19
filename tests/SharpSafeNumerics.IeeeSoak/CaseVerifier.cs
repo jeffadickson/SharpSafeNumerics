@@ -39,9 +39,11 @@ internal static class CaseVerifier
                 // GDA's finite-precision remainder-near rejects a quotient that does not
                 // fit its context. IEEE remainder has no such quotient-precision limit.
                 EContext remainderContext=EContext.Unlimited.WithBlankFlags();
-                EDecimal expected=operation switch{0=>x.Add(y,oracle),1=>x.Subtract(y,oracle),2=>x.Multiply(y,oracle),3=>x.Divide(y,oracle),4=>x.MultiplyAndAdd(y,c,oracle),5=>x.Sqrt(oracle),6=>x.Quantize(y,oracle),_=>x.RemainderNear(y,remainderContext).RoundToPrecision(oracle)};
+                var product=operation==2?ExactProduct(x,y,precision,qmin,qmax,mode,oracle):default;
+                EDecimal expected=operation switch{0=>x.Add(y,oracle),1=>x.Subtract(y,oracle),2=>product.Value,3=>x.Divide(y,oracle),4=>x.MultiplyAndAdd(y,c,oracle),5=>x.Sqrt(oracle),6=>x.Quantize(y,oracle),_=>x.RemainderNear(y,remainderContext).RoundToPrecision(oracle)};
                 var actual=operation switch{0=>IeeeDecimal<T>.Add(a,b,context),1=>IeeeDecimal<T>.Subtract(a,b,context),2=>IeeeDecimal<T>.Multiply(a,b,context),3=>IeeeDecimal<T>.Divide(a,b,context),4=>IeeeDecimal<T>.FusedMultiplyAdd(a,b,z,context),5=>IeeeDecimal<T>.Sqrt(a,context),6=>IeeeDecimal<T>.Quantize(a,b,context),_=>IeeeDecimal<T>.Remainder(a,b,context)};
-                observation=Compare(op,mode,x,y,c,expected,Flags(oracle.Flags|remainderContext.Flags),actual,true);
+                int expectedFlags=operation==2?product.Flags:Flags(oracle.Flags|remainderContext.Flags);
+                observation=Compare(op,mode,x,y,c,expected,expectedFlags,actual,true);
             }
             else if(operation==8)
             {
@@ -74,10 +76,9 @@ internal static class CaseVerifier
             }
             else
             {
-                EDecimal low=Elementary(x,operation,160),high=Elementary(x,operation,224);
-                EDecimal expected=low.RoundToPrecision(oracle),second=high.RoundToPrecision(format.WithRounding(Rounding(mode)));
-                if(expected.CompareTo(second)!=0||expected.IsZero&&second.IsZero&&expected.IsNegative!=second.IsNegative)
-                    observation=new("Inconclusive",typeof(T).Name,op,mode.ToString(),x.ToString(),"","",expected.ToString(),second.ToString(),0,0,"160/224-digit target rounding disagrees",0);
+                bool stable=TryElementaryReference(x,operation,format,mode,out EDecimal expected,out int precisionUsed);
+                if(!stable)
+                    observation=new("Inconclusive",typeof(T).Name,op,mode.ToString(),x.ToString(),"","",expected.ToString(),$"unstable through {precisionUsed} digits",0,0,"Adaptive elementary target rounding did not stabilize",0);
                 else
                 {
                     var actual=operation switch{12=>IeeeDecimal<T>.Exp(a,context),13=>IeeeDecimal<T>.Log(a,context),14=>IeeeDecimal<T>.ExpM1(a,context),_=>IeeeDecimal<T>.LogP1(a,context)};
@@ -87,6 +88,73 @@ internal static class CaseVerifier
             }
             observe(observation);if(observation.Outcome=="Failed")throw new OracleMismatchException(observation);
         }
+    }
+
+    private static bool TryElementaryReference(EDecimal value,int operation,EContext format,IeeeDecimalRounding mode,out EDecimal expected,out int precisionUsed)
+    {
+        EDecimal? previous=null;
+        foreach(int precision in new[]{160,224,320,448,640,896,1280})
+        {
+            EContext target=format.WithRounding(Rounding(mode)).WithBlankFlags();
+            EDecimal current=Elementary(value,operation,precision).RoundToPrecision(target);
+            if(previous is not null&&current.CompareTo(previous)==0&&(!current.IsZero||current.IsNegative==previous.IsNegative))
+            {
+                expected=current;precisionUsed=precision;return true;
+            }
+            previous=current;
+        }
+        expected=previous!;precisionUsed=1280;return false;
+    }
+
+    private static (EDecimal Value,int Flags) ExactProduct(EDecimal left,EDecimal right,int precision,int qmin,int qmax,IeeeDecimalRounding mode,EContext fallback)
+    {
+        // PeterO 1.8.2 double-rounds some Decimal32 subnormal products. Use it
+        // for special-value semantics, then independently round every finite
+        // exact integer product at the interchange format's quantum boundary.
+        EDecimal exact=left.Multiply(right,EContext.Unlimited);
+        if(!exact.IsFinite)
+        {
+            EDecimal special=left.Multiply(right,fallback);
+            return(special,Flags(fallback.Flags));
+        }
+
+        bool negative=exact.IsNegative;
+        BigInteger magnitude=BigInteger.Abs(BigInteger.Parse(exact.Mantissa.ToString(),CultureInfo.InvariantCulture));
+        int exponent=int.Parse(exact.Exponent.ToString(),CultureInfo.InvariantCulture);
+        int preferred=int.Parse(left.Exponent.Add(right.Exponent).ToString(),CultureInfo.InvariantCulture);
+        if(magnitude.IsZero)return(EDecimal.Create(EInteger.Zero,EInteger.FromInt32(Math.Clamp(exponent,qmin,qmax))).CopySign(exact),0);
+
+        int digits=magnitude.ToString(CultureInfo.InvariantCulture).Length;
+        int adjusted=exponent+digits-1;
+        int quantum=Math.Max(qmin,adjusted-precision+1);
+        BigInteger scaled=magnitude,divisor=BigInteger.One;
+        int shift=exponent-quantum;
+        if(shift>=0)scaled*=BigInteger.Pow(10,shift);else divisor=BigInteger.Pow(10,-shift);
+        BigInteger coefficient=BigInteger.DivRem(scaled,divisor,out BigInteger remainder);
+        bool increment=!remainder.IsZero&&mode switch
+        {
+            IeeeDecimalRounding.ToNearestEven=>2*remainder>divisor||2*remainder==divisor&&!coefficient.IsEven,
+            IeeeDecimalRounding.ToNearestAway=>2*remainder>=divisor,
+            IeeeDecimalRounding.TowardPositive=>!negative,
+            IeeeDecimalRounding.TowardNegative=>negative,
+            _=>false
+        };
+        if(increment)coefficient++;
+        if(coefficient>=BigInteger.Pow(10,precision)){coefficient/=10;quantum++;}
+        bool inexact=!remainder.IsZero;
+        if(!inexact)while(quantum<Math.Min(preferred,qmax)&&coefficient%10==0){coefficient/=10;quantum++;}
+        int flags=inexact?(int)IeeeDecimalFlags.Inexact:0;
+        if(inexact&&adjusted<qmin+precision-1)flags|=(int)IeeeDecimalFlags.Underflow;
+        if(quantum>qmax)
+        {
+            bool infinity=mode is IeeeDecimalRounding.ToNearestEven or IeeeDecimalRounding.ToNearestAway||mode==IeeeDecimalRounding.TowardPositive&&!negative||mode==IeeeDecimalRounding.TowardNegative&&negative;
+            EDecimal overflow=infinity?(negative?EDecimal.NegativeInfinity:EDecimal.PositiveInfinity):EDecimal.Create(EInteger.FromString((negative?"-":"")+(BigInteger.Pow(10,precision)-1).ToString(CultureInfo.InvariantCulture)),EInteger.FromInt32(qmax));
+            return(overflow,(int)(IeeeDecimalFlags.Overflow|IeeeDecimalFlags.Inexact));
+        }
+        EInteger signed=EInteger.FromString((negative?"-":"")+coefficient.ToString(CultureInfo.InvariantCulture));
+        EDecimal rounded=EDecimal.Create(signed,EInteger.FromInt32(quantum));
+        if(negative&&coefficient.IsZero)rounded=rounded.Negate();
+        return(rounded,flags);
     }
 
     private static EDecimal Elementary(EDecimal x,int operation,int precision)

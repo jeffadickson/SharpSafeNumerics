@@ -12,7 +12,7 @@ the configured branch only at daily boundaries unless PinnedSource is selected.
 [CmdletBinding()]
 param(
     [ValidatePattern('^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')][string]$Repository = 'jeffadickson/SharpSafeNumerics',
-    [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._/-]*$')][string]$SourceRef = 'ieee-decimal-completion',
+    [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._/-]*$')][string]$SourceRef = 'main',
     [ValidateRange(1,2147483647)][int]$IssueNumber = 1,
     [ValidateRange(0.001,8760)][double]$Hours = 168,
     [ValidateRange(0.001,168)][double]$ReportIntervalHours = 24,

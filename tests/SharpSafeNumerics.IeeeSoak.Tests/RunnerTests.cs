@@ -106,6 +106,34 @@ public sealed class RunnerTests
     }
 
     [Fact]
+    public void Decimal32SubnormalProductUsesExactProductBeforeFinalRounding()
+    {
+        UInt128 a=UInt128.Parse("00000000000000000000000000006354",System.Globalization.NumberStyles.HexNumber);
+        UInt128 b=UInt128.Parse("000000004005ED9697EC90C50345FF72",System.Globalization.NumberStyles.HexNumber);
+        var rows=new List<CaseObservation>();
+
+        CaseVerifier.Verify(a,b,rows.Add);
+
+        Assert.Equal(5,rows.Count);
+        Assert.All(rows,row=>{Assert.Equal("Passed",row.Outcome);Assert.Equal("Multiply",row.Operation);});
+        Assert.Equal("1.0601E-97",rows[0].Expected);
+    }
+
+    [Fact]
+    public void ElementaryReferenceRaisesPrecisionUntilTargetRoundingStabilizes()
+    {
+        UInt128 a=UInt128.Parse("000017CB80B803677A2C364C0BEE50E1",System.Globalization.NumberStyles.HexNumber);
+        UInt128 b=UInt128.Parse("0000000000000208F481C73C07A0621E",System.Globalization.NumberStyles.HexNumber);
+        var rows=new List<CaseObservation>();
+
+        CaseVerifier.Verify(a,b,rows.Add);
+
+        Assert.Equal(5,rows.Count);
+        Assert.All(rows,row=>{Assert.Equal("Passed",row.Outcome);Assert.Equal("ExpM1",row.Operation);});
+        Assert.Equal("1.000001E-80",rows.Single(row=>row.Rounding==nameof(IeeeDecimalRounding.TowardPositive)).Expected);
+    }
+
+    [Fact]
     public void FailureAndAmbiguityAccountingPreservesDiagnostics()
     {
         var state=new CampaignState();

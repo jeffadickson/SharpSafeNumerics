@@ -554,6 +554,11 @@ Implementation: tests/SharpSafeNumerics.IeeeSoak and eng/Invoke-WeekQualificatio
 Verification: dedicated harness tests, short executed campaigns, Pester control
 flow/negative tests and native preprocessor schema/property tests. A short smoke
 cannot establish week-long endurance; actual future reports provide that evidence.
+The first published campaign exposed a PeterO1.8.2 subnormal-product double
+rounding and fixed-precision elementary ambiguity. The harness now uses an
+exact-integer multiplication oracle and adaptive160-through1,280-digit
+elementary agreement. Published operands have permanent regressions; see
+verification/2026-11-19-workstation-week.md.
 <<<
 
 [REQUIREMENT]

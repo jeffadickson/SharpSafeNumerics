@@ -10,7 +10,7 @@ $artifactRoot = Join-Path $documents 'QualificationArtifacts'
 # The runner verifies/creates missing child directories after checking their parents.
 $runner = Join-Path $PSScriptRoot '..\eng\Invoke-WeekQualification.ps1'
 & $runner -Hours 168 -ReportIntervalHours 24 -IssueNumber 1 `
-  -SourceRef ieee-decimal-completion -CheckoutRoot $checkoutRoot -ArtifactRoot $artifactRoot
+  -SourceRef main -CheckoutRoot $checkoutRoot -ArtifactRoot $artifactRoot
 ```
 
 When invoking interactively, replace `$runner` with the actual checked-out script path. `-PlanOnly` prints paths/deadlines without creating files, installing tools or starting tests. E: is not required: the example explicitly places artifacts in redirected Documents. Without ArtifactRoot the runner uses CODEX_ARTIFACT_ROOT, then E:/Artifacts if E: exists, otherwise Documents/QualificationArtifacts. Check free disk space for a week of logs; no memory caps are imposed.

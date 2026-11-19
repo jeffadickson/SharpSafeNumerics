@@ -32,7 +32,7 @@ Describe 'Week qualification plans and contracts' {
         $plan=(& $script:weekRunner -PlanOnly -CheckoutRoot (Join-Path $TestDrive 'checkouts') -ArtifactRoot (Join-Path $TestDrive 'artifacts')) | ConvertFrom-Json
         $plan.Hours | Should -Be 168
         $plan.ReportIntervalHours | Should -Be 24
-        $plan.SourceRef | Should -Be 'ieee-decimal-completion'
+        $plan.SourceRef | Should -Be 'main'
         $plan.FollowSource | Should -BeTrue
         $plan.ResultsBranch | Should -Match '^qualification/issue-1/week-'
         Test-Path -LiteralPath $plan.Artifacts | Should -BeFalse
